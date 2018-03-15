@@ -1,0 +1,44 @@
+local monarch = require "monarch.monarch"
+local gooey = require "gooey.gooey"
+
+
+local function show_select_opponent_button(self)
+	gui.set_enabled(gui.get_node("select_opponent/bg"), true)
+	gui.set_enabled(gui.get_node("play/bg"), false)
+end
+
+
+local function show_play_button(self)
+	gui.set_enabled(gui.get_node("select_opponent/bg"), false)
+	gui.set_enabled(gui.get_node("play/bg"), true)
+end
+
+
+function init(self)
+	gui.set_render_order(15)
+
+	msg.post(".", "acquire_input_focus")
+
+	self.context_id, self.context_type = fbinstant.get_context()
+	if self.context_id and self.context_type then
+		show_play_button(self)
+	else
+		show_select_opponent_button(self)
+	end
+end
+
+
+function on_input(self, action_id, action)
+	gooey.button("select_opponent/bg", action_id, action, function()
+		fbinstant.choose_context(function(self, context_id, context_type)
+			if context_id then
+				self.context_id = context_id
+				self.context_type = context_type
+				monarch.show(hash("game"), nil, { context_id = self.context_id })
+			end
+		end)
+	end)
+	gooey.button("play/bg", action_id, action, function()
+		monarch.show(hash("game"), nil, { context_id = self.context_id })
+	end)
+end

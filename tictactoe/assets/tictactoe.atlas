@@ -1,0 +1,57 @@
+images {
+  image: "/tictactoe/assets/images/avatar-circle.png"
+}
+images {
+  image: "/tictactoe/assets/images/avatar-cross.png"
+}
+images {
+  image: "/tictactoe/assets/images/btn.png"
+}
+images {
+  image: "/tictactoe/assets/images/o.png"
+}
+images {
+  image: "/tictactoe/assets/images/transparent1px.png"
+}
+images {
+  image: "/tictactoe/assets/images/vs.png"
+}
+images {
+  image: "/tictactoe/assets/images/x.png"
+}
+images {
+  image: "/tictactoe/assets/images/madewithdefold-small.png"
+}
+images {
+  image: "/tictactoe/assets/images/logo-c.png"
+}
+images {
+  image: "/tictactoe/assets/images/logo-e.png"
+}
+images {
+  image: "/tictactoe/assets/images/logo-i.png"
+}
+images {
+  image: "/tictactoe/assets/images/logo-t.png"
+}
+images {
+  image: "/tictactoe/assets/images/logo-xo.png"
+}
+images {
+  image: "/tictactoe/assets/images/logo-o.png"
+}
+images {
+  image: "/tictactoe/assets/images/logo-a.png"
+}
+images {
+  image: "/tictactoe/assets/images/bg-1.png"
+}
+images {
+  image: "/tictactoe/assets/images/board-noShadow.png"
+}
+images {
+  image: "/tictactoe/assets/images/board-shadow-0.25x.png"
+}
+margin: 0
+extrude_borders: 1
+inner_padding: 0

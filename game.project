@@ -1,0 +1,25 @@
+[project]
+title = XOXO
+dependencies = https://github.com/britzl/gooey/archive/1.1.zip,https://github.com/britzl/monarch/archive/1.0.zip
+
+[bootstrap]
+main_collection = /tictactoe/tictactoe.collectionc
+
+[input]
+game_binding = /input/game.input_bindingc
+
+[display]
+width = 640
+height = 1136
+
+[script]
+shared_state = 1
+
+[html5]
+htmlfile = /index.html
+
+[library]
+include_dirs = fbinstant
+
+[native_extension]
+app_manifest = /debug.appmanifest

@@ -1,0 +1,317 @@
+local monarch = require "monarch.monarch"
+local gooey = require "gooey.gooey"
+local data = require "tictactoe.game.data"
+local rxijson = require "fbinstant.utils.json"
+
+local TEXTURE1_ID = "player1_photo"
+local TEXTURE2_ID = "player2_photo"
+
+
+local function index_to_row_column(index)
+	local row = math.ceil(index / 3)
+	local column = 1 + ((index - 1) % 3)
+	return row, column
+end
+
+
+local function update_context(self, text)
+	fbinstant.update(rxijson.encode({
+		action = "CUSTOM",
+		cta = "Play",
+		template = "play_turn",
+		image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAADElEQVQImWNgoBMAAABpAAFEI8ARAAAAAElFTkSuQmCC",
+		text = text,
+		strategy = "IMMEDIATE",
+	}), function()
+		fbinstant.quit()
+	end)
+end
+
+
+local function update_message(self, text)
+	gui.set_text(gui.get_node("message"), text)
+end
+
+
+local function refresh_player(player, photo_node, name_node, texture_id)
+	gui.set_text(name_node, player and player.name or "")
+
+	if player and player.photo and player.photo ~= "" then
+		http.request(player.photo .. "&ignore=" .. os.time(), "GET", function(self, id, response)
+			if response.status == 200 then
+				local img = image.load(response.response)
+				gui.set_texture_data(texture_id, img.width, img.height, "rgb", img.buffer, false)
+				gui.set_enabled(photo_node, true)
+			end
+		end)
+	end
+end
+
+
+local function show_players()
+	fbinstant.get_players(function(self, players)
+		if not players then
+			print("Unable to get players for context")
+			return
+		end
+		if self.game_data.players[1] == players[1].id then
+			refresh_player(players[2], gui.get_node("player1_photo"), gui.get_node("player1_name"), TEXTURE1_ID)
+			refresh_player(players[1], gui.get_node("player2_photo"), gui.get_node("player2_name"), TEXTURE2_ID)
+		else
+			refresh_player(players[1], gui.get_node("player1_photo"), gui.get_node("player1_name"), TEXTURE1_ID)
+			refresh_player(players[2], gui.get_node("player2_photo"), gui.get_node("player2_name"), TEXTURE2_ID)
+		end
+	end)
+end
+
+
+local function update_cells(self)
+	for i=1,9 do
+		local row, column = index_to_row_column(i)
+		local pidx = self.game_data.gameState[row][column]
+		local url = msg.url(nil, "cell" .. i, "symbol")
+		local node = gui.get_node("cell" .. i)
+		if pidx == 1 then
+			gui.set_enabled(node, true)
+			gui.play_flipbook(node, hash("x"))
+		elseif pidx == 2 then
+			gui.set_enabled(node, true)
+			gui.play_flipbook(node, hash("o"))
+		else
+			gui.set_enabled(node, false)
+		end
+	end
+end
+
+
+local function check_match(cells)
+	return cells[1] ~= -1 and cells[1] == cells[2] and cells[1] == cells[3]
+end
+
+
+local function check_game_won(self)
+	local gs = self.game_data.gameState
+	local match_row =
+	check_match(gs[1]
+	or check_match(gs[2])
+	or check_match(gs[3]))
+
+	local match_column =
+	check_match({ gs[1][1], gs[2][1], gs[3][1] })
+	or check_match({ gs[1][2], gs[2][2], gs[3][2] })
+	or check_match({ gs[1][3], gs[2][3], gs[3][3] })
+
+	local match_cross =
+	check_match({ gs[1][1], gs[2][2], gs[3][3] })
+	or check_match({ gs[3][1], gs[2][2], gs[1][3] })
+
+	local won = match_row or match_column or match_cross
+	return won
+end
+
+
+local function check_draw(self)
+	local gs = self.game_data.gameState
+	for i=1,9 do
+		local row, column = index_to_row_column(i)
+		if gs[row][column] == -1 then
+			return false
+		end
+	end
+	return true
+end
+
+
+local function show_rematch()
+	msg.post(".", "acquire_input_focus")
+	gui.set_enabled(gui.get_node("rematch/bg"), true)
+end
+
+
+local function handle_game_data(self, server_data)
+	assert(coroutine.running())
+	if not server_data then
+		-- new game, player is Player 1
+		self.game_data.players = { self.player.id }
+		self.game_data.playerTurn = 1
+		data.save(self.game_data)
+	else
+		self.game_data = server_data
+		if #self.game_data.players == 1 and self.game_data[1] ~= self.player.id then
+			-- player is accepting a challenge as Player 2
+			self.game_data.players[2] = self.player.id
+			self.game_data.playerTurn = 2
+			data.save(self.game_data)
+		end
+	end
+	update_cells(self)
+	self.player_index = (self.game_data.players[1] == self.player.id) and 1 or 2
+	self.opponent_index = (self.game_data.players[1] == self.player.id) and 2 or 1
+
+	if check_game_won(self) then
+		if self.game_data.playerTurn == self.player_index then
+			update_message(self, "You win!")
+		else
+			update_message(self, "You lose!")
+		end
+		show_rematch()
+	elseif check_draw(self) then
+		update_message(self, "Draw!")
+		show_rematch()
+	else
+		if self.game_data.playerTurn == self.player_index then
+			msg.post(".", "acquire_input_focus")
+			update_message(self, "Your turn")
+		else
+			update_message(self, "Wait your turn")
+		end
+	end
+end
+
+
+local function load_game_data(self)
+	coroutine.wrap(function()
+		local server_data = data.load()
+		if server_data and not next(server_data) then
+			server_data = nil
+		end
+		handle_game_data(self, server_data)
+		show_players()
+	end)()
+end
+
+
+local function finish_game(self, player_won)
+	coroutine.wrap(function()
+		data.save(self.game_data)
+		fbinstant.get_player_data("score", function(self, score)
+			local current_win_streak = 0
+			if score then
+				current_win_streak = tonumber(score)
+			end
+
+			if player_won then
+				current_win_streak = current_win_streak + 1
+			end
+
+			fbinstant.set_player_data(rxijson.encode({
+				score = current_win_streak,
+			}))
+
+			fbinstant.set_session_data(rxijson.encode({
+				playerWon = player_won,
+				opponent = self.game_data.players[self.opponent_index],
+				score = current_win_streak,
+			}))
+
+			if player_won then
+				update_context(self, self.player.name .. " won the game");
+			else
+				update_context(self, "Draw! Rematch?");
+			end
+		end)
+	end)()
+end
+
+
+local function play_in_cell(self, index)
+	coroutine.wrap(function()
+		local row, column = index_to_row_column(index)
+		self.game_data.gameState[row][column] = self.player_index
+		update_cells(self)
+		msg.post(".", "release_input_focus")
+		if check_game_won(self) then
+			update_message(self, "You won!")
+			finish_game(self, true)
+		elseif check_draw(self) then
+			update_message(self, "Draw!")
+			finish_game(self, false)
+		else
+			update_message(self, "Sending your move")
+			self.game_data.playerTurn = (self.game_data.playerTurn == 1) and 2 or 1
+		end
+		data.save(self.game_data)
+		update_context(self, self.player.name .. " played their move");
+	end)()
+end
+
+
+local function reset_game_data(self)
+	self.game_data = {}
+	self.game_data.gameState = {
+		{ -1, -1, -1 },
+		{ -1, -1, -1 },
+		{ -1, -1, -1 },
+	}
+	self.game_data.players = {}
+	self.game_data.playerTurn = -1
+
+	self.cells = {}
+	for i=1,9 do
+		self.cells[i] = gui.get_node("cell" .. i)
+		gui.set_enabled(self.cells[i], false)
+	end
+end
+
+
+function init(self)
+	gui.set_render_order(15)
+
+	local screen_data = monarch.data(hash("game"))
+	assert(screen_data and screen_data.context_id)
+	self.context_id = screen_data.context_id
+	self.player = fbinstant.get_player()
+	self.player_index = nil
+	self.opponent_index = nil
+
+	local ok = gui.new_texture(TEXTURE1_ID, 120, 120, "rgb", (string.char(0xff) .. string.char(0x80) .. string.char(0x10)):rep(120*120), false)
+	if not ok then
+		print("Unable to create player1 texture")
+	end
+	local ok = gui.new_texture(TEXTURE2_ID, 120, 120, "rgb", (string.char(0xff) .. string.char(0x80) .. string.char(0x10)):rep(120*120), false)
+	if not ok then
+		print("Unable to create player2 texture")
+	end
+	local player1_photo = gui.get_node("player1_photo")
+	local player2_photo = gui.get_node("player2_photo")
+	gui.set_texture(player1_photo, TEXTURE1_ID)
+	gui.set_enabled(player1_photo, false)
+	gui.set_texture(player2_photo, TEXTURE2_ID)
+	gui.set_enabled(player2_photo, false)
+	gui.set_enabled(gui.get_node("rematch/bg"), false)
+	update_message(self, "")
+	reset_game_data(self)
+	load_game_data(self)
+end
+
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("trigger_response") and message.group == hash("cell") then
+		if message.enter then
+			self.over_cell = message.other_id
+		elseif self.over_cell == message.other_id then
+			self.over_cell = nil
+		end
+	end
+end
+
+
+function on_input(self, action_id, action)
+	if action_id == hash("touch") and action.released then
+		for i,cell in pairs(self.cells) do
+			if gui.pick_node(cell, action.x, action.y) then
+				table.remove(self.cells, i)
+				play_in_cell(self, i)
+				return true
+			end
+		end
+	end
+	gooey.button("rematch/bg", action_id, action, function()
+		gui.set_enabled(gui.get_node("rematch/bg"), false)
+		msg.post(".", "release_input_focus")
+		coroutine.wrap(function()
+			reset_game_data(self)
+			handle_game_data(self, nil)
+		end)()
+	end)
+end

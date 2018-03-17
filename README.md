@@ -1,3 +1,5 @@
+![Instant Games](/images/instantgames.png)
+
 # Facebook Instant Games
 Facebook Instant Games extension for the [Defold](https://www.defold.com) game engine.
 

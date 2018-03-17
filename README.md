@@ -10,7 +10,7 @@ https://github.com/defold/extension-fbinstant/archive/master.zip
 Or point to the ZIP file of a [specific release](https://github.com/defold/extension-fbinstant/releases).
 
 ## Preparing index.html
-Before the extension can be used you need to add the Facebook Instant Games API to the index.html of your game. [Refer to the index.html in the root of this project](https://github.com/defold/extension-fbinstant/blob/master/index.html#L56) for an example of this.
+Before the extension can be used you need to add the Facebook Instant Games API to the index.html of your game. [Refer to the index.html in the root of this project](https://github.com/defold/extension-fbinstant/blob/master/index.html#L55) for an example of this.
 
 ## Creating a Facebook App
 You also need to create a Facebook App where Instant Games is enabled. Please refer to the [Getting Started documentation](https://developers.facebook.com/docs/games/instant-games/getting-started) on the Instant Games page for further instructions.

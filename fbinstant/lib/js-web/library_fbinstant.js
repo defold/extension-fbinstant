@@ -39,16 +39,18 @@ var FBInstantLibrary = {
         allocateString: function(str) {
             return allocate(intArrayFromString(str), 'i8', ALLOC_NORMAL)
         },
-        dynCall_vi: function(fn, arg) {
-            if (typeof arg == "number") {
-                Runtime.dynCall('vi', fn, [arg]);
+        dynCall: function(fn, in_args) {
+            var signature = "v";
+            var out_args = [];
+            for (var i=0; i < in_args.length; i++) {
+                signature = signature + "i";
+                out_args.push((typeof in_args[i] == "string") ? Utils.allocateString(in_args[i]) : in_args[i]);
             }
-            else if (typeof arg == "string") {
-                var ptr = Utils.allocateString(arg);
-                Runtime.dynCall('vi', fn, [ptr]);
-                Module._free(ptr);
+            Runtime.dynCall(signature, fn, out_args.slice());
+            for (var i=0; i < in_args.length; i++) {
+                if (typeof in_args[i] == "string") Module._free(out_args[i]);
             }
-        }
+        },
     },
 
     $Interstitials: {
@@ -91,9 +93,7 @@ var FBInstantLibrary = {
         var key = Pointer_stringify(ckey);
         FBInstant.player.getDataAsync([key]).then(function(data) {
             if (typeof data[key] !== 'undefined') {
-                var ptr = Utils.allocateString(data[key].toString());
-                Runtime.dynCall('vi', callback, [ptr]);
-                Module._free(ptr);
+                Utils.dynCall(callback, [data[key].toString()]);
             }
             else {
                 Runtime.dynCall('vi', callback, [0]);
@@ -154,9 +154,7 @@ var FBInstantLibrary = {
         var json = Pointer_stringify(cjson);
         var increments = JSON.parse(json);
         FBInstant.player.incrementStatsAsync(increments).then(function(stats) {
-            var ptr = Utils.allocateString(JSON.stringify(stats));
-            Runtime.dynCall('vi', callback, [ptr]);
-            Module._free(ptr);
+            Utils.dynCall(callback, [JSON.stringify(stats)]);
         }).catch(function(err) {
             console.log('FBInstant_PlatformIncrementPlayerStatsAsync - error', err);
             Runtime.dynCall('vi', callback, [0]);
@@ -235,7 +233,7 @@ var FBInstantLibrary = {
         if (photo == null) {
             photo = "";
         }
-        Utils.storeString("playerPhoto", photo);
+        return Utils.storeString("playerPhoto", photo);
     },
 
 
@@ -245,7 +243,7 @@ var FBInstantLibrary = {
     FBInstant_PlatformGetEntryPointData: function() {
         var entryPointData = FBInstant.getEntryPointData();
         if (entryPointData) {
-            return Utils.allocateString(JSON.stringify(entryPointData));
+            return Utils.storeString("entryPointData", JSON.stringify(entryPointData));
         }
         else {
             return null;
@@ -258,9 +256,7 @@ var FBInstantLibrary = {
     // =====================================
     FBInstant_PlatformGetEntryPointAsync: function(callback) {
         FBInstant.getEntryPointAsync().then(function(entrypoint) {
-            var ptr = Utils.allocateString(entrypoint);
-            Runtime.dynCall('vi', callback, [ptr]);
-            Module._free(ptr);
+            Utils.dynCall(callback, [entrypoint]);
         }).catch(function(err) {
             console.log('FBInstant_PlatformGetEntryPoint - error', err);
             Runtime.dynCall('vi', callback, [0]);
@@ -277,11 +273,7 @@ var FBInstantLibrary = {
         FBInstant.context.chooseAsync(options).then(function() {
             var ctxId = FBInstant.context.getID();
             var ctxType = FBInstant.context.getType();
-            var idPtr = Utils.allocateString(ctxId);
-            var typePtr = Utils.allocateString(ctxType);
-            Runtime.dynCall('vii', callback, [idPtr,typePtr]);
-            Module._free(idPtr);
-            Module._free(typePtr);
+            Utils.dynCall(callback, [ctxId, ctxType]);
         }).catch(function(err) {
             console.log('FBInstant_PlatformChooseContextAsync - error', err);
             Runtime.dynCall('vii', callback, [0,0]);
@@ -297,11 +289,7 @@ var FBInstantLibrary = {
         FBInstant.context.createAsync(playerId).then(function() {
             var ctxId = FBInstant.context.getID();
             var ctxType = FBInstant.context.getType();
-            var idPtr = Utils.allocateString(ctxId);
-            var typePtr = Utils.allocateString(ctxType);
-            Runtime.dynCall('vii', callback, [idPtr,typePtr]);
-            Module._free(idPtr);
-            Module._free(typePtr);
+            Utils.dynCall(callback, [ctxId, ctxType]);
         }).catch(function(err) {
             console.log('FBInstant_PlatformCreateContextAsync - error', err);
             Runtime.dynCall('vii', callback, [0,0]);
@@ -317,11 +305,7 @@ var FBInstantLibrary = {
         FBInstant.context.createAsync(contextId).then(function() {
             var ctxId = FBInstant.context.getID();
             var ctxType = FBInstant.context.getType();
-            var idPtr = Utils.allocateString(ctxId);
-            var typePtr = Utils.allocateString(ctxType);
-            Runtime.dynCall('vii', callback, [idPtr,typePtr]);
-            Module._free(idPtr);
-            Module._free(typePtr);
+            Utils.dynCall(callback, [ctxId, ctxType]);
         }).catch(function(err) {
             console.log('FBInstant_PlatformSwitchContextAsync - error', err);
             Runtime.dynCall('vii', callback, [0,0]);
@@ -428,9 +412,7 @@ var FBInstantLibrary = {
         var storeName = Pointer_stringify(cstoreName);
         FBInstant.context.createStoreAsync(storeName).then(function(store) {
             var storeId = store.getID();
-            var ptr = Utils.allocateString(storeId);
-            Runtime.dynCall('vi', callback, [ptr]);
-            Module._free(ptr);
+            Utils.dynCall(callback, [storeId]);
         }).catch(function(err) {
             console.log("FBInstant_PlatformCreateStoreAsync - error", err);
             Runtime.dynCall('vi', callback, [0]);
@@ -475,9 +457,7 @@ var FBInstantLibrary = {
             var store = stores.find(function(store) { return store.getName() == storeName; });
             if (store) {
                 store.getDataAsync(keys).then(function(data) {
-                    var ptr = Utils.allocateString(JSON.stringify(data));
-                    Runtime.dynCall('vi', callback, [ptr]);
-                    Module._free();
+                    Utils.dynCall(callback, [JSON.stringify(data)]);
                 }).catch(function(err) {
                     console.log("FBInstant_PlatformGetStoreDataAsync - getDataAsync - error", err);
                     Runtime.dynCall('vi', callback, [0]);
@@ -505,9 +485,7 @@ var FBInstantLibrary = {
             var store = stores.find(function(store) { return store.getName() == storeName; });
             if (store) {
                 store.incrementDataAsync(increments).then(function(data) {
-                    var ptr = Utils.allocateString(JSON.stringify(data));
-                    Runtime.dynCall('vi', callback, [ptr]);
-                    Module._free(ptr);
+                    Utils.dynCall(callback, [data]);
                 }).catch(function(err) {
                     console.log("FBInstant_PlatformIncrementStoreDataAsync - incrementDataAsync - error", err);
                     Runtime.dynCall('vi', callback, [0]);
@@ -538,9 +516,7 @@ var FBInstantLibrary = {
                 });
             });
             var storesJson = JSON.stringify(results);
-            var ptr = Utils.allocateString(storesJson);
-            Runtime.dynCall('vi', callback, [ptr]);
-            Module._free(ptr);
+            Utils.dynCall(callback, [storesJson]);
         }).catch(function(err) {
             console.log("FBInstant_PlatformGetStoresAsync - error", err);
             Runtime.dynCall('vi', callback, [0]);

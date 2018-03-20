@@ -179,7 +179,7 @@ The ```callback``` function is expected to accept the following values:
 
 ## Context functions
 
-### fbinstant.get_contect()
+### fbinstant.get_context()
 Get the current context.
 
 **RETURN**

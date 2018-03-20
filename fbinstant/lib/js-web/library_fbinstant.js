@@ -126,15 +126,11 @@ var FBInstantLibrary = {
     // =====================================
     // Get/Set/Increment PlayerStats
     // =====================================
-    FBInstant_PlatformGetPlayerStatsAsync: function(callback, ckey) {
-        var key = Pointer_stringify(ckey);
-        FBInstant.player.getStatsAsync([key]).then(function(stats) {
-            if (typeof stats[key] !== 'undefined') {
-                Runtime.dynCall('vi', callback, [stats[key]]);
-            }
-            else {
-                Runtime.dynCall('vi', callback, [0]);
-            }
+    FBInstant_PlatformGetPlayerStatsAsync: function(callback, ckeysjson) {
+        var keysJson = Pointer_stringify(ckeysjson);
+        var keys = keysJson != "" ? JSON.parse(keysJson) : null;
+        FBInstant.player.getStatsAsync(keys).then(function(stats) {
+            Utils.dynCall(callback, [JSON.stringify(stats)]);
         }).catch(function(err) {
             console.log('FBInstant_PlatformGetPlayerStatsAsync - error', err);
             Runtime.dynCall('vi', callback, [0]);

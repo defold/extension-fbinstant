@@ -38,7 +38,7 @@ extern "C" {
     void FBInstant_PlatformSetPlayerDataAsync(OnPlayerDataSetCallback callback, const char* json);
     void FBInstant_PlatformFlushPlayerDataAsync(OnPlayerDataFlushedCallback callback);
 
-	void FBInstant_PlatformGetPlayerStatsAsync(OnPlayerStatsCallback callback, const char* key);
+	void FBInstant_PlatformGetPlayerStatsAsync(OnPlayerStatsCallback callback, const char* json);
     void FBInstant_PlatformSetPlayerStatsAsync(OnPlayerStatsSetCallback callback, const char* json);
     void FBInstant_PlatformIncrementPlayerStatsAsync(OnPlayerStatsIncrementedCallback callback, const char* json);
 

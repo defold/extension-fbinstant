@@ -137,17 +137,17 @@ The ```callback``` function is expected to accept the following values:
 * ```success``` (boolean) - Indicating if the operation was successful or not
 
 
-### fbinstant.get_player_stats(key, callback)
+### fbinstant.get_player_stats([stats,] callback)
 Retrieve stats from the designated cloud storage of the current player.
 
 **PARAMETERS**
-* ```key``` (string) - Key holding the stat to get
+* ```stats``` (string) - Optional JSON encoded array of unique keys to retrieve stats for. If the function is called without it, it will fetch all stats.
 * ```callback``` (function) - Function to call when the stat has been retrieved
 
 The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
-* ```value``` (string) - The stat or nil if it doesn't exist
+* ```stats``` (string) - JSON encoded key-value pair map containing the requested stats.
 
 
 ### fbinstant.set_player_stats(stats, callback)
@@ -187,7 +187,7 @@ Get the current context.
 * ```type``` (string) - The context type, or nil if none exists (see fbinstant.CONTEXT_* constants)
 
 
-### fbinstant.choose_context([options], callback)
+### fbinstant.choose_context([options,] callback)
 Opens a context selection dialog for the player.
 
 **PARAMETERS**

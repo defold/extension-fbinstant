@@ -165,12 +165,12 @@ static int FBInstant_FlushPlayerDataAsync(lua_State* L) {
 // ===============================================
 lua_Listener getStatsAsyncListener;
 
-static void FBInstant_OnPlayerStats(const int stat) {
+static void FBInstant_OnPlayerStats(const char* stats) {
 	lua_State* L = getStatsAsyncListener.m_L;
 	int top = lua_gettop(L);
 
 	lua_pushlistener(L, getStatsAsyncListener);
-	lua_pushnumber(L, stat);
+	lua_pushstring(L, stats);
 	int ret = lua_pcall(L, 2, 0, 0);
 	if (ret != 0) {
 		lua_pop(L, 1);
@@ -182,9 +182,16 @@ static void FBInstant_OnPlayerStats(const int stat) {
 static int FBInstant_GetPlayerStatsAsync(lua_State* L) {
 	int top = lua_gettop(L);
 
-	const char* key = luaL_checkstring(L, 1);
-	luaL_checklistener(L, 2, getStatsAsyncListener);
-	FBInstant_PlatformGetPlayerStatsAsync((OnPlayerStatsCallback)FBInstant_OnPlayerStats, key);
+	int type = lua_type(L, 1);
+	if (type == LUA_TFUNCTION) {
+		luaL_checklistener(L, 1, getStatsAsyncListener);
+		FBInstant_PlatformGetPlayerStatsAsync((OnPlayerStatsCallback)FBInstant_OnPlayerStats, "");
+	}
+	else {
+		const char* statsJson = luaL_checkstring(L, 1);
+		luaL_checklistener(L, 2, getStatsAsyncListener);
+		FBInstant_PlatformGetPlayerStatsAsync((OnPlayerStatsCallback)FBInstant_OnPlayerStats, statsJson);
+	}
 
 	assert(top == lua_gettop(L));
 	return 0;

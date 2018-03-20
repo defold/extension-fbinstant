@@ -385,16 +385,16 @@ The ```callback``` function is expected to accept the following values:
 ## Constants
 
 ### fbinstant.CONTEXT_SOLO
-fbinstant.get_contect().type
+fbinstant.get_context().type
 
 ### fbinstant.CONTEXT_POST
-fbinstant.get_contect().type
+fbinstant.get_context().type
 
 ### fbinstant.CONTEXT_THREAD
-fbinstant.get_contect().type
+fbinstant.get_context().type
 
 ### fbinstant.CONTEXT_GROUP
-fbinstant.get_contect().type
+fbinstant.get_context().type
 
 
 ### fbinstant.SHARE_INTENT_INVITE

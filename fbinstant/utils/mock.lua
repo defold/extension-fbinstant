@@ -81,6 +81,7 @@ end
 
 function fbinstant.quit()
 	print("quit")
+	os.exit()
 end
 
 
@@ -144,9 +145,17 @@ function fbinstant.flush_player_data(cb)
 	cb(get_self(), true)
 end
 
-function fbinstant.get_player_stats(stat, cb)
+function fbinstant.get_player_stats(stats, cb)
 	print("get player stats", stats)
-	cb(get_self(), player_stats[stat] or 0)
+	if type(stats) == "function" then
+		cb(get_self(), rxijson.encode(player_stats))
+	else
+		local result = {}
+		for _,key in ipairs(json.decode(stats)) do
+			result[key] = player_stats[key]
+		end
+		cb(get_self(), rxijson.encode(result))
+	end
 end
 
 function fbinstant.set_player_stats(statsjson, cb)
@@ -270,7 +279,7 @@ function fbinstant.get_stores(cb)
 	print("get_stores")
 	local context_id = fbinstant.CONTEXT.id
 
-	local stores = load("stores")	
+	local stores = load("stores")
 	stores[context_id] = stores[context_id] or {}
 	local result = {}
 	for _,store_name in pairs(stores[context_id]) do
@@ -328,6 +337,3 @@ function fbinstant.increment_store_data(store_name, data_json, cb)
 		cb(get_self(), rxijson.encode(result))
 	end
 end
-
-
-

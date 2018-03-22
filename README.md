@@ -62,7 +62,7 @@ The ```callback``` function is expected to accept the following values:
 Update the game session.
 
 **PARAMETERS**
-* ```data``` (string) - JSON encoded object containing game information (refer to the [CustomUpdatePayload object of the Javascript API](https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant5.0#customupdatepayload))
+* ```data``` (string) - JSON encoded object containing game information (refer to the [CustomUpdatePayload object of the Javascript API](https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.0#customupdatepayload))
 * ```callback``` (function) - Function to call when the value has been retrieved
 
 The ```callback``` function is expected to accept the following values:
@@ -281,7 +281,7 @@ Each entry in the ```players``` table has the following values:
 Invoke a share dialog.
 
 **PARAMETERS**
-* ```payload``` (string) - JSON encoded share payload (refer to the [SharePayload object](https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant5.0#sharepayload) from the Javascript API)
+* ```payload``` (string) - JSON encoded share payload (refer to the [SharePayload object](https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.0#sharepayload) from the Javascript API)
 * ```callback``` (function) - Function to call when the share dialog has been closed.
 
 The ```callback``` function is expected to accept the following values:

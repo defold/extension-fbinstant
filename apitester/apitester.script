@@ -1,0 +1,58 @@
+local monarch = require "monarch.monarch"
+local json = require "fbinstant.utils.json"
+local popup = require "apitester.popup.popup"
+
+-- mock fbinstant.* to test your game without the need to build/bundle for HTML5
+require "fbinstant.utils.mock"
+if fbinstant.mock then
+	-- this is the logged in player
+	fbinstant.PLAYER = {
+		name = "Player 1",
+		id = "100000000001fake",
+		photo = "http://i.pravatar.cc/200?u=123",
+		locale = "en_US",
+	}
+
+	-- these are the players in the current context (fbinstant.get_players())
+	fbinstant.PLAYERS = {
+		fbinstant.PLAYER,
+		{
+			name = "Player 2",
+			id = "100000000002fake",
+			photo = "http://i.pravatar.cc/200?u=456",
+			locale = "en_US",
+		}
+	}
+
+	-- the current context
+	fbinstant.CONTEXT = {
+		id = "123456fake",
+		type = fbinstant.CONTEXT_THREAD,
+		size = 2,
+	}
+end
+
+
+function init(self)
+	msg.post("#", "initialize")
+	msg.post("@render:", "clear_color", { color = vmath.vector4(0.1, 0.1, 0.1, 1.0) })
+end
+
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("initialize") then
+		fbinstant.initialize(function(self, success)
+			if not success then
+				popup.show("Failed to initialize fbinstant")
+				return
+			end
+			fbinstant.start_game(function(self, success)
+				if not success then
+					popup.show("Failed to start game")
+					return
+				end
+				monarch.show(hash("overview"))
+			end)
+		end)
+	end
+end

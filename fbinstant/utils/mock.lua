@@ -104,14 +104,14 @@ end
 --------------- SESSION AND ENTRY DATA
 --------------------------------
 
-function fbinstant.get_entry_point_data(key)
-	print("get_entry_point_data", key)
-	return entry_point_data[key]
+function fbinstant.get_entry_point_data()
+	print("get_entry_point_data")
+	return rxijson.encode(entry_point_data)
 end
 
 function fbinstant.get_entry_point(cb)
 	print("get_entry_point")
-	return cb(get_self(), "entrypoint")
+	return cb(get_self(), "admin_message")
 end
 
 function fbinstant.set_session_data(jsondata)
@@ -130,23 +130,27 @@ function fbinstant.get_player()
 end
 
 function fbinstant.get_player_data(key, cb)
-	print("get_player_data", key)
+	print("get_player_data", key, player_data[key])
 	cb(get_self(), player_data[key])
 end
 
 function fbinstant.set_player_data(jsondata, cb)
 	print("set_player_data", jsondata)
-	player_data = json.decode(jsondata)
+	player_data = player_data or {}
+	for k,v in pairs(json.decode(jsondata)) do
+		player_data[k] = v
+	end
+	pprint(player_data)
 	cb(get_self(), true)
 end
 
 function fbinstant.flush_player_data(cb)
-	print("flush player data")
+	print("flush_player_data")
 	cb(get_self(), true)
 end
 
 function fbinstant.get_player_stats(stats, cb)
-	print("get player stats", stats)
+	print("get_player_stats", stats)
 	if type(stats) == "function" then
 		cb(get_self(), rxijson.encode(player_stats))
 	else
@@ -159,14 +163,14 @@ function fbinstant.get_player_stats(stats, cb)
 end
 
 function fbinstant.set_player_stats(statsjson, cb)
-	print("set player stats", statsjson)
+	print("set_player_stats", statsjson)
 	player_stats = json.decode(statsjson)
 	cb(get_self(), true)
 end
 
 function fbinstant.increment_player_stats(statsjson, cb)
+	print("increment_player_stats", statsjson)
 	local stats = json.decode(statsjson)
-	print("increment player stats")
 	for k,v in pairs(stats) do
 		player_stats[k] = player_stats[k] or 0
 		player_stats[k] = player_stats[k] + v
@@ -181,18 +185,19 @@ end
 --------------- CONTEXT FUNCTIONS
 --------------------------------
 
-function fbinstant.choose_context(cb)
+function fbinstant.choose_context(options, cb)
 	print("choose_context")
+	if type(options) == "function" then cb = options end
 	cb(get_self(), fbinstant.CONTEXT and fbinstant.CONTEXT.id, fbinstant.CONTEXT and fbinstant.CONTEXT.type)
 end
 
 function fbinstant.create_context(player_id, cb)
-	print("create_context")
+	print("create_context", player_id)
 	cb(get_self(), fbinstant.CONTEXT and fbinstant.CONTEXT.id, fbinstant.CONTEXT and fbinstant.CONTEXT.type)
 end
 
 function fbinstant.switch_context(context_id, cb)
-	print("switch_context")
+	print("switch_context", context_id)
 	fbinstant.CONTEXT.id = context_id
 	cb(get_self(), fbinstant.CONTEXT and fbinstant.CONTEXT.id, fbinstant.CONTEXT and fbinstant.CONTEXT.type)
 end
@@ -202,6 +207,7 @@ function fbinstant.get_context()
 end
 
 function fbinstant.is_size_between(min, max)
+	print("is_size_between", min, max)
 	if not fbinstant.CONTEXT then
 		return false
 	end

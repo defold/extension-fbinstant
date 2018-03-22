@@ -1,0 +1,61 @@
+local dirtylarry = require "gooey.themes.dirtylarry.dirtylarry"
+local json = require "fbinstant.utils.json"
+local prettify = require "apitester.prettify"
+local monarch = require "monarch.monarch"
+
+
+function init(self)
+	print("init")
+	msg.post(".", "acquire_input_focus")
+	msg.post("#", "update_context")
+	msg.post("#", "update_players")
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("update_context") then
+		local context_id, context_type = fbinstant.get_context()
+		local text = "CONTEXT\n"
+		text = text .. "ID: " .. (context_id or "nil") .. "\n"
+		text = text .. "TYPE: " .. (context_type or "nil") .. "\n"
+		gui.set_text(gui.get_node("context"), text)
+	elseif message_id == hash("update_players") then
+		fbinstant.get_players(function(self, players)
+			local text = "PLAYERS\n"
+			for _,player in ipairs(players) do
+				text = text .. prettify(player) .. "\n"
+			end
+			gui.set_text(gui.get_node("players"), text)
+		end)
+	end
+end
+
+function on_input(self, action_id, action)
+	dirtylarry.button("choose_context", action_id, action, function()
+		local options = {}
+		fbinstant.choose_context(json.encode(options), function(self, id, type)
+			msg.post("#", "update_context")
+		end)
+	end)
+	dirtylarry.button("create_context", action_id, action, function()
+		local player_id = self.create_context_player_id.text
+		fbinstant.create_context(player_id, function(self, id, type)
+			msg.post("#", "update_context")
+		end)
+	end)
+	dirtylarry.button("switch_context", action_id, action, function()
+		local context_id = self.switch_context_context_id.text
+		fbinstant.switch_context(context_id, function(self, id, type)
+			msg.post("#", "update_context")
+		end)
+	end)
+	dirtylarry.button("back", action_id, action, function()
+		monarch.back()
+	end)
+	self.create_context_player_id = dirtylarry.input("create_context_player_id", gui.KEYBOARD_TYPE_DEFAULT, action_id, action, "Player id")
+	self.switch_context_context_id = dirtylarry.input("switch_context_context_id", gui.KEYBOARD_TYPE_DEFAULT, action_id, action, "Context id")
+end
+
+function on_reload(self)
+	-- Add input-handling code here
+	-- Remove this function if not needed
+end

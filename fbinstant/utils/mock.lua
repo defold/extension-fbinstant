@@ -288,7 +288,7 @@ function fbinstant.get_stores(cb)
 	local stores = load("stores")
 	stores[context_id] = stores[context_id] or {}
 	local result = {}
-	for _,store_name in pairs(stores[context_id]) do
+	for store_name,_ in pairs(stores[context_id]) do
 		local store = load_store(store_name)
 		table.insert(result, store.info)
 	end

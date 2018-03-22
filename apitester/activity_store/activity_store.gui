@@ -136,7 +136,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "LABEL"
+  text: "BACK"
   font: "dirtylarry"
   id: "back/label"
   xanchor: XANCHOR_NONE
@@ -162,6 +162,7 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
@@ -293,7 +294,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "LABEL"
+  text: "CREATE"
   font: "dirtylarry"
   id: "create_store/label"
   xanchor: XANCHOR_NONE
@@ -319,6 +320,7 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
@@ -450,7 +452,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "LABEL"
+  text: "CLOSE"
   font: "dirtylarry"
   id: "close_store/label"
   xanchor: XANCHOR_NONE
@@ -476,6 +478,7 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
@@ -669,7 +672,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "LABEL"
+  text: "SAVE DATA"
   font: "dirtylarry"
   id: "save_store_data/label"
   xanchor: XANCHOR_NONE
@@ -695,6 +698,7 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
@@ -826,7 +830,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "LABEL"
+  text: "INC DATA"
   font: "dirtylarry"
   id: "increment_store_data/label"
   xanchor: XANCHOR_NONE
@@ -852,6 +856,7 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0

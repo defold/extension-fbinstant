@@ -110,17 +110,17 @@ The ```player``` table contains the following key-value pairs:
 * ```locale``` (string) - Player locale
 
 
-### fbinstant.get_player_data(key, callback)
+### fbinstant.get_player_data(keys, callback)
 Retrieve data from the designated cloud storage of the current player.
 
 **PARAMETERS**
-* ```key``` (string) - Key holding the data to get
+* ```keys``` (string) - An array of unique keys to retrieve data for.
 * ```callback``` (function) - Function to call when the data has been retrieved
 
 The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
-* ```value``` (string) - The data or nil if it doesn't exist
+* ```data``` (string) - JSON encoded key-value pair map containing the requested data.
 
 
 ### fbinstant.set_player_data(data, callback)

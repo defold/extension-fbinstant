@@ -184,7 +184,8 @@ end
 local function finish_game(self, player_won)
 	coroutine.wrap(function()
 		data.save(self.game_data)
-		fbinstant.get_player_data("score", function(self, score)
+		fbinstant.get_player_data(rxisjon.encode({"score"}), function(self, data)
+			local score = data.score
 			local current_win_streak = 0
 			if score then
 				current_win_streak = tonumber(score)

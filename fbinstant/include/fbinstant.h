@@ -36,7 +36,7 @@ extern "C" {
     void FBInstant_PlatformOnPause(OnPauseCallback callback);
     void FBInstant_PlatformSetLoadingProgress(int progress);
 
-    void FBInstant_PlatformGetPlayerDataAsync(OnPlayerDataCallback callback, const char* key);
+    void FBInstant_PlatformGetPlayerDataAsync(OnPlayerDataCallback callback, const char* json);
     void FBInstant_PlatformSetPlayerDataAsync(OnPlayerDataSetCallback callback, const char* json);
     void FBInstant_PlatformFlushPlayerDataAsync(OnPlayerDataFlushedCallback callback);
 

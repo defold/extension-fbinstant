@@ -91,15 +91,11 @@ var FBInstantLibrary = {
     // =====================================
     // Get/Set/Flush PlayerData
     // =====================================
-    FBInstant_PlatformGetPlayerDataAsync: function(callback, ckey) {
-        var key = Pointer_stringify(ckey);
-        FBInstant.player.getDataAsync([key]).then(function(data) {
-            if (typeof data[key] !== "undefined") {
-                Utils.dynCall(callback, [data[key].toString()]);
-            }
-            else {
-                Runtime.dynCall("vi", callback, [0]);
-            }
+    FBInstant_PlatformGetPlayerDataAsync: function(callback, ckeysjson) {
+        var keysJson = Pointer_stringify(ckeysjson);
+        var keys = JSON.parse(keysJson);
+        FBInstant.player.getDataAsync(keys).then(function(data) {
+            Utils.dynCall(callback, [JSON.stringify(data)]);
         }).catch(function(err) {
             console.log("FBInstant_PlatformGetDataAsync - error", err);
             Runtime.dynCall("vi", callback, [0]);

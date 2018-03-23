@@ -133,9 +133,13 @@ function fbinstant.get_player()
 	return fbinstant.PLAYER
 end
 
-function fbinstant.get_player_data(key, cb)
-	print("get_player_data", key, player_data[key])
-	cb(get_self(), player_data[key])
+function fbinstant.get_player_data(keys, cb)
+	print("get_player_data", keys)
+	local result = {}
+	for _,key in pairs(json.decode(keys)) do
+		result[key] = player_data[key]
+	end
+	cb(get_self(), rxijson.encode(result))
 end
 
 function fbinstant.set_player_data(jsondata, cb)
@@ -285,7 +289,7 @@ end
 function fbinstant.get_stores(cb)
 	local context_id = fbinstant.CONTEXT.id
 	print("get_stores", context_id)
-	
+
 	local stores = load("stores")
 	stores[context_id] = stores[context_id] or {}
 	local result = {}

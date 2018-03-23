@@ -79,12 +79,7 @@ static void FBInstant_OnPlayerData(const char* data) {
 	int top = lua_gettop(L);
 
 	lua_pushlistener(L, getDataAsyncListener);
-	if (data != NULL) {
-		lua_pushstring(L, data);
-	}
-	else {
-		lua_pushnil(L);
-	}
+	lua_pushstring(L, data);
 	int ret = lua_pcall(L, 2, 0, 0);
 	if (ret != 0) {
 		lua_pop(L, 1);
@@ -96,9 +91,9 @@ static void FBInstant_OnPlayerData(const char* data) {
 static int FBInstant_GetPlayerDataAsync(lua_State* L) {
 	int top = lua_gettop(L);
 
-	const char* key = luaL_checkstring(L, 1);
+	const char* keysJson = luaL_checkstring(L, 1);
 	luaL_checklistener(L, 2, getDataAsyncListener);
-	FBInstant_PlatformGetPlayerDataAsync((OnPlayerDataCallback)FBInstant_OnPlayerData, key);
+	FBInstant_PlatformGetPlayerDataAsync((OnPlayerDataCallback)FBInstant_OnPlayerData, keysJson);
 
 	assert(top == lua_gettop(L));
 	return 0;

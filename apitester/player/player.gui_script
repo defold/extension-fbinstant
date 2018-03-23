@@ -29,7 +29,8 @@ function on_input(self, action_id, action)
 	end)
 
 	dirtylarry.button("get_data", action_id, action, function()
-		fbinstant.get_player_data("achievements", function(self, achievements)
+		local keys = { "achievements" }
+		fbinstant.get_player_data(json.encode(keys), function(self, achievements)
 			print("get_player_data", achievements)
 			gui.set_text(gui.get_node("player_data"), prettify(json.decode(achievements or "[]")))
 		end)

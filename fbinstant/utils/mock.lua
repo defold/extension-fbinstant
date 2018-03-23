@@ -84,6 +84,10 @@ function fbinstant.quit()
 	os.exit()
 end
 
+function fbinstant.on_pause(cb)
+	print("on_pause")
+end
+
 
 --------------------------------
 --------------- MISC FUNCTIONS
@@ -177,8 +181,6 @@ function fbinstant.increment_player_stats(statsjson, cb)
 	end
 	cb(get_self(), rxijson.encode(player_stats))
 end
-
-
 
 
 --------------------------------

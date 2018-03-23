@@ -387,6 +387,35 @@ static int FBInstant_Quit(lua_State* L) {
 
 
 // ===============================================
+// ON PAUSE
+// ===============================================
+lua_Listener onPauseListener;
+
+static void FBInstant_OnPause() {
+	lua_State* L = onPauseListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, onPauseListener);
+	int ret = lua_pcall(L, 1, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_OnPause(lua_State* L) {
+	int top = lua_gettop(L);
+
+	luaL_checklistener(L, 1, onPauseListener);
+	FBInstant_PlatformShareAsync((OnPauseCallback)FBInstant_OnPause);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+// ===============================================
 // SET LOADING PROGRESS
 // ===============================================
 static int FBInstant_SetLoadingProgress(lua_State* L) {
@@ -398,6 +427,7 @@ static int FBInstant_SetLoadingProgress(lua_State* L) {
 	assert(top == lua_gettop(L));
 	return 0;
 }
+
 
 // ===============================================
 // CHOOSE CONTEXT
@@ -437,6 +467,7 @@ static int FBInstant_ChooseContextAsync(lua_State* L) {
 	return 0;
 }
 
+
 // ===============================================
 // CREATE CONTEXT
 // ===============================================
@@ -468,6 +499,7 @@ static int FBInstant_CreateContextAsync(lua_State* L) {
 	return 0;
 }
 
+
 // ===============================================
 // SWITCH CONTEXT
 // ===============================================
@@ -498,6 +530,7 @@ static int FBInstant_SwitchContextAsync(lua_State* L) {
 	assert(top == lua_gettop(L));
 	return 0;
 }
+
 
 // ===============================================
 // GET CONTEXT
@@ -906,6 +939,7 @@ static const luaL_reg Module_methods[] = {
 	{"set_loading_progress", FBInstant_SetLoadingProgress},
 	{"start_game", FBInstant_startGameAsync},
 	{"update", FBInstant_UpdateAsync},
+	{"on_pause", FBInstant_OnPause},
 	{"quit", FBInstant_Quit},
 
 	// event logging

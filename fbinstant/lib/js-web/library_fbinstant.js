@@ -15,7 +15,7 @@ var FBInstantLibrary = {
             }
             // create new player objects with allocated strings
             for (var i=0; i<players_to_set.length; i++) {
-                var player = players_to_set[i];
+                player = players_to_set[i];
                 Context.players.push({
                     id: Utils.allocateString(player.getID()),
                     name: Utils.allocateString(player.getName()),
@@ -34,21 +34,22 @@ var FBInstantLibrary = {
             Utils.strings[key] = {
                 ptr: Utils.allocateString(value),
                 str: value
-            }
+            };
             return Utils.strings[key].ptr;
         },
         allocateString: function(str) {
-            return allocate(intArrayFromString(str), "i8", ALLOC_NORMAL)
+            return allocate(intArrayFromString(str), "i8", ALLOC_NORMAL);
         },
         dynCall: function(fn, in_args) {
             var signature = "v";
             var out_args = [];
-            for (var i=0; i < in_args.length; i++) {
+            var i;
+            for (i=0; i < in_args.length; i++) {
                 signature = signature + "i";
                 out_args.push((typeof in_args[i] == "string") ? Utils.allocateString(in_args[i]) : in_args[i]);
             }
             Runtime.dynCall(signature, fn, out_args.slice());
-            for (var i=0; i < in_args.length; i++) {
+            for (i=0; i < in_args.length; i++) {
                 if (typeof in_args[i] == "string") Module._free(out_args[i]);
             }
         },
@@ -77,7 +78,7 @@ var FBInstantLibrary = {
     // =====================================
     FBInstant_PlatformUpdateAsync: function(callback, cpayloadjson) {
         var payloadjson = Pointer_stringify(cpayloadjson);
-        var payload = JSON.parse(payloadjson)
+        var payload = JSON.parse(payloadjson);
         FBInstant.updateAsync(payload).then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
@@ -589,7 +590,7 @@ var FBInstantLibrary = {
             Runtime.dynCall("vi", callback, [0]);
         }
     },
-}
+};
 
 autoAddDeps(FBInstantLibrary, "$Context");
 autoAddDeps(FBInstantLibrary, "$Utils");

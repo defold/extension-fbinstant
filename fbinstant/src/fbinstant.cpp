@@ -408,7 +408,7 @@ static int FBInstant_OnPause(lua_State* L) {
 	int top = lua_gettop(L);
 
 	luaL_checklistener(L, 1, onPauseListener);
-	FBInstant_PlatformShareAsync((OnPauseCallback)FBInstant_OnPause);
+	FBInstant_PlatformOnPause((OnPauseCallback)FBInstant_OnPause);
 
 	assert(top == lua_gettop(L));
 	return 0;

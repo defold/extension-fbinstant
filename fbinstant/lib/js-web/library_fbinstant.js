@@ -189,7 +189,7 @@ var FBInstantLibrary = {
     FBInstant_PlatformOnPause: function(callback) {
         FBInstant.onPause(function() {
             Runtime.dynCall("v", callback, []);
-        );
+        });
     },
 
 

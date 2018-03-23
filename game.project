@@ -16,7 +16,7 @@ height = 1136
 shared_state = 1
 
 [html5]
-htmlfile = /index.html
+htmlfile = /fbinstant/index.html
 
 [library]
 include_dirs = fbinstant

@@ -55,5 +55,8 @@ function on_message(self, message_id, message, sender)
 				monarch.show(hash("overview"))
 			end)
 		end)
+		fbinstant.on_pause(function(self)
+			popup.show("Pause!")
+		end)
 	end
 end

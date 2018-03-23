@@ -4,10 +4,16 @@ local prettify = require "apitester.prettify"
 local monarch = require "monarch.monarch"
 
 
+local function has_context()
+	local context_id, context_type = fbinstant.get_context()
+	return context_id and context_type
+end
+
 function init(self)
 	print("init")
 	msg.post(".", "acquire_input_focus")
 	msg.post("#", "update_entrypoint")
+	dirtylarry.button("activity_store").set_visible(has_context())
 end
 
 function on_message(self, message_id, message, sender)
@@ -37,7 +43,7 @@ function on_input(self, action_id, action)
 			intent = fbinstant.SHARE_INTENT_CHALLENGE,
 			image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAADElEQVQImWNgoBMAAABpAAFEI8ARAAAAAElFTkSuQmCC",
 			text = "I challenge thee!",
-			data = "datablob"
+			data = { foo = "bar" },
 		}
 		pprint(payload)
 		fbinstant.share(json.encode(payload), function(self, success)

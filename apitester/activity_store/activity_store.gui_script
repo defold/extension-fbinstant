@@ -9,12 +9,19 @@ function init(self)
 	print("init")
 	msg.post(".", "acquire_input_focus")
 	msg.post("#", "update_stores")
+	self.stores = {}
+	dirtylarry.dynamic_list("store_list", self.stores)
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("update_stores") then
 		fbinstant.get_stores(function(self, stores)
 			
+			local data = {}
+			for _,store in pairs(json.decode(stores)) do
+				data[#data + 1] = ("%s (%s) %s"):format(store.name, store.id, store.status)
+			end
+			self.stores = data
 		end)
 	end
 end
@@ -31,6 +38,9 @@ function on_input(self, action_id, action)
 			popup.success_check(store_id, "Created store " .. store_id, "Failed to create store")
 			msg.post("#", "update_stores")
 		end)
+	end)
+
+	dirtylarry.dynamic_list("store_list", self.stores, action_id, action, function(list)
 	end)
 end
 

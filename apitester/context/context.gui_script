@@ -4,6 +4,11 @@ local prettify = require "apitester.prettify"
 local monarch = require "monarch.monarch"
 
 
+local function has_context()
+	local context_id, context_type = fbinstant.get_context()
+	return context_id and context_type
+end
+
 function init(self)
 	print("init")
 	msg.post(".", "acquire_input_focus")
@@ -14,18 +19,26 @@ end
 function on_message(self, message_id, message, sender)
 	if message_id == hash("update_context") then
 		local context_id, context_type = fbinstant.get_context()
-		local text = "CONTEXT\n"
-		text = text .. "ID: " .. (context_id or "nil") .. "\n"
-		text = text .. "TYPE: " .. (context_type or "nil") .. "\n"
-		gui.set_text(gui.get_node("context"), text)
+		if context_id and context_type then
+			local text = "CONTEXT\n"
+			text = text .. "ID: " .. (context_id or "nil") .. "\n"
+			text = text .. "TYPE: " .. (context_type or "nil") .. "\n"
+			gui.set_text(gui.get_node("context"), text)
+		else
+			gui.set_text(gui.get_node("context"), "NO CONTEXT")
+		end
 	elseif message_id == hash("update_players") then
-		fbinstant.get_players(function(self, players)
-			local text = "PLAYERS\n"
-			for _,player in ipairs(players) do
-				text = text .. prettify(player) .. "\n"
-			end
-			gui.set_text(gui.get_node("players"), text)
-		end)
+		if has_context() then
+			fbinstant.get_players(function(self, players)
+				local text = "PLAYERS\n"
+				for _,player in ipairs(players) do
+					text = text .. prettify(player) .. "\n"
+				end
+				gui.set_text(gui.get_node("players"), text)
+			end)
+		else
+			gui.set_text(gui.get_node("players"), "NO CONTEXT = NO PLAYERS")
+		end
 	end
 end
 

@@ -1,9 +1,9 @@
 [project]
-title = XOXO
+title = APITester
 dependencies = https://github.com/britzl/gooey/archive/4.0.1.zip,https://github.com/britzl/monarch/archive/1.0.zip
 
 [bootstrap]
-main_collection = /tictactoe/tictactoe.collectionc
+main_collection = /apitester/apitester.collectionc
 
 [input]
 game_binding = /input/game.input_bindingc
@@ -22,8 +22,8 @@ htmlfile = /index.html
 include_dirs = fbinstant
 
 [native_extension]
-app_manifest = /debug.appmanifest
+app_manifest = /tictactoe/debug.appmanifest
 
 [graphics]
-texture_profiles = /fbinstant.texture_profiles
+texture_profiles = /tictactoe/tictactoe.texture_profiles
 

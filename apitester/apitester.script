@@ -41,6 +41,7 @@ end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("initialize") then
+		print("initialize")
 		fbinstant.initialize(function(self, success)
 			if not success then
 				popup.show("Failed to initialize fbinstant")

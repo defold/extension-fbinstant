@@ -266,6 +266,7 @@ var FBInstantLibrary = {
     FBInstant_PlatformChooseContextAsync: function(callback, coptionsJson) {
         var optionsJson = Pointer_stringify(coptionsJson);
         var options = optionsJson != "" ? JSON.parse(optionsJson) : null;
+        console.log("FBInstant_PlatformChooseContextAsync", optionsJson, options);
         FBInstant.context.chooseAsync(options).then(function() {
             var ctxId = FBInstant.context.getID();
             var ctxType = FBInstant.context.getType();

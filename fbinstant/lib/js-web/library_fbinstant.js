@@ -182,6 +182,16 @@ var FBInstantLibrary = {
 
 
     // =====================================
+    // OnPause
+    // =====================================
+    FBInstant_PlatformOnPause: function(callback) {
+        FBInstant.onPause(function() {
+            Runtime.dynCall('v', callback, []);
+        );
+    },
+
+
+    // =====================================
     // Quit
     // =====================================
     FBInstant_PlatformQuit: function() {

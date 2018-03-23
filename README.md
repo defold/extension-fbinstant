@@ -71,6 +71,17 @@ The ```callback``` function is expected to accept the following values:
 * ```success``` (boolean) - Indicating if the operation was successful or not
 
 
+### fbinstant.on_pause(callback)
+Set a callback to be fired when a pause event is triggered.
+
+**PARAMETERS**
+* ```callback``` (function) - Function to call when the game has started
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+
+
 ### fbinstant.quit()
 Quit the current game session.
 

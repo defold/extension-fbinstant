@@ -22,4 +22,8 @@ htmlfile = /index.html
 include_dirs = fbinstant
 
 [native_extension]
-app_manifest = /debug.appmanifest
+app_manifest = /tictactoe/debug.appmanifest
+
+[graphics]
+texture_profiles = /tictactoe/tictactoe.texture_profiles
+

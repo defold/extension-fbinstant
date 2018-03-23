@@ -1,0 +1,68 @@
+local dirtylarry = require "gooey.themes.dirtylarry.dirtylarry"
+local json = require "fbinstant.utils.json"
+local prettify = require "apitester.prettify"
+local monarch = require "monarch.monarch"
+
+
+local function has_context()
+	local context_id, context_type = fbinstant.get_context()
+	return context_id and context_type
+end
+
+function init(self)
+	print("init")
+	msg.post(".", "acquire_input_focus")
+	msg.post("#", "update_entrypoint")
+	dirtylarry.button("activity_store").set_visible(has_context())
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("update_entrypoint") then
+		fbinstant.get_entry_point(function(self, entry_point)
+			local entry_point_data = json.decode(fbinstant.get_entry_point_data())
+			local text = "ENTRY POINT\n"
+			text = text .. entry_point .. "\n"
+			text = text .. prettify(entry_point_data) .. "\n"
+			gui.set_text(gui.get_node("entry_point"), text)
+		end)
+	end
+end
+
+function on_input(self, action_id, action)
+	dirtylarry.button("context", action_id, action, function()
+		monarch.show(hash("context"))
+	end)
+	dirtylarry.button("player", action_id, action, function()
+		monarch.show(hash("player"))
+	end)
+	dirtylarry.button("activity_store", action_id, action, function()
+		monarch.show(hash("activity_store"))
+	end)
+	dirtylarry.button("share", action_id, action, function()
+		local payload = {
+			intent = fbinstant.SHARE_INTENT_CHALLENGE,
+			image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAADElEQVQImWNgoBMAAABpAAFEI8ARAAAAAElFTkSuQmCC",
+			text = "I challenge thee!",
+			data = { foo = "bar" },
+		}
+		pprint(payload)
+		fbinstant.share(json.encode(payload), function(self, success)
+			print("share success =", success)
+		end)
+	end)
+	dirtylarry.button("log", action_id, action, function()
+		local parameters = {
+			foo = "bar",
+			defold = 1234
+		}
+		fbinstant.log_event("event name", math.random(1,3), json.encode(parameters))
+	end)
+	dirtylarry.button("quit", action_id, action, function()
+		fbinstant.quit()
+	end)
+end
+
+function on_reload(self)
+	-- Add input-handling code here
+	-- Remove this function if not needed
+end

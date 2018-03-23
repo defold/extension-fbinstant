@@ -62,13 +62,24 @@ The ```callback``` function is expected to accept the following values:
 Update the game session.
 
 **PARAMETERS**
-* ```data``` (string) - JSON encoded object containing game information (refer to the [CustomUpdatePayload object of the Javascript API](https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant5.0#customupdatepayload))
+* ```data``` (string) - JSON encoded object containing game information (refer to the [CustomUpdatePayload object of the Javascript API](https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.0#customupdatepayload))
 * ```callback``` (function) - Function to call when the value has been retrieved
 
 The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
 * ```success``` (boolean) - Indicating if the operation was successful or not
+
+
+### fbinstant.on_pause(callback)
+Set a callback to be fired when a pause event is triggered.
+
+**PARAMETERS**
+* ```callback``` (function) - Function to call when the game has started
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
 
 
 ### fbinstant.quit()
@@ -99,17 +110,17 @@ The ```player``` table contains the following key-value pairs:
 * ```locale``` (string) - Player locale
 
 
-### fbinstant.get_player_data(key, callback)
+### fbinstant.get_player_data(keys, callback)
 Retrieve data from the designated cloud storage of the current player.
 
 **PARAMETERS**
-* ```key``` (string) - Key holding the data to get
+* ```keys``` (string) - An array of unique keys to retrieve data for.
 * ```callback``` (function) - Function to call when the data has been retrieved
 
 The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
-* ```value``` (string) - The data or nil if it doesn't exist
+* ```data``` (string) - JSON encoded key-value pair map containing the requested data.
 
 
 ### fbinstant.set_player_data(data, callback)
@@ -281,7 +292,7 @@ Each entry in the ```players``` table has the following values:
 Invoke a share dialog.
 
 **PARAMETERS**
-* ```payload``` (string) - JSON encoded share payload (refer to the [SharePayload object](https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant5.0#sharepayload) from the Javascript API)
+* ```payload``` (string) - JSON encoded share payload (refer to the [SharePayload object](https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.0#sharepayload) from the Javascript API)
 * ```callback``` (function) - Function to call when the share dialog has been closed.
 
 The ```callback``` function is expected to accept the following values:

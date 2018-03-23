@@ -1,5 +1,6 @@
 local monarch = require "monarch.monarch"
 local json = require "fbinstant.utils.json"
+local popup = require "apitester.popup.popup"
 
 -- mock fbinstant.* to test your game without the need to build/bundle for HTML5
 require "fbinstant.utils.mock"
@@ -40,15 +41,22 @@ end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("initialize") then
+		print("initialize")
 		fbinstant.initialize(function(self, success)
+			if not success then
+				popup.show("Failed to initialize fbinstant")
+				return
+			end
 			fbinstant.start_game(function(self, success)
-				local context_id, context_type = fbinstant.get_context()
-				if not context_id or context_type == fbinstant.CONTEXT_SOLO then
-					monarch.show(hash("start"))
-				else
-					monarch.show(hash("game"), nil, { context_id = context_id })
+				if not success then
+					popup.show("Failed to start game")
+					return
 				end
+				monarch.show(hash("overview"))
 			end)
+		end)
+		fbinstant.on_pause(function(self)
+			popup.show("Pause!")
 		end)
 	end
 end

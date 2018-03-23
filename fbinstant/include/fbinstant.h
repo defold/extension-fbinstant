@@ -14,6 +14,7 @@ typedef void (*OnPlayerStatsIncrementedCallback)(const char* stats);
 typedef void (*OnGameStartedCallback)(const int success);
 typedef void (*OnUpdatedCallback)(const int success);
 typedef void (*OnShareCallback)(const int success);
+typedef void (*OnPauseCallback)();
 typedef void (*OnContextCallback)(const char* id, const char* type);
 typedef void (*OnGetPlayersInContext)(int count);
 typedef void (*OnEntryPointCallback)(const char* entrypoint);
@@ -32,9 +33,10 @@ extern "C" {
     void FBInstant_PlatformStartGameAsync(OnGameStartedCallback callback);
     void FBInstant_PlatformUpdateAsync(OnUpdatedCallback callback, const char* json);
     void FBInstant_PlatformQuit();
+    void FBInstant_PlatformOnPause(OnPauseCallback callback);
     void FBInstant_PlatformSetLoadingProgress(int progress);
 
-    void FBInstant_PlatformGetPlayerDataAsync(OnPlayerDataCallback callback, const char* key);
+    void FBInstant_PlatformGetPlayerDataAsync(OnPlayerDataCallback callback, const char* json);
     void FBInstant_PlatformSetPlayerDataAsync(OnPlayerDataSetCallback callback, const char* json);
     void FBInstant_PlatformFlushPlayerDataAsync(OnPlayerDataFlushedCallback callback);
 

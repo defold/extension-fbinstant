@@ -368,13 +368,8 @@ parse = function(str, idx)
   decode_error(str, idx, "unexpected character '" .. chr .. "'")
 end
 
-
-function json.decode(str)
-  if type(str) ~= "string" then
-    error("expected argument of type string, got " .. type(str))
-  end
-  return ( parse(str, next_char(str, 1, space_chars, true)) )
-end
+-- use engine provided json.decode
+json.decode = _G.json.decode
 
 
 return json

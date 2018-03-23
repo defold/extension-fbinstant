@@ -1,6 +1,6 @@
 [project]
 title = XOXO
-dependencies = https://github.com/britzl/gooey/archive/1.1.zip,https://github.com/britzl/monarch/archive/1.0.zip
+dependencies = https://github.com/britzl/gooey/archive/5.2.0.zip,https://github.com/britzl/monarch/archive/1.0.zip
 
 [bootstrap]
 main_collection = /tictactoe/tictactoe.collectionc
@@ -22,4 +22,8 @@ htmlfile = /index.html
 include_dirs = fbinstant
 
 [native_extension]
-app_manifest = /debug.appmanifest
+app_manifest = /tictactoe/debug.appmanifest
+
+[graphics]
+texture_profiles = /tictactoe/tictactoe.texture_profiles
+

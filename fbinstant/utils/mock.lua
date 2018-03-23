@@ -144,7 +144,6 @@ function fbinstant.set_player_data(jsondata, cb)
 	for k,v in pairs(json.decode(jsondata)) do
 		player_data[k] = v
 	end
-	pprint(player_data)
 	cb(get_self(), true)
 end
 
@@ -245,7 +244,7 @@ local function save_store(store)
 
 	local stores = load("stores")
 	stores[store.info.contextID] = stores[store.info.contextID] or {}
-	table.insert(stores[store.info.contextID], store.name)
+	stores[store.info.contextID][store.info.name] = true
 	save("stores", stores)
 
 	save(filename, store)
@@ -284,9 +283,9 @@ function fbinstant.close_store(store_name, cb)
 end
 
 function fbinstant.get_stores(cb)
-	print("get_stores")
 	local context_id = fbinstant.CONTEXT.id
-
+	print("get_stores", context_id)
+	
 	local stores = load("stores")
 	stores[context_id] = stores[context_id] or {}
 	local result = {}

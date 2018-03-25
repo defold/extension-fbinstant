@@ -25,6 +25,17 @@ function init(self)
 	else
 		show_select_opponent_button(self)
 	end
+
+	local placement = "130801227620858_156771488357165"
+	fbinstant.load_interstitial_ad(placement, function(self, success)
+		print("loaded interstitial", success)
+		if not success then
+			return
+		end
+		fbinstant.show_interstitial_ad(placement, function(self, success)
+			print("showed interstitial", success)
+		end)
+	end)	
 end
 
 

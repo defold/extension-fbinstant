@@ -348,3 +348,17 @@ function fbinstant.increment_store_data(store_name, data_json, cb)
 		cb(get_self(), rxijson.encode(result))
 	end
 end
+
+--------------------------------
+--------------- ADS
+--------------------------------
+
+function fbinstant.load_interstitial_ad(placement, cb)
+	print("load_interstitial_ad")
+	cb(get_self(), true)
+end
+
+function fbinstant.show_interstitial_ad(placement, cb)
+	print("show_interstitial_ad")
+	cb(get_self(), true)
+end

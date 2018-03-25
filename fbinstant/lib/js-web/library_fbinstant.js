@@ -55,8 +55,27 @@ var FBInstantLibrary = {
         },
     },
 
-    $Interstitials: {
-        ads: [],
+    $Ads: {
+        instances: [],
+        remove: function(placementId) {
+            for(var i=0; i<Ads.instances.length; i++) {
+                var instance = Ads.instances[i];
+                if (instance.placementId == placementId) {
+                    Ads.instances.splice(i, 1);
+                    return instance.ad;
+                }
+            }
+            return null;
+        },
+        insert: function(placementId, ad) {
+            console.log("Ads.insert()");
+            console.log("Ads.insert() " + placementId.toString() + " " + ad.toString());
+            Ads.instances.push({
+                placementId: placementId,
+                ad: ad,
+            });
+            console.log("Ads.insert() done");
+        }
     },
 
 
@@ -400,7 +419,6 @@ var FBInstantLibrary = {
     FBInstant_PlatformShareAsync: function(callback, cpayloadJson) {
         var payloadJson = Pointer_stringify(cpayloadJson);
         var payload = JSON.parse(payloadJson);
-        console.log("FBInstant_PlatformShareAsync - payload", payload);
         FBInstant.shareAsync(payload).then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
@@ -556,14 +574,14 @@ var FBInstantLibrary = {
         });
     },
 
-
-
     FBInstant_PlatformLoadInterstitialAdAsync: function(callback, cplacementId) {
         var placementId = Pointer_stringify(cplacementId);
+        var adInstance;
         FBInstant.getInterstitialAdAsync(placementId).then(function(interstitial) {
-            Interstitials.ads.push(interstitial);
+            adInstance = interstitial;
             return interstitial.loadAsync();
         }).then(function() {
+            Ads.insert(placementId, adInstance);
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
             console.log("FBInstant_PlatformLoadInterstitialAdAsync - error", err);
@@ -572,12 +590,11 @@ var FBInstantLibrary = {
     },
     FBInstant_PlatformShowInterstitialAdAsync: function(callback, cplacementId) {
         var placementId = Pointer_stringify(cplacementId);
-        var interstitial = Interstitials.ads.find(function(ad) { return ad.getPlacementID() == placementId; });
-        if (interstitial) {
-            interstitial.showAsync().then(function() {
+        var ad = Ads.remove(placementId);
+        if (ad) {
+            ad.showAsync().then(function() {
                 Runtime.dynCall("vi", callback, [1]);
             }).catch(function(err) {
-                console.log("FBInstant_PlatformShowInterstitialAdAsync - error", err);
                 Runtime.dynCall("vi", callback, [0]);
             });
         }
@@ -590,6 +607,6 @@ var FBInstantLibrary = {
 
 autoAddDeps(FBInstantLibrary, "$Context");
 autoAddDeps(FBInstantLibrary, "$Utils");
-autoAddDeps(FBInstantLibrary, "$Interstitials");
+autoAddDeps(FBInstantLibrary, "$Ads");
 
 mergeInto(LibraryManager.library, FBInstantLibrary);

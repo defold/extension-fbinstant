@@ -68,13 +68,10 @@ var FBInstantLibrary = {
             return null;
         },
         insert: function(placementId, ad) {
-            console.log("Ads.insert()");
-            console.log("Ads.insert() " + placementId.toString() + " " + ad.toString());
             Ads.instances.push({
                 placementId: placementId,
                 ad: ad,
             });
-            console.log("Ads.insert() done");
         }
     },
 

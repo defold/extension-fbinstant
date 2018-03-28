@@ -51,8 +51,22 @@ if fbinstant.mock then
 end
 
 
+local function check_init(callback)
+	if tonumber(html5.run("Module._instant_inited")) == 1 then
+		msg.post("#", "initialize")
+	else
+		fbinstant.initialize(function(self, success)
+			if not success then
+				popup.show("Failed to initialize fbinstant")
+				return
+			end			
+			msg.post("#", "initialize")
+		end)
+	end	
+end
+
 function init(self)
-	msg.post("#", "initialize")
+	check_init()
 	msg.post("@render:", "clear_color", { color = vmath.vector4(0.1, 0.1, 0.1, 1.0) })
 end
 
@@ -60,18 +74,12 @@ end
 function on_message(self, message_id, message, sender)
 	if message_id == hash("initialize") then
 		print("initialize")
-		fbinstant.initialize(function(self, success)
+		fbinstant.start_game(function(self, success)
 			if not success then
-				popup.show("Failed to initialize fbinstant")
+				popup.show("Failed to start game")
 				return
 			end
-			fbinstant.start_game(function(self, success)
-				if not success then
-					popup.show("Failed to start game")
-					return
-				end
-				monarch.show(hash("overview"))
-			end)
+			monarch.show(hash("overview"))
 		end)
 		fbinstant.on_pause(function(self)
 			popup.show("Pause!")

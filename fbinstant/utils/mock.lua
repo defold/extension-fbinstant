@@ -112,7 +112,7 @@ end
 
 function fbinstant.get_supported_apis()
 	print("get_supported_apis")
-	return {
+	return rxijson.encode({
 		"getLocale", "getPlatform", "getSupportedAPIs", "getEntryPointData", "logEvent", "onPause", "initializeAsync", "setLoadingProgress", "setSessionData", "startGameAsync", "shareAsync", "switchGameAsync", "quit", "getEntryPointAsync", "updateAsync",
 
 		"player.getID", "player.getName", "player.getPhoto", "player.flushDataAsync", "player.getDataAsync", "player.setDataAsync", "player.getStatsAsync", "player.setStatsAsync", "player.incrementStatsAsync",
@@ -128,8 +128,14 @@ function fbinstant.get_supported_apis()
 		--"getLeaderboardAsync",
 		--"checkCanPlayerMatchAsync",
 		--"player.canSubscribeBotAsync",
-	}
+	})
 end
+
+function fbinstant.get_sdk_version()
+	print("get_sdk_version")
+	return "6.1"
+end
+
 
 --------------------------------
 --------------- SESSION AND ENTRY DATA

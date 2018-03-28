@@ -63,6 +63,7 @@ end
 
 
 function init(self)
+	print("SDK Version: " .. fbinstant.get_sdk_version())
 	print("Supported APIs: ...")
 	pprint(fbinstant.get_supported_apis())
 	-- build set of supported APIs (should be handled internally by extension in the future)

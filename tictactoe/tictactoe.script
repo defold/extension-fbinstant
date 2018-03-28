@@ -25,8 +25,8 @@ if fbinstant.mock then
 
 	-- the current context
 	fbinstant.CONTEXT = {
-		--id = "123456fake",
-		--type = fbinstant.CONTEXT_THREAD,
+		id = "123456fake",
+		type = fbinstant.CONTEXT_THREAD,
 		size = 2,
 	}
 end

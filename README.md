@@ -284,7 +284,15 @@ Each entry in the ```players``` table has the following values:
 * ```photo``` (string) - URL to a photo of the user
 
 
+## Platform functions
 
+## fbinstant.get_platform()
+Gets the active platform the game is running on. These are necessary as Defold's own functions will always return HTML5.
+
+Use these before attempting to use features which won't work on WEB or MOBILE_WEB such as ads. You can detect the platform and disable ad related features entirely.
+
+**RETURN**
+* ```platform``` (string) - The current platform one of "IOS" or "ANDROID" or "WEB" or "MOBILE_WEB".
 
 ## Share functions
 

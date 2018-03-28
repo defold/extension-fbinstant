@@ -31,7 +31,7 @@ function init(self)
 	local platform = fbinstant.get_platform() --Type: ("IOS" | "ANDROID" | "WEB" | "MOBILE_WEB")
 	print("Platform is... " .. platform)
 	
-	if platform == "IOS" or "ANDROID" then
+	if platform == "IOS" or platform == "ANDROID" then
 		print("about to attempt to load interstitial")
 		local placement = "130801227620858_156771488357165"
 		fbinstant.load_interstitial_ad(placement, function(self, success)

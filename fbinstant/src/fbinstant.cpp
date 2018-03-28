@@ -960,6 +960,7 @@ static const luaL_reg Module_methods[] = {
 	{"log_event", FBInstant_LogEvent},
 
 	// misc
+	{"get_platform", FBInstant_GetPlatform},
 	{"share", FBInstant_ShareAsync},
 
 	// ads

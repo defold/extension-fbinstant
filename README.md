@@ -284,7 +284,21 @@ Each entry in the ```players``` table has the following values:
 * ```photo``` (string) - URL to a photo of the user
 
 
+## Platform functions
 
+## fbinstant.get_platform()
+Gets the active platform the game is running on.
+
+**RETURN**
+* ```platform``` (string) - The current platform one of "IOS" or "ANDROID" or "WEB" or "MOBILE_WEB".
+
+## fbinstant.get_supported_apis()
+Gets a list of supported apis by the current platform.
+
+Check this list before attempting to use features which don't yet work on all platforms such as ads.
+
+**RETURN**
+* ```apis``` (string) - In the form of ["getLocale","getPlatform","getSDKVersion", ... "player.incrementStatsAsync","updateAsync"] etc. check the api version docs for complete API list https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.1
 
 ## Share functions
 
@@ -312,6 +326,62 @@ Log an app event with FB Analytics.
 * ```event_name``` (string) - Name of the event (refer to the [Javascript API](https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.0) for event name limitations)
 * ```value_to_sum``` (number) - An numeric value that FB Analytics can calculate a sum with.
 * ```parameters``` (string) - JSON encoded object of key value pairs (refer to the [Javascript API](https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.0) for parameter limitations)
+
+
+
+
+## Ads functions
+
+### fbinstant.load_interstitial_ad(placement, callback)
+Preload an interstitial ad.
+
+**PARAMETERS**
+* ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
+* ```callback``` (function) - Function to call when the interstitial ad has loaded
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```success``` (boolean) - Indicating if the operation was successful or not
+
+
+### fbinstant.show_interstitial_ad(placement, callback)
+Present an interstitial ad.
+
+**PARAMETERS**
+* ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
+* ```callback``` (function) - Function to call when user finished watching the ad
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```success``` (boolean) - Indicating if the operation was successful or not
+
+
+### fbinstant.load_rewarded_video(placement, callback)
+Preload a rewarded video.
+
+**PARAMETERS**
+* ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
+* ```callback``` (function) - Function to call when the rewarded video has loaded
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```success``` (boolean) - Indicating if the operation was successful or not
+
+
+### fbinstant.show_rewarded_video(placement, callback)
+Present the rewarded video.
+
+**PARAMETERS**
+* ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
+* ```callback``` (function) - Function to call when user finished watching the ad
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```success``` (boolean) - Indicating if the operation was successful or not
 
 
 

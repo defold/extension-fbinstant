@@ -27,7 +27,7 @@ var FBInstantLibrary = {
 
     $Utils: {
         strings: {},
-        storeString: function(key, value) {
+        manageString: function(key, value) {
             if (Utils.strings[key] != null) {
                 Module._free(Utils.strings[key].ptr);
             }
@@ -68,10 +68,13 @@ var FBInstantLibrary = {
             return null;
         },
         insert: function(placementId, ad) {
+            console.log("Ads.insert()");
+            console.log("Ads.insert() " + placementId.toString() + " " + ad.toString());
             Ads.instances.push({
                 placementId: placementId,
                 ad: ad,
             });
+            console.log("Ads.insert() done");
         }
     },
 
@@ -229,7 +232,7 @@ var FBInstantLibrary = {
         if (name == null) {
             name = "";
         }
-        return Utils.storeString("playerName", name);
+        return Utils.manageString("playerName", name);
     },
 
     FBInstant_PlatformGetPlayerId: function() {
@@ -237,7 +240,7 @@ var FBInstantLibrary = {
         if (id == null) {
             id = "";
         }
-        return Utils.storeString("playerID", id);
+        return Utils.manageString("playerID", id);
     },
 
     FBInstant_PlatformGetPlayerLocale: function() {
@@ -245,7 +248,7 @@ var FBInstantLibrary = {
         if (locale == null) {
             locale = "";
         }
-        return Utils.storeString("playerLocale", locale);
+        return Utils.manageString("playerLocale", locale);
     },
 
     FBInstant_PlatformGetPlayerPhoto: function() {
@@ -253,7 +256,7 @@ var FBInstantLibrary = {
         if (photo == null) {
             photo = "";
         }
-        return Utils.storeString("playerPhoto", photo);
+        return Utils.manageString("playerPhoto", photo);
     },
 
 
@@ -263,7 +266,7 @@ var FBInstantLibrary = {
     FBInstant_PlatformGetEntryPointData: function() {
         var entryPointData = FBInstant.getEntryPointData();
         if (entryPointData) {
-            return Utils.storeString("entryPointData", JSON.stringify(entryPointData));
+            return Utils.manageString("entryPointData", JSON.stringify(entryPointData));
         }
         else {
             return null;
@@ -342,7 +345,7 @@ var FBInstantLibrary = {
         if (id == null) {
             return;
         }
-        return Utils.storeString("contextId", id);
+        return Utils.manageString("contextId", id);
     },
 
     FBInstant_PlatformGetContextType: function() {
@@ -350,7 +353,7 @@ var FBInstantLibrary = {
         if (type == null) {
             return;
         }
-        return Utils.storeString("contextType", type);
+        return Utils.manageString("contextType", type);
     },
 
 
@@ -385,6 +388,32 @@ var FBInstantLibrary = {
         }
     },
 
+
+    // =====================================
+    // GetPlatform
+    // =====================================
+    FBInstant_PlatformGetPlatform: function() {
+        var platform = FBInstant.getPlatform();
+        if (platform) {
+            return Utils.manageString("platform", platform);
+        }
+        else {
+            return null;
+        }
+    },
+
+    // =====================================
+    // GetSupportedAPIs
+    // =====================================
+    FBInstant_PlatformGetSupportedAPIs: function() {
+        var supportedAPIs = FBInstant.getSupportedAPIs();
+        if (supportedAPIs) {
+            return Utils.manageString("supportedAPIs", JSON.stringify(supportedAPIs));
+        }
+        else {
+            return null;
+        }
+    },
 
     // =====================================
     // LogEvent
@@ -597,6 +626,37 @@ var FBInstantLibrary = {
         }
         else {
             console.log("FBInstant_PlatformShowInterstitialAdAsync - unable to find ad. Did you load it?");
+            Runtime.dynCall("vi", callback, [0]);
+        }
+    },
+
+
+    FBInstant_PlatformLoadRewardedVideoAsync: function(callback, cplacementId) {
+        var placementId = Pointer_stringify(cplacementId);
+        var adInstance;
+        FBInstant.getRewardedVideoAsync(placementId).then(function(rewardedVideo) {
+            adInstance = rewardedVideo;
+            return rewardedVideo.loadAsync();
+        }).then(function() {
+            Ads.insert(placementId, adInstance);
+            Runtime.dynCall("vi", callback, [1]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformLoadRewardedVideoAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
+        });
+    },
+    FBInstant_PlatformShowRewardedVideoAsync: function(callback, cplacementId) {
+        var placementId = Pointer_stringify(cplacementId);
+        var ad = Ads.remove(placementId);
+        if (ad) {
+            ad.showAsync().then(function() {
+                Runtime.dynCall("vi", callback, [1]);
+            }).catch(function(err) {
+                Runtime.dynCall("vi", callback, [0]);
+            });
+        }
+        else {
+            console.log("FBInstant_PlatformShowRewardedVideoAsync - unable to find video. Did you load it?");
             Runtime.dynCall("vi", callback, [0]);
         }
     },

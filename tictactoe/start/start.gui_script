@@ -1,6 +1,10 @@
 local monarch = require "monarch.monarch"
 local gooey = require "gooey.gooey"
 
+local INTERSTITIAL_AD = "130801227620858_156771488357165"
+local REWARDED_VIDEO = "130801227620858_168215297212784"
+
+local supported_apis
 
 local function show_select_opponent_button(self)
 	gui.set_enabled(gui.get_node("select_opponent/bg"), true)
@@ -22,14 +26,54 @@ local function table_contains(table, element)
 	return false
 end
 
+local function show_interstitial_ad(placement)
+	if not supported_apis["getInterstitialAdAsync"] then
+		print("This platform does not supported interstitial ads")
+		return
+	end
+	print("About to attempt to load interstitial")
+	fbinstant.load_interstitial_ad(placement, function(self, success)
+		print("Loaded interstitial", success)
+		if not success then
+			return
+		end
+		fbinstant.show_interstitial_ad(placement, function(self, success)
+			print("Showed interstitial", success)
+		end)
+	end)
+end
+
+
+local function show_rewarded_video(placement)
+	if not supported_apis["getRewardedVideoAsync"] then
+		print("This platform does not supported rewarded videos")
+		return
+	end
+	print("About to attempt to load rewarded video")
+	fbinstant.load_rewarded_video(placement, function(self, success)
+		print("Loaded rewarded video", success)
+		if not success then
+			return
+		end
+		fbinstant.show_rewarded_video(placement, function(self, success)
+			print("Showed rewarded video", success)
+		end)
+	end)
+end
+
+
 function init(self)
-
 	print("SDK Version: " .. fbinstant.get_sdk_version())
-
 	print("Supported APIs: ...")
 	pprint(fbinstant.get_supported_apis())
+	-- build set of supported APIs (should be handled internally by extension in the future)
+	supported_apis = {}
+	for _,api in ipairs(json.decode(fbinstant.get_supported_apis())) do
+		supported_apis[api] = true
+	end
 
-	local supported_apis = json.decode(fbinstant.get_supported_apis())
+	local platform = fbinstant.get_platform() --Type: ("IOS" | "ANDROID" | "WEB" | "MOBILE_WEB")
+	print("Platform is... " .. platform)
 
 	gui.set_render_order(15)
 
@@ -42,24 +86,8 @@ function init(self)
 		show_select_opponent_button(self)
 	end
 
-	local platform = fbinstant.get_platform() --Type: ("IOS" | "ANDROID" | "WEB" | "MOBILE_WEB")
-	print("Platform is... " .. platform)
-
-	if table_contains(supported_apis, "getInterstitialAdAsync") then
-		print("about to attempt to load interstitial")
-		local placement = "130801227620858_156771488357165"
-		fbinstant.load_interstitial_ad(placement, function(self, success)
-			print("loaded interstitial", success)
-			if not success then
-				return
-			end
-			fbinstant.show_interstitial_ad(placement, function(self, success)
-				print("showed interstitial", success)
-			end)
-		end)
-	else
-		print("this platform does not supported interstitial ads: " .. platform)
-	end
+	--show_interstitial_ad(INTERSTITIAL_AD)
+	show_rewarded_video(REWARDED_VIDEO)
 end
 
 

@@ -966,6 +966,76 @@ static int FBInstant_ShowInterstitialAdAsync(lua_State* L) {
 }
 
 
+
+
+
+// ===============================================
+// LOAD REWARDED VIDEO
+// ===============================================
+lua_Listener loadRewardedVideoAsyncListener;
+
+static void FBInstant_OnRewardedVideoLoaded(const int success) {
+	lua_State* L = loadRewardedVideoAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, loadRewardedVideoAsyncListener);
+	lua_pushboolean(L, success);
+
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_LoadRewardedVideoAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* placementId = luaL_checkstring(L, 1);
+	luaL_checklistener(L, 2, loadRewardedVideoAsyncListener);
+	FBInstant_PlatformLoadRewardedVideoAsync((OnRewardedVideoLoadedCallback)FBInstant_OnRewardedVideoLoaded, placementId);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+
+
+// ===============================================
+// SHOW REWARDED VIDEO
+// ===============================================
+lua_Listener showRewardedVideoAsyncListener;
+
+static void FBInstant_OnRewardedVideoShown(const int success) {
+	lua_State* L = showRewardedVideoAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, showRewardedVideoAsyncListener);
+	lua_pushboolean(L, success);
+
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_ShowRewardedVideoAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* placementId = luaL_checkstring(L, 1);
+	luaL_checklistener(L, 2, showRewardedVideoAsyncListener);
+	FBInstant_PlatformShowRewardedVideoAsync((OnRewardedVideoShownCallback)FBInstant_OnRewardedVideoShown, placementId);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+
 static const luaL_reg Module_methods[] = {
 	// lifecycle functions
 	{"initialize", FBInstant_InitializeAsync},
@@ -986,6 +1056,8 @@ static const luaL_reg Module_methods[] = {
 	// ads
 	{"load_interstitial_ad", FBInstant_LoadInterstitialAdAsync},
 	{"show_interstitial_ad", FBInstant_ShowInterstitialAdAsync},
+	{"load_rewarded_video", FBInstant_LoadRewardedVideoAsync},
+	{"show_rewarded_video", FBInstant_ShowRewardedVideoAsync},
 
 	// session and entry data
 	{"get_entry_point_data", FBInstant_GetEntryPointData},

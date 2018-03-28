@@ -26,6 +26,8 @@ typedef void (*OnStoreDataSavedCallback)(const int success);
 typedef void (*OnStoreDataIncrementedCallback)(const char* data);
 typedef void (*OnInterstitialAdLoadedCallback)(const int success);
 typedef void (*OnInterstitialAdShownCallback)(const int success);
+typedef void (*OnRewardedVideoLoadedCallback)(const int success);
+typedef void (*OnRewardedVideoShownCallback)(const int success);
 
 
 extern "C" {
@@ -55,7 +57,7 @@ extern "C" {
 
 	char* FBInstant_PlatformGetPlatform();
 	char* FBInstant_PlatformGetSupportedAPIs();
-	
+
     void FBInstant_PlatformLogEvent(const char* eventName, int valueToSum, const char* parametersJson);
 
     void FBInstant_PlatformShareAsync(OnShareCallback callback, const char* payloadJson);
@@ -82,6 +84,9 @@ extern "C" {
 
     void FBInstant_PlatformLoadInterstitialAdAsync(OnInterstitialAdLoadedCallback callback, const char* placementId);
     void FBInstant_PlatformShowInterstitialAdAsync(OnInterstitialAdShownCallback callback, const char* placementId);
+
+    void FBInstant_PlatformLoadRewardedVideoAsync(OnRewardedVideoLoadedCallback callback, const char* placementId);
+    void FBInstant_PlatformShowRewardedVideoAsync(OnRewardedVideoShownCallback callback, const char* placementId);
 
 }
 

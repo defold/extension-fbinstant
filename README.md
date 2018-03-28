@@ -330,6 +330,62 @@ Log an app event with FB Analytics.
 
 
 
+## Ads functions
+
+### fbinstant.load_interstitial_ad(placement, callback)
+Preload an interstitial ad.
+
+**PARAMETERS**
+* ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
+* ```callback``` (function) - Function to call when the interstitial ad has loaded
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```success``` (boolean) - Indicating if the operation was successful or not
+
+
+### fbinstant.show_interstitial_ad(placement, callback)
+Present an interstitial ad.
+
+**PARAMETERS**
+* ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
+* ```callback``` (function) - Function to call when user finished watching the ad
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```success``` (boolean) - Indicating if the operation was successful or not
+
+
+### fbinstant.load_rewarded_video(placement, callback)
+Preload a rewarded video.
+
+**PARAMETERS**
+* ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
+* ```callback``` (function) - Function to call when the rewarded video has loaded
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```success``` (boolean) - Indicating if the operation was successful or not
+
+
+### fbinstant.show_rewarded_video(placement, callback)
+Present the rewarded video.
+
+**PARAMETERS**
+* ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
+* ```callback``` (function) - Function to call when user finished watching the ad
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```success``` (boolean) - Indicating if the operation was successful or not
+
+
+
+
 ## Activity Store functions
 
 ### fbinstant.create_store(name, callback)

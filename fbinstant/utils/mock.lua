@@ -103,6 +103,10 @@ function fbinstant.share(payload, cb)
 	cb(get_self(), true)
 end
 
+function fbinstant.get_platform()
+	print("get_platform")
+	return "WEB"
+end
 
 --------------------------------
 --------------- SESSION AND ENTRY DATA

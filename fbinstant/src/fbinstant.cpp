@@ -591,6 +591,25 @@ static int FBInstant_GetPlayersInContextAsync(lua_State* L) {
 
 
 // ===============================================
+// GET PLATFORM ("IOS" | "ANDROID" | "WEB" | "MOBILE_WEB")
+// ===============================================
+static int FBInstant_GetPlatform(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* data = FBInstant_PlatformGetPlatform();
+	if (data) {
+		lua_pushstring(L, data);
+	}
+	else {
+		lua_pushnil(L);
+	}
+
+	assert(top + 1 == lua_gettop(L));
+	return 1;
+}
+
+
+// ===============================================
 // SHARE
 // ===============================================
 lua_Listener shareAsyncListener;

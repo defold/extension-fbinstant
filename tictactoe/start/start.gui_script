@@ -25,18 +25,24 @@ function init(self)
 	else
 		show_select_opponent_button(self)
 	end
-	
-	print("about to attempt to load interstitial")
-	local placement = "130801227620858_156771488357165"
-	fbinstant.load_interstitial_ad(placement, function(self, success)
-		print("loaded interstitial", success)
-		if not success then
-			return
-		end
-		fbinstant.show_interstitial_ad(placement, function(self, success)
-			print("showed interstitial", success)
+
+	--Type: ("IOS" | "ANDROID" | "WEB" | "MOBILE_WEB")
+	local platform = html5.run(FBInstant.getPlatform())
+	if platform == "IOS" or "ANDROID" then
+		print("about to attempt to load interstitial")
+		local placement = "130801227620858_156771488357165"
+		fbinstant.load_interstitial_ad(placement, function(self, success)
+			print("loaded interstitial", success)
+			if not success then
+				return
+			end
+			fbinstant.show_interstitial_ad(placement, function(self, success)
+				print("showed interstitial", success)
+			end)
 		end)
-	end)	
+	else
+		print("don't attempt to show ads on " .. platform)
+	end
 end
 
 

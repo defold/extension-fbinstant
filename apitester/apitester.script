@@ -51,7 +51,7 @@ if fbinstant.mock then
 end
 
 
-local function check_init(callback)
+local function check_init()
 	if tonumber(html5.run("Module._instant_inited")) == 1 then
 		msg.post("#", "initialize")
 	else
@@ -64,6 +64,7 @@ local function check_init(callback)
 		end)
 	end	
 end
+
 
 function init(self)
 	check_init()

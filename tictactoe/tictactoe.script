@@ -32,7 +32,7 @@ if fbinstant.mock then
 end
 
 
-local function check_init(callback)
+local function check_init()
 	if tonumber(html5.run("Module._instant_inited")) == 1 then
 		msg.post("#", "initialize")
 	else
@@ -42,10 +42,12 @@ local function check_init(callback)
 	end	
 end
 
+
 function init(self)
 	check_init()
 	msg.post("@render:", "clear_color", { color = vmath.vector4(0.1, 0.1, 0.1, 1.0) })
 end
+
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("initialize") then

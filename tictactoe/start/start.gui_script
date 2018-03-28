@@ -24,11 +24,13 @@ end
 
 function init(self)
 
+	print("SDK Version: " .. fbinstant.get_sdk_version())
+
 	print("Supported APIs: ...")
 	pprint(fbinstant.get_supported_apis())
-	
+
 	local supported_apis = json.decode(fbinstant.get_supported_apis())
-	
+
 	gui.set_render_order(15)
 
 	msg.post(".", "acquire_input_focus")
@@ -39,10 +41,10 @@ function init(self)
 	else
 		show_select_opponent_button(self)
 	end
-	
+
 	local platform = fbinstant.get_platform() --Type: ("IOS" | "ANDROID" | "WEB" | "MOBILE_WEB")
 	print("Platform is... " .. platform)
-	
+
 	if table_contains(supported_apis, "getInterstitialAdAsync") then
 		print("about to attempt to load interstitial")
 		local placement = "130801227620858_156771488357165"

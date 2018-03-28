@@ -115,6 +115,12 @@ function fbinstant.get_supported_apis()
 	return {}
 end
 
+function fbinstant.get_sdk_version()
+	print("get_sdk_version")
+	return "6.1"
+end
+
+
 --------------------------------
 --------------- SESSION AND ENTRY DATA
 --------------------------------

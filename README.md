@@ -300,6 +300,13 @@ Check this list before attempting to use features which don't yet work on all pl
 **RETURN**
 * ```apis``` (string) - In the form of ["getLocale","getPlatform","getSDKVersion", ... "player.incrementStatsAsync","updateAsync"] etc. check the api version docs for complete API list https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.1
 
+## fbinstant.get_sdk_version()
+Gets the current SDK version. Can be used as a sanity check.
+
+**RETURN**
+* ```version``` (string) - Example "6.1"
+
+
 ## Share functions
 
 ### fbinstant.share()

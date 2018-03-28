@@ -395,7 +395,7 @@ var FBInstantLibrary = {
     FBInstant_PlatformGetPlatform: function() {
         var platform = FBInstant.getPlatform();
         if (platform) {
-            return Utils.manageString("platform", platform);
+            return Utils.storeString("platform", platform);
         }
         else {
             return null;

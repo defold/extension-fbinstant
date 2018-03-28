@@ -17,6 +17,14 @@ local function show_play_button(self)
 	gui.set_enabled(gui.get_node("play/bg"), true)
 end
 
+local function table_contains(table, element)
+	for _, value in pairs(table) do
+		if value == element then
+			return true
+		end
+	end
+	return false
+end
 
 local function show_interstitial_ad(placement)
 	if not supported_apis["getInterstitialAdAsync"] then
@@ -62,7 +70,7 @@ function init(self)
 	for _,api in ipairs(json.decode(fbinstant.get_supported_apis())) do
 		supported_apis[api] = true
 	end
-	
+
 	local platform = fbinstant.get_platform() --Type: ("IOS" | "ANDROID" | "WEB" | "MOBILE_WEB")
 	print("Platform is... " .. platform)
 
@@ -76,7 +84,7 @@ function init(self)
 	else
 		show_select_opponent_button(self)
 	end
-	
+
 	--show_interstitial_ad(INTERSTITIAL_AD)
 	show_rewarded_video(REWARDED_VIDEO)
 end

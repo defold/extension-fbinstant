@@ -176,6 +176,28 @@ var FBInstantLibrary = {
 
 
     // =====================================
+    // GetConnectedPlayersAsync
+    // =====================================
+    FBInstant_PlatformGetConnectedPlayersAsync: function(callback) {
+        FBInstant.player.getConnectedPlayersAsync().then(function(connected_players) {
+            var players = [];
+            for(var i=0; i<connected_players.length; i++) {
+                var connected_player = connected_players[i];
+                players.push({
+                    id: connected_player.getID(),
+                    name: connected_player.getName(),
+                    photo: connected_player.getPhoto(),
+                });
+            }
+            Utils.dynCall(callback, [JSON.stringify(players)]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformGetConnectedPlayersAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
+        });
+    },
+
+
+    // =====================================
     // SetSessionData
     // =====================================
     FBInstant_PlatformSetSessionData: function(cjson) {
@@ -395,7 +417,7 @@ var FBInstantLibrary = {
     FBInstant_PlatformGetPlatform: function() {
         var platform = FBInstant.getPlatform();
         if (platform) {
-            return Utils.storeString("platform", platform);
+            return Utils.manageString("platform", platform);
         }
         else {
             return null;

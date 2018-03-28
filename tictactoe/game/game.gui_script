@@ -97,9 +97,14 @@ local function check_game_won(self)
 	or check_match(gs[3]))
 
 	local match_column =
+	-- down
 	check_match({ gs[1][1], gs[2][1], gs[3][1] })
 	or check_match({ gs[1][2], gs[2][2], gs[3][2] })
 	or check_match({ gs[1][3], gs[2][3], gs[3][3] })
+	-- across
+	or check_match({ gs[1][1], gs[1][2], gs[1][3] })
+	or check_match({ gs[2][1], gs[2][2], gs[2][3] })
+	or check_match({ gs[3][1], gs[3][2], gs[3][3] })
 
 	local match_cross =
 	check_match({ gs[1][1], gs[2][2], gs[3][3] })

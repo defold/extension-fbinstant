@@ -258,8 +258,8 @@ var FBInstantLibrary = {
         }
         return Utils.storeString("playerPhoto", photo);
     },
-
-
+	
+	
     // =====================================
     // GetEntryPointData
     // =====================================
@@ -388,7 +388,33 @@ var FBInstantLibrary = {
         }
     },
 
+	
+    // =====================================
+    // GetPlatform
+    // =====================================
+    FBInstant_PlatformGetPlatform: function() {
+        var platform = FBInstant.getPlatform();
+        if (platform) {
+            return Utils.storeString("platform", platform);
+        }
+        else {
+            return null;
+        }
+    },	
 
+    // =====================================
+    // GetSupportedAPIs
+    // =====================================
+    FBInstant_PlatformGetSupportedAPIs: function() {
+        var supportedAPIs = FBInstant.getSupportedAPIs();
+        if (supportedAPIs) {
+            return Utils.storeString("supportedAPIs", JSON.stringify(supportedAPIs));
+        }
+        else {
+            return null;
+        }
+    },	
+	
     // =====================================
     // LogEvent
     // =====================================

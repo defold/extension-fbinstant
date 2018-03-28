@@ -1,3 +1,12 @@
+local info = sys.get_sys_info()
+
+if info.system_name == "HTML5" then
+	local domain = html5.run("window.location.hostname")
+	if domain == "localhost" then
+		fbinstant = nil
+	end
+end
+
 if fbinstant then return end
 fbinstant = {
 	mock = true

@@ -54,6 +54,7 @@ extern "C" {
     char* FBInstant_PlatformGetPlayerLocale();
 
 	char* FBInstant_PlatformGetPlatform();
+	char* FBInstant_PlatformGetSupportedAPIs();
 	
     void FBInstant_PlatformLogEvent(const char* eventName, int valueToSum, const char* parametersJson);
 

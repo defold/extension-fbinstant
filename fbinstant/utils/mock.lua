@@ -22,6 +22,8 @@ end
 
 local rxijson = require "fbinstant.utils.json"
 
+fbinstant.mock = true
+
 fbinstant.CONTEXT_SOLO = "SOLO"
 fbinstant.CONTEXT_POST = "POST"
 fbinstant.CONTEXT_THREAD = "THREAD"
@@ -106,6 +108,11 @@ end
 function fbinstant.get_platform()
 	print("get_platform")
 	return "WEB"
+end
+
+function fbinstant.get_supported_apis()
+	print("get_supported_apis")
+	return {}
 end
 
 --------------------------------

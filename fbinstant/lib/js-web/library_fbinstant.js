@@ -388,6 +388,7 @@ var FBInstantLibrary = {
         }
     },
 
+	
     // =====================================
     // GetPlatform
     // =====================================
@@ -401,6 +402,19 @@ var FBInstantLibrary = {
         }
     },	
 
+    // =====================================
+    // GetSupportedAPIs
+    // =====================================
+    FBInstant_PlatformGetSupportedAPIs: function() {
+        var supportedAPIs = FBInstant.getSupportedAPIs();
+        if (supportedAPIs) {
+            return Utils.storeString("supportedAPIs", JSON.stringify(supportedAPIs));
+        }
+        else {
+            return null;
+        }
+    },	
+	
     // =====================================
     // LogEvent
     // =====================================

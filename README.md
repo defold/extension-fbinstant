@@ -287,12 +287,18 @@ Each entry in the ```players``` table has the following values:
 ## Platform functions
 
 ## fbinstant.get_platform()
-Gets the active platform the game is running on. These are necessary as Defold's own functions will always return HTML5.
-
-Use these before attempting to use features which won't work on WEB or MOBILE_WEB such as ads. You can detect the platform and disable ad related features entirely.
+Gets the active platform the game is running on.
 
 **RETURN**
 * ```platform``` (string) - The current platform one of "IOS" or "ANDROID" or "WEB" or "MOBILE_WEB".
+
+## fbinstant.get_supported_apis()
+Gets a list of supported apis by the current platform.
+
+Check this list before attempting to use features which don't yet work on all platforms such as ads.
+
+**RETURN**
+* ```apis``` (string) - In the form of ["getLocale","getPlatform","getSDKVersion", ... "player.incrementStatsAsync","updateAsync"] etc. check the api version docs for complete API list https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.1
 
 ## Share functions
 

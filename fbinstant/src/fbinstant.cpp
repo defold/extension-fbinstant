@@ -629,6 +629,25 @@ static int FBInstant_GetSupportedAPIs(lua_State* L) {
 
 
 // ===============================================
+// GET SDK VERSION
+// ===============================================
+static int FBInstant_GetSDKVersion(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* data = FBInstant_PlatformGetSDKVersion();
+	if (data) {
+		lua_pushstring(L, data);
+	}
+	else {
+		lua_pushnil(L);
+	}
+
+	assert(top + 1 == lua_gettop(L));
+	return 1;
+}
+
+
+// ===============================================
 // SHARE
 // ===============================================
 lua_Listener shareAsyncListener;
@@ -981,6 +1000,7 @@ static const luaL_reg Module_methods[] = {
 	// misc
 	{"get_platform", FBInstant_GetPlatform},
 	{"get_supported_apis", FBInstant_GetSupportedAPIs},
+	{"get_sdk_version", FBInstant_GetSDKVersion},
 	{"share", FBInstant_ShareAsync},
 
 	// ads

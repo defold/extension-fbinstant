@@ -413,7 +413,22 @@ var FBInstantLibrary = {
         else {
             return null;
         }
-    },	
+    },
+
+	
+    // =====================================
+    // GetSDKVersion
+    // =====================================
+    FBInstant_PlatformGetSDKVersion: function() {
+        var sdkVersion = FBInstant.getSDKVersion();
+        if (sdkVersion) {
+            return Utils.storeString("sdkVersion", sdkVersion);
+        }
+        else {
+            return null;
+        }
+    },		
+	
 	
     // =====================================
     // LogEvent

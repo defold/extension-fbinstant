@@ -55,6 +55,7 @@ extern "C" {
 
 	char* FBInstant_PlatformGetPlatform();
 	char* FBInstant_PlatformGetSupportedAPIs();
+	char* FBInstant_PlatformGetSDKVersion();
 	
     void FBInstant_PlatformLogEvent(const char* eventName, int valueToSum, const char* parametersJson);
 

@@ -112,7 +112,23 @@ end
 
 function fbinstant.get_supported_apis()
 	print("get_supported_apis")
-	return {}
+	return {
+		"getLocale", "getPlatform", "getSupportedAPIs", "getEntryPointData", "logEvent", "onPause", "initializeAsync", "setLoadingProgress", "setSessionData", "startGameAsync", "shareAsync", "switchGameAsync", "quit", "getEntryPointAsync", "updateAsync",
+
+		"player.getID", "player.getName", "player.getPhoto", "player.flushDataAsync", "player.getDataAsync", "player.setDataAsync", "player.getStatsAsync", "player.setStatsAsync", "player.incrementStatsAsync",
+
+		"context.getID", "context.getType", "context.isSizeBetween", "context.switchAsync", "context.chooseAsync", "context.createAsync", "context.getPlayersAsync",
+
+		--"getSDKVersion",
+		--"payments.onReady",
+		--"matchPlayerAsync",
+		--"player.subscribeBotAsync",
+		--"player.getSignedPlayerInfoAsync",
+		--"player.getConnectedPlayersAsync",
+		--"getLeaderboardAsync",
+		--"checkCanPlayerMatchAsync",
+		--"player.canSubscribeBotAsync",
+	}
 end
 
 --------------------------------

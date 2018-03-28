@@ -284,7 +284,21 @@ Each entry in the ```players``` table has the following values:
 * ```photo``` (string) - URL to a photo of the user
 
 
+## Platform functions
 
+## fbinstant.get_platform()
+Gets the active platform the game is running on.
+
+**RETURN**
+* ```platform``` (string) - The current platform one of "IOS" or "ANDROID" or "WEB" or "MOBILE_WEB".
+
+## fbinstant.get_supported_apis()
+Gets a list of supported apis by the current platform.
+
+Check this list before attempting to use features which don't yet work on all platforms such as ads.
+
+**RETURN**
+* ```apis``` (string) - In the form of ["getLocale","getPlatform","getSDKVersion", ... "player.incrementStatsAsync","updateAsync"] etc. check the api version docs for complete API list https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.1
 
 ## Share functions
 

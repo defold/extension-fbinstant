@@ -53,6 +53,9 @@ extern "C" {
     char* FBInstant_PlatformGetPlayerPhoto();
     char* FBInstant_PlatformGetPlayerLocale();
 
+	char* FBInstant_PlatformGetPlatform();
+	char* FBInstant_PlatformGetSupportedAPIs();
+	
     void FBInstant_PlatformLogEvent(const char* eventName, int valueToSum, const char* parametersJson);
 
     void FBInstant_PlatformShareAsync(OnShareCallback callback, const char* payloadJson);

@@ -13,8 +13,22 @@ local function show_play_button(self)
 	gui.set_enabled(gui.get_node("play/bg"), true)
 end
 
+local function table_contains(table, element)
+	for _, value in pairs(table) do
+		if value == element then
+			return true
+		end
+	end
+	return false
+end
 
 function init(self)
+
+	print("Supported APIs: ...")
+	pprint(fbinstant.get_supported_apis())
+	
+	local supported_apis = json.decode(fbinstant.get_supported_apis())
+	
 	gui.set_render_order(15)
 
 	msg.post(".", "acquire_input_focus")
@@ -25,6 +39,7 @@ function init(self)
 	else
 		show_select_opponent_button(self)
 	end
+<<<<<<< HEAD
 
 	local placement = "130801227620858_156771488357165"
 	fbinstant.load_interstitial_ad(placement, function(self, success)
@@ -36,6 +51,27 @@ function init(self)
 			print("showed interstitial", success)
 		end)
 	end)	
+=======
+	
+	local platform = fbinstant.get_platform() --Type: ("IOS" | "ANDROID" | "WEB" | "MOBILE_WEB")
+	print("Platform is... " .. platform)
+	
+	if table_contains(supported_apis, "getInterstitialAdAsync") then
+		print("about to attempt to load interstitial")
+		local placement = "130801227620858_156771488357165"
+		fbinstant.load_interstitial_ad(placement, function(self, success)
+			print("loaded interstitial", success)
+			if not success then
+				return
+			end
+			fbinstant.show_interstitial_ad(placement, function(self, success)
+				print("showed interstitial", success)
+			end)
+		end)
+	else
+		print("this platform does not supported interstitial ads: " .. platform)
+	end
+>>>>>>> master
 end
 
 

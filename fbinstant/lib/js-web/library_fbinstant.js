@@ -68,10 +68,13 @@ var FBInstantLibrary = {
             return null;
         },
         insert: function(placementId, ad) {
+            console.log("Ads.insert()");
+            console.log("Ads.insert() " + placementId.toString() + " " + ad.toString());
             Ads.instances.push({
                 placementId: placementId,
                 ad: ad,
             });
+            console.log("Ads.insert() done");
         }
     },
 
@@ -385,6 +388,32 @@ var FBInstantLibrary = {
         }
     },
 
+
+    // =====================================
+    // GetPlatform
+    // =====================================
+    FBInstant_PlatformGetPlatform: function() {
+        var platform = FBInstant.getPlatform();
+        if (platform) {
+            return Utils.storeString("platform", platform);
+        }
+        else {
+            return null;
+        }
+    },
+
+    // =====================================
+    // GetSupportedAPIs
+    // =====================================
+    FBInstant_PlatformGetSupportedAPIs: function() {
+        var supportedAPIs = FBInstant.getSupportedAPIs();
+        if (supportedAPIs) {
+            return Utils.storeString("supportedAPIs", JSON.stringify(supportedAPIs));
+        }
+        else {
+            return null;
+        }
+    },
 
     // =====================================
     // LogEvent

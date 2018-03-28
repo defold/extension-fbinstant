@@ -53,6 +53,7 @@ local player_stats = {}
 
 fbinstant.PLAYER = {}
 fbinstant.PLAYERS = {}
+fbinstant.CONNECTED_PLAYERS = {}
 fbinstant.CONTEXT = nil
 
 local function get_self()
@@ -164,6 +165,11 @@ end
 function fbinstant.get_player()
 	print("get_player")
 	return fbinstant.PLAYER
+end
+
+function fbinstant.get_connected_players(cb)
+	print("get_connected_players")
+	cb(get_self(), rxijson.encode(fbinstant.CONNECTED_PLAYERS))
 end
 
 function fbinstant.get_player_data(keys, cb)

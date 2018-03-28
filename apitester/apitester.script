@@ -9,7 +9,7 @@ if fbinstant.mock then
 	fbinstant.PLAYER = {
 		name = "Player 1",
 		id = "100000000001fake",
-		photo = "http://i.pravatar.cc/200?u=123",
+		photo = "http://i.pravatar.cc/200?u=1",
 		locale = "en_US",
 	}
 
@@ -19,11 +19,29 @@ if fbinstant.mock then
 		{
 			name = "Player 2",
 			id = "100000000002fake",
-			photo = "http://i.pravatar.cc/200?u=456",
+			photo = "http://i.pravatar.cc/200?u=2",
 			locale = "en_US",
 		}
 	}
-
+	
+	fbinstant.CONNECTED_PLAYERS = {
+		{
+			name = "Rick Dangerous",
+			id = "100000000003fake",
+			photo = "http://i.pravatar.cc/200?u=3",
+		},
+		{
+			name = "Lara Croft",
+			id = "100000000004fake",
+			photo = "http://i.pravatar.cc/200?u=4",
+		},
+		{
+			name = "Gordon Freeman",
+			id = "100000000005fake",
+			photo = "http://i.pravatar.cc/200?u=5",
+		},
+	}
+	
 	-- the current context
 	fbinstant.CONTEXT = {
 		id = "123456fake",

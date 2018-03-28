@@ -9,6 +9,7 @@ function init(self)
 	print("init")
 	msg.post(".", "acquire_input_focus")
 	msg.post("#", "update_player")
+	msg.post("#", "update_connected_players")
 end
 
 function on_message(self, message_id, message, sender)
@@ -20,6 +21,10 @@ function on_message(self, message_id, message, sender)
 		text = text .. "PHOTO: " .. (player.photo or "nil") .. "\n"
 		text = text .. "LOCALE: " .. (player.locale or "nil") .. "\n"
 		gui.set_text(gui.get_node("player"), text)
+	elseif message_id == hash("update_connected_players") then
+		fbinstant.get_connected_players(function(self, players)
+			gui.set_text(gui.get_node("connected_players"), prettify(json.decode(players)))
+		end)
 	end
 end
 

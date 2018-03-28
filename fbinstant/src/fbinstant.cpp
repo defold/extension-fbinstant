@@ -253,6 +253,39 @@ static int FBInstant_IncrementPlayerStatsAsync(lua_State* L) {
 	return 0;
 }
 
+
+lua_Listener getConnectedPlayersAsyncListener;
+
+static void FBInstant_OnConnectedPlayers(const char* players) {
+	lua_State* L = getConnectedPlayersAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, getConnectedPlayersAsyncListener);
+	if (players != NULL) {
+		lua_pushstring(L, players);
+	}
+	else {
+		lua_pushnil(L);
+	}
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_GetConnectedPlayersAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	luaL_checklistener(L, 1, getConnectedPlayersAsyncListener);
+	FBInstant_PlatformGetConnectedPlayersAsync((OnConnectedPlayersCallback)FBInstant_OnConnectedPlayers);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
 // ===============================================
 // START GAME
 // ===============================================
@@ -1092,7 +1125,7 @@ static const luaL_reg Module_methods[] = {
 	{"get_player_stats", FBInstant_GetPlayerStatsAsync},
 	{"set_player_stats", FBInstant_SetPlayerStatsAsync},
 	{"increment_player_stats", FBInstant_IncrementPlayerStatsAsync},
-	// TODO: {"get_connected_players", FBInstant_GetConnectedPlayersAsync},
+	{"get_connected_players", FBInstant_GetConnectedPlayersAsync},
 
 	// context functions
 	{"choose_context", FBInstant_ChooseContextAsync},

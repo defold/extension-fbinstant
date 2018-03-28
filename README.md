@@ -110,6 +110,24 @@ The ```player``` table contains the following key-value pairs:
 * ```locale``` (string) - Player locale
 
 
+### fbinstant.get_connected_players()
+Get an list of players that are connected to the current player.
+
+**PARAMETERS**
+* ```callback``` (function) - Function to call with the list of connected players
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```players``` (string) - JSON encoded array of connected player information
+
+Each entry in the ```players``` array represents a player with these properties:
+
+* ```id``` (string) - Id of the connected player
+* ```photo``` (string) - The player's public profile photo
+* ```name``` (string) - The player's full name
+
+
 ### fbinstant.get_player_data(keys, callback)
 Retrieve data from the designated cloud storage of the current player.
 

@@ -28,6 +28,7 @@ typedef void (*OnInterstitialAdLoadedCallback)(const int success);
 typedef void (*OnInterstitialAdShownCallback)(const int success);
 typedef void (*OnRewardedVideoLoadedCallback)(const int success);
 typedef void (*OnRewardedVideoShownCallback)(const int success);
+typedef void (*OnConnectedPlayersCallback)(const char* players);
 
 
 extern "C" {
@@ -54,6 +55,8 @@ extern "C" {
     char* FBInstant_PlatformGetPlayerId();
     char* FBInstant_PlatformGetPlayerPhoto();
     char* FBInstant_PlatformGetPlayerLocale();
+
+    char* FBInstant_PlatformGetConnectedPlayersAsync(OnConnectedPlayersCallback callback);
 
 	char* FBInstant_PlatformGetPlatform();
 	char* FBInstant_PlatformGetSupportedAPIs();

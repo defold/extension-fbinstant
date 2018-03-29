@@ -33,13 +33,18 @@ end
 
 
 local function check_init()
-	if tonumber(html5.run("Module._instant_inited")) == 1 then
-		msg.post("#", "initialize")
-	else
-		fbinstant.initialize(function(self, success)
+	local info = sys.get_sys_info()
+	if info.system_name == "HTML5" then
+		if tonumber(html5.run("Module._instant_inited")) == 1 then
 			msg.post("#", "initialize")
-		end)
-	end	
+		else
+			fbinstant.initialize(function(self, success)
+				msg.post("#", "initialize")
+			end)
+		end
+	else
+		msg.post("#", "initialize")
+	end
 end
 
 

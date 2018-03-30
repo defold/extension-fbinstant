@@ -325,7 +325,12 @@ Gets the current SDK version. Can be used as a sanity check.
 * ```version``` (string) - Example "6.1"
 
 ### fbinstant.can_create_shortcut(callback)
-Says if a shortcut can be created. Currently only a feature on Android for adding a shortcut to the home screen.
+
+Returns whether or not the user is eligible to have shortcut creation requested.
+
+Will return false if createShortcutAsync was already called this session or the user is ineligible for shortcut creation.
+
+Currently only a feature on Android for adding a shortcut to the home screen.
 
 **PARAMETERS**
 * ```callback``` (function) - Function to call if shortcut can be created
@@ -336,7 +341,7 @@ The ```callback``` function is expected to accept the following values:
 * ```success``` (boolean) - Indicating if the operation was successful or not
 
 ### fbinstant.create_shortcut(callback)
-Attempts to create a shortcut. For now, only for adding a shortcut to the Android home screen only. Can only be called once per session.
+Prompts the user to create a shortcut to the game if they are eligible to. For now, only for adding a shortcut to the Android home screen. Can only be called once per session.
 
 **PARAMETERS**
 * ```callback``` (function) - Function to call to decide what to do if a shortcut was or wasn't created (such as storing data to ask again sometime in the future)

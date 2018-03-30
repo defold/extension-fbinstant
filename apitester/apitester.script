@@ -88,11 +88,39 @@ local function create_shortcut(self)
 	end)
 end
 
+local function subscribe_bot(self)
+	print("Checking to see if can subscribe to bot...")
+	self.can_subscribe = false
+	fbinstant.can_subscribe_bot(function(self, success)
+		if not success then
+			print("API says cannot attempt to subscribe to bot.")
+			return
+		end
+		print("Can subscribe to bot!")
+		self.can_subscribe = true
+	end)
+end
+
 function init(self)
 	check_init()
 	msg.post("@render:", "clear_color", { color = vmath.vector4(0.1, 0.1, 0.1, 1.0) })
+	self.screate_shortcut_attempt = false
+	self.subscribe_bot_attempt = false
 end
 
+function update(self, dt)
+	if self.subscribe_bot_attempt == false and self.can_subscribe == true then
+		self.subscribe_bot_attempt = true
+		print("Attempting to subscribe to bot now...")
+		fbinstant.subscribe_bot(function(self, success)
+			if not success then
+				print("Couldn't subscribe to bot for some reason.")
+				return
+			end
+			print("Player is now subscribed to bot!")
+		end)		
+	end
+end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("initialize") then
@@ -104,6 +132,7 @@ function on_message(self, message_id, message, sender)
 			end
 			monarch.show(hash("overview"))
 			create_shortcut(self)
+			subscribe_bot(self)
 		end)
 		fbinstant.on_pause(function(self)
 			popup.show("Pause!")

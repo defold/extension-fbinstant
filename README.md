@@ -205,6 +205,29 @@ The ```callback``` function is expected to accept the following values:
 * ```stats``` (string) - JSON encoded key-value pairs with the incremented stats
 
 
+### fbinstant.can_subscribe_bot(callback)
+
+Returns whether or not the player is eligible to subscribe to the associated chat bot.
+
+**PARAMETERS**
+* ```callback``` (function) - Function to call if player can be subscribed to bot
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```success``` (boolean) - Indicating if the operation was successful or not
+
+### fbinstant.subscribe_bot(callback)
+Prompts the player to subscribe to the chat bot. Player will only be able to see this bot subscription dialog once for a specific game.
+
+**PARAMETERS**
+* ```callback``` (function) - Function to call to decide what to do if the player was subscribed or not
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```success``` (boolean) - Indicating if the operation was successful or not
+
 
 ## Context functions
 

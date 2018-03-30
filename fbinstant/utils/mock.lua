@@ -235,6 +235,16 @@ function fbinstant.increment_player_stats(statsjson, cb)
 	cb(get_self(), rxijson.encode(player_stats))
 end
 
+function fbinstant.can_subscribe_bot(cb)
+	print("can_subscribe_bot")
+	cb(get_self(), true)
+end
+
+function fbinstant.subscribe_bot(cb)
+	print("subscribe_bot")
+	cb(get_self(), true)
+end
+
 
 --------------------------------
 --------------- CONTEXT FUNCTIONS

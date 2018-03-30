@@ -681,7 +681,7 @@ static int FBInstant_GetSDKVersion(lua_State* L) {
 
 
 // ===============================================
-// CAN CREATE SHORCUT
+// CAN CREATE SHORTCUT
 // ===============================================
 lua_Listener canCreateShortcutAsyncListener;
 
@@ -711,7 +711,7 @@ static int FBInstant_CanCreateShortcutAsync(lua_State* L) {
 
 
 // ===============================================
-// CREATE SHORCUT
+// CREATE SHORTCUT
 // ===============================================
 lua_Listener createShortcutAsyncListener;
 
@@ -1165,8 +1165,8 @@ static const luaL_reg Module_methods[] = {
 	{"get_supported_apis", FBInstant_GetSupportedAPIs},
 	{"get_sdk_version", FBInstant_GetSDKVersion},
 	{"share", FBInstant_ShareAsync},
-	{"can_create_shorcut", FBInstant_CanCreateShortcutAsync},
-	{"create_shorcut", FBInstant_CreateShortcutAsync},
+	{"can_create_shortcut", FBInstant_CanCreateShortcutAsync},
+	{"create_shortcut", FBInstant_CreateShortcutAsync},
 
 	// ads
 	{"load_interstitial_ad", FBInstant_LoadInterstitialAdAsync},

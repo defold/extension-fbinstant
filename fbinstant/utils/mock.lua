@@ -138,6 +138,17 @@ function fbinstant.get_sdk_version()
 end
 
 
+function fbinstant.can_create_shortcut(cb)
+	print("can_create_shortcut")
+	cb(get_self(), true)
+end
+
+function fbinstant.create_shortcut(cb)
+	print("create_shortcut")
+	cb(get_self(), true)
+end
+
+
 --------------------------------
 --------------- SESSION AND ENTRY DATA
 --------------------------------

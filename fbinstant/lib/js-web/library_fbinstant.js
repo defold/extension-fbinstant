@@ -451,6 +451,32 @@ var FBInstantLibrary = {
         }
     },
 
+	
+    // =====================================
+    // CanCreateShortcutAsync
+    // =====================================
+    FBInstant_PlatformCanCreateShortcutAsync: function(callback) {
+        FBInstant.canCreateShortcutAsync().then(function() {
+            Runtime.dynCall("vi", callback, [1]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformCanCreateShortcutAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
+        });
+    },
+	
+	
+    // =====================================
+    // CreateShortcutAsync
+    // =====================================
+    FBInstant_PlatformCreateShortcutAsync: function(callback) {
+        FBInstant.createShortcutAsync().then(function() {
+            Runtime.dynCall("vi", callback, [1]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformCreateShortcutAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
+        });
+    },
+	
 
     // =====================================
     // LogEvent

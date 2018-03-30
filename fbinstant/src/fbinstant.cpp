@@ -681,6 +681,66 @@ static int FBInstant_GetSDKVersion(lua_State* L) {
 
 
 // ===============================================
+// CAN CREATE SHORCUT
+// ===============================================
+lua_Listener canCreateShortcutAsyncListener;
+
+static void FBInstant_OnCanCreateShortcut(const int success) {
+	lua_State* L = canCreateShortcutAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, canCreateShortcutAsyncListener);
+	lua_pushboolean(L, success);
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_CanCreateShortcutAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	luaL_checklistener(L, 1, canCreateShortcutAsyncListener);
+	FBInstant_PlatformCanCreateShortcutAsync((OnCanCreateShortcutCallback)FBInstant_OnCanCreateShortcut);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+// ===============================================
+// CREATE SHORCUT
+// ===============================================
+lua_Listener createShortcutAsyncListener;
+
+static void FBInstant_OnCreateShortcut(const int success) {
+	lua_State* L = createShortcutAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, createShortcutAsyncListener);
+	lua_pushboolean(L, success);
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_CreateShortcutAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	luaL_checklistener(L, 1, createShortcutAsyncListener);
+	FBInstant_PlatformCreateShortcutAsync((OnCreateShortcutCallback)FBInstant_OnCreateShortcut);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+// ===============================================
 // SHARE
 // ===============================================
 lua_Listener shareAsyncListener;
@@ -1105,6 +1165,8 @@ static const luaL_reg Module_methods[] = {
 	{"get_supported_apis", FBInstant_GetSupportedAPIs},
 	{"get_sdk_version", FBInstant_GetSDKVersion},
 	{"share", FBInstant_ShareAsync},
+	{"can_create_shorcut", FBInstant_CanCreateShortcutAsync},
+	{"create_shorcut", FBInstant_CreateShortcutAsync},
 
 	// ads
 	{"load_interstitial_ad", FBInstant_LoadInterstitialAdAsync},

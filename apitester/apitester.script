@@ -67,9 +67,26 @@ local function check_init()
 		end
 	else
 		msg.post("#", "initialize")
-	end		
+	end	
 end
 
+local function create_shortcut(self)
+	print("About to test creating shorcuts... if it doesn't print anything more it probably means the API for even testing it isn't available.")
+	fbinstant.can_create_shortcut(function(self, success)
+		if not success then
+			print("Could not create shortcut for some reason. This is an Android only feature FYI.")
+			return
+		end
+		print("Can create shortcut! The user should be asked to create a shorcut now.")
+		fbinstant.create_shortcut(function(self, success)
+			if not success then
+				print("Shortcut wasn't created?")
+				return
+			end
+			print("Shortcut was created!")
+		end)
+	end)
+end
 
 function init(self)
 	check_init()
@@ -86,6 +103,7 @@ function on_message(self, message_id, message, sender)
 				return
 			end
 			monarch.show(hash("overview"))
+			create_shortcut(self)
 		end)
 		fbinstant.on_pause(function(self)
 			popup.show("Pause!")

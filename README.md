@@ -304,13 +304,13 @@ Each entry in the ```players``` table has the following values:
 
 ## Platform functions
 
-## fbinstant.get_platform()
+### fbinstant.get_platform()
 Gets the active platform the game is running on.
 
 **RETURN**
 * ```platform``` (string) - The current platform one of "IOS" or "ANDROID" or "WEB" or "MOBILE_WEB".
 
-## fbinstant.get_supported_apis()
+### fbinstant.get_supported_apis()
 Gets a list of supported apis by the current platform.
 
 Check this list before attempting to use features which don't yet work on all platforms such as ads.
@@ -318,11 +318,34 @@ Check this list before attempting to use features which don't yet work on all pl
 **RETURN**
 * ```apis``` (string) - In the form of ["getLocale","getPlatform","getSDKVersion", ... "player.incrementStatsAsync","updateAsync"] etc. check the api version docs for complete API list https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.1
 
-## fbinstant.get_sdk_version()
+### fbinstant.get_sdk_version()
 Gets the current SDK version. Can be used as a sanity check.
 
 **RETURN**
 * ```version``` (string) - Example "6.1"
+
+### fbinstant.can_create_shortcut(callback)
+Says if a shortcut can be created. Currently only a feature on Android for adding a shortcut to the home screen.
+
+**PARAMETERS**
+* ```callback``` (function) - Function to call if shortcut can be created
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```success``` (boolean) - Indicating if the operation was successful or not
+
+### fbinstant.create_shortcut(callback)
+Attempts to create a shortcut. For now, only for adding a shortcut to the Android home screen only. Can only be called once per session.
+
+**PARAMETERS**
+* ```callback``` (function) - Function to call to decide what to do if a shortcut was or wasn't created (such as storing data to ask again sometime in the future)
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```success``` (boolean) - Indicating if the operation was successful or not
+
 
 
 ## Share functions

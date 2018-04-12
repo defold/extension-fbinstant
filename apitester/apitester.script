@@ -50,26 +50,6 @@ if fbinstant.mock then
 	}
 end
 
-
-local function check_init()
-	local info = sys.get_sys_info()
-	if info.system_name == "HTML5" then
-		if tonumber(html5.run("Module._instant_inited")) == 1 then
-			msg.post("#", "start_game")
-		else
-			fbinstant.initialize(function(self, success)
-				if not success then
-					popup.show("Failed to initialize fbinstant")
-					return
-				end			
-				msg.post("#", "start_game")
-			end)
-		end
-	else
-		msg.post("#", "start_game")
-	end	
-end
-
 local function create_shortcut(self)
 	print("About to test creating shortcuts... if it doesn't print anything more it probably means the API for even testing it isn't available.")
 	fbinstant.can_create_shortcut(function(self, success)
@@ -102,7 +82,7 @@ local function subscribe_bot(self)
 end
 
 function init(self)
-	check_init()
+	msg.post("#", "initialize")
 	msg.post("@render:", "clear_color", { color = vmath.vector4(0.1, 0.1, 0.1, 1.0) })
 	self.screate_shortcut_attempt = false
 	self.subscribe_bot_attempt = false
@@ -123,19 +103,22 @@ function update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("start_game") then
-		print("start_game")
-		fbinstant.start_game(function(self, success)
+	if message_id == hash("initialize") then
+		fbinstant.initialize(function(self, success)
 			if not success then
-				popup.show("Failed to start game")
+				popup.show("Failed to initialize FBInstant")
 				return
 			end
-			monarch.show(hash("overview"))
-			create_shortcut(self)
-			subscribe_bot(self)
-		end)
-		fbinstant.on_pause(function(self)
-			popup.show("Pause!")
+
+			fbinstant.start_game(function(self, success)
+				if not success then
+					popup.show("Failed to start game")
+					return
+				end
+				monarch.show(hash("overview"))
+				create_shortcut(self)
+				subscribe_bot(self)
+			end)
 		end)
 	end
 end

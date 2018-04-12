@@ -4,17 +4,40 @@
 Facebook Instant Games extension for the [Defold](https://www.defold.com) game engine.
 
 # Setup
-## Project dependencies
+## 1. Add project dependencies
 You can use the extension in your own project by adding this project as a [Defold library dependency](http://www.defold.com/manuals/libraries/). Open your game.project file and in the dependencies field under project add:
 
 https://github.com/defold/extension-fbinstant/archive/master.zip
 
 Or point to the ZIP file of a [specific release](https://github.com/defold/extension-fbinstant/releases).
 
-## Preparing index.html
+## 2. Preparing index.html
 Before the extension can be used you need to add the Facebook Instant Games API to the index.html of your game. [Refer to the index.html in the root of this project](https://github.com/defold/extension-fbinstant/blob/master/index.html#L55) for an example of this.
 
-## Creating a Facebook App
+### 2.1 Report loading progress
+Facebook Instant Games can show the progress while the game is loaded. It is quite easy to set this up for a Defold game. All that is required is to override the Progress.updateProgress() function and pass along the value to the Instant Games API (this is done for you in the default index.html provided with this extension):
+
+	```
+	// Set up a progress listener and feed progress to FBInstant
+	Progress.updateProgress = function (percentage, text) {
+		FBInstant.setLoadingProgress(percentage);
+	}
+	```
+
+### 2.2 Early API initialization
+It has been observed that the progress updates do not work properly on Android. The progress stays at 0 and immediately jumps to 100 when the game has finished loaded. This seems to be caused by the Instant Games API not being initialized until after the game has loaded. In order to avoid this it is recommended to initialize the Instant Games API and flag this to the extension:
+
+	```
+    // Do early initialization of FBInstant
+    // This is required to be able to properly update the loading
+    // progress above.
+    FBInstant.initializeAsync().then(function() {
+        // This will be checked by the FBInstant Defold extension
+		Module._fbinstant_inited = true;
+	});
+	```
+
+## 3. Create a Facebook App
 You also need to create a Facebook App where Instant Games is enabled. Please refer to the [Getting Started documentation](https://developers.facebook.com/docs/games/instant-games/getting-started) on the Instant Games page for further instructions.
 
 # Usage
@@ -25,12 +48,7 @@ The extension wraps the Instant Games Javascript API in a Lua interface. The API
 The async API functions are [Promise based](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) in Javascript while the Lua counterparts are callback based.
 
 ## Missing API functions
-Some parts of the Instant Games Javascript API hasn't yet been wrapped in a Lua interface:
-
-* FBinstant.getInterstitialAdAsync
-* FBinstant.getRewardedVideoAsync
-* FBInstant.player.getConnectedPlayersAsync
-* FBInstant.getLeaderboardAsync()
+The Facebook Instant Games platform is still evolving and new APIs are added by Facebook quite frequently. This means that there's likely parts of the API that isn't yet provided by this extension. Refer to the [GitHub Issues tagged "Missing API"](https://github.com/defold/extension-fbinstant/issues?q=is%3Aissue+is%3Aopen+label%3A%22missing+api%22) for a list of know missing APIs.
 
 ## Lifecycle functions
 

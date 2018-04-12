@@ -60,15 +60,15 @@ extern "C" {
     char* FBInstant_PlatformGetPlayerLocale();
 
     char* FBInstant_PlatformGetConnectedPlayersAsync(OnConnectedPlayersCallback callback);
-	
-	void FBInstant_PlatformCanSubscribeBotAsync(OnCanSubscribeBotCallback callback);
-	void FBInstant_PlatformSubscribeBotAsync(OnSubscribeBotCallback callback);	
 
-	char* FBInstant_PlatformGetPlatform();
-	char* FBInstant_PlatformGetSupportedAPIs();
-	char* FBInstant_PlatformGetSDKVersion();
-	void FBInstant_PlatformCanCreateShortcutAsync(OnCanCreateShortcutCallback callback);
-	void FBInstant_PlatformCreateShortcutAsync(OnCreateShortcutCallback callback);
+    void FBInstant_PlatformCanSubscribeBotAsync(OnCanSubscribeBotCallback callback);
+    void FBInstant_PlatformSubscribeBotAsync(OnSubscribeBotCallback callback);
+
+    char* FBInstant_PlatformGetPlatform();
+    char* FBInstant_PlatformGetSupportedAPIs();
+    char* FBInstant_PlatformGetSDKVersion();
+    void FBInstant_PlatformCanCreateShortcutAsync(OnCanCreateShortcutCallback callback);
+    void FBInstant_PlatformCreateShortcutAsync(OnCreateShortcutCallback callback);
 
     void FBInstant_PlatformLogEvent(const char* eventName, int valueToSum, const char* parametersJson);
 

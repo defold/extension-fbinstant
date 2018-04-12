@@ -10,7 +10,7 @@
     <style>
     canvas {
         vertical-align: middle;
-    }        
+    }
     .canvas-app-container {
         /* A positioned parent for loading visuals */
         width: 100%;
@@ -65,71 +65,64 @@
     <script type='text/javascript' src="dmloader.js"></script>
     <script type='text/javascript' src="{{DEFOLD_ENGINE}}" async onload="{{DEFOLD_DEV_INIT}}"></script>
     <script type='text/javascript'>
+        // Set up a progress listener and feed progress to FBInstant
         Progress.updateProgress = function (percentage, text) {
             FBInstant.setLoadingProgress(percentage);
-            if (text) {
-                console.log(text);
+        }
+
+        // Do early initialization of FBInstant
+        // This is required to be able to properly update the loading
+        // progress above.
+        FBInstant.initializeAsync().then(function() {
+            // This will be checked by the FBInstant Defold extension
+    		Module._fbinstant_inited = true;
+    	});
+
+        // Start the instant game
+        var extra_params = {
+            archive_location_filter: function( path ) {
+                return ("{{DEFOLD_ARCHIVE_LOCATION_PREFIX}}" + path + "{{DEFOLD_ARCHIVE_LOCATION_SUFFIX}}");
+            },
+            engine_arguments: ["--verify-graphics-calls=false"],
+            splash_image: "{{DEFOLD_SPLASH_IMAGE}}",
+            custom_heap_size: {{DEFOLD_HEAP_SIZE}}
+        }
+        Module.runApp("canvas", extra_params);
+
+        // Make sure to resize the canvas to cover entire available area
+        // Resize on init, screen resize and orientation change
+        function resize_game_canvas() {
+            var app_container = document.getElementById('app-container');
+            var game_canvas = document.getElementById('canvas');
+
+            var dpi=window.devicePixelRatio || 1
+            var width=window.innerWidth;
+            var height=window.innerHeight;
+            var targetRatio = {{DEFOLD_DISPLAY_WIDTH}}/{{DEFOLD_DISPLAY_HEIGHT}};
+            var actualRatio = width/height;
+            if (actualRatio > targetRatio) {
+                width = height * targetRatio;
+                app_container.style.marginLeft = ((window.innerWidth - width) / 2) + "px"
+                app_container.style.marginTop = "0px"
             }
+            else {
+                height = width / targetRatio;
+                app_container.style.marginLeft = "0px"
+                app_container.style.marginTop = ((window.innerHeight - height) / 2) + "px"
+            }
+
+            app_container.style.width = width+"px";
+            app_container.style.height = height+"px";
+
+            game_canvas.width = width*dpi;
+            game_canvas.height = height*dpi;
+
+            window.console.log("width: " + game_canvas.width + " > "+ game_canvas.style.width)
+            window.console.log("height:" + game_canvas.height + " > "+ game_canvas.style.height)
         }
-        // Combine.addProgressListener(function(downloaded, total, foo) {
-        //     var percent = (downloaded / total) * 100;
-        //     console.log("progress ", percent);
-        //     FBInstant.setLoadingProgress(percent);
-        // });
-    </script>
-    <!-- -->
-
-    <script type='text/javascript'>
-    var extra_params = {
-        archive_location_filter: function( path ) {
-            return ("{{DEFOLD_ARCHIVE_LOCATION_PREFIX}}" + path + "{{DEFOLD_ARCHIVE_LOCATION_SUFFIX}}");
-        },
-        engine_arguments: ["--verify-graphics-calls=false"],
-        splash_image: "{{DEFOLD_SPLASH_IMAGE}}",
-        custom_heap_size: {{DEFOLD_HEAP_SIZE}}
-    }
-
-    Module.runApp("canvas", extra_params);
-
-    function resize_game_canvas() {
-        var app_container = document.getElementById('app-container');
-        var game_canvas = document.getElementById('canvas');
-
-        var dpi=window.devicePixelRatio || 1
-        var width=window.innerWidth;
-        var height=window.innerHeight;
-        var targetRatio = {{DEFOLD_DISPLAY_WIDTH}}/{{DEFOLD_DISPLAY_HEIGHT}};
-        var actualRatio = width/height;
-        if (actualRatio > targetRatio) {
-            width = height * targetRatio;
-            app_container.style.marginLeft = ((window.innerWidth - width) / 2) + "px"
-            app_container.style.marginTop = "0px"
-        }
-        else {
-            height = width / targetRatio;
-            app_container.style.marginLeft = "0px"
-            app_container.style.marginTop = ((window.innerHeight - height) / 2) + "px"
-        }
-
-        app_container.style.width = width+"px";
-        app_container.style.height = height+"px";
-
-        game_canvas.width = width*dpi;
-        game_canvas.height = height*dpi;
-
-        window.console.log("width: " + game_canvas.width + " > "+ game_canvas.style.width)
-        window.console.log("height:" + game_canvas.height + " > "+ game_canvas.style.height)
-    }
-
-	FBInstant.initializeAsync().then(function() {
-		Module._instant_inited = 1;
-	});
-	
-    resize_game_canvas();
-
-    window.addEventListener('resize', resize_game_canvas, false);
-    window.addEventListener('orientationchange', resize_game_canvas, false);
-
+        resize_game_canvas();
+        window.addEventListener('resize', resize_game_canvas, false);
+        window.addEventListener('orientationchange', resize_game_canvas, false);
     </script>
 </body>
 </html>

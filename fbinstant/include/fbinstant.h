@@ -29,7 +29,10 @@ typedef void (*OnInterstitialAdShownCallback)(const int success);
 typedef void (*OnRewardedVideoLoadedCallback)(const int success);
 typedef void (*OnRewardedVideoShownCallback)(const int success);
 typedef void (*OnConnectedPlayersCallback)(const char* players);
-
+typedef void (*OnCanCreateShortcutCallback)(const int success);
+typedef void (*OnCreateShortcutCallback)(const int success);
+typedef void (*OnCanSubscribeBotCallback)(const int success);
+typedef void (*OnSubscribeBotCallback)(const int success);
 
 extern "C" {
     void FBInstant_PlatformInitializeAsync(OnInitializedCallback callback);
@@ -57,10 +60,15 @@ extern "C" {
     char* FBInstant_PlatformGetPlayerLocale();
 
     char* FBInstant_PlatformGetConnectedPlayersAsync(OnConnectedPlayersCallback callback);
+	
+	void FBInstant_PlatformCanSubscribeBotAsync(OnCanSubscribeBotCallback callback);
+	void FBInstant_PlatformSubscribeBotAsync(OnSubscribeBotCallback callback);	
 
 	char* FBInstant_PlatformGetPlatform();
 	char* FBInstant_PlatformGetSupportedAPIs();
 	char* FBInstant_PlatformGetSDKVersion();
+	void FBInstant_PlatformCanCreateShortcutAsync(OnCanCreateShortcutCallback callback);
+	void FBInstant_PlatformCreateShortcutAsync(OnCreateShortcutCallback callback);
 
     void FBInstant_PlatformLogEvent(const char* eventName, int valueToSum, const char* parametersJson);
 

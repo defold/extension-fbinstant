@@ -83,6 +83,12 @@ var FBInstantLibrary = {
     // InitializeAsync
     // =====================================
     FBInstant_PlatformInitializeAsync: function(callback) {
+        console.log("FBInstant inited", Module._fbinstant_inited);
+        // Was FBInstant initialized externally? (ie from index.html)
+        if (Module._fbinstant_inited == true) {
+            Runtime.dynCall("vi", callback, [1]);
+            return;
+        }
         FBInstant.initializeAsync().then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
@@ -281,7 +287,7 @@ var FBInstantLibrary = {
         return Utils.manageString("playerPhoto", photo);
     },
 
-	
+
     // =====================================
     // CanSubscribeBotAsync
     // =====================================
@@ -293,8 +299,8 @@ var FBInstantLibrary = {
             Runtime.dynCall("vi", callback, [0]);
         });
     },
-	
-	
+
+
     // =====================================
     // SubscribeBotAsync
     // =====================================
@@ -305,8 +311,8 @@ var FBInstantLibrary = {
             console.log("FBInstant_PlatformSubscribeBotAsync - error", err);
             Runtime.dynCall("vi", callback, [0]);
         });
-    },	
-	
+    },
+
 
     // =====================================
     // GetEntryPointData
@@ -477,7 +483,7 @@ var FBInstantLibrary = {
         }
     },
 
-	
+
     // =====================================
     // CanCreateShortcutAsync
     // =====================================
@@ -489,8 +495,8 @@ var FBInstantLibrary = {
             Runtime.dynCall("vi", callback, [0]);
         });
     },
-	
-	
+
+
     // =====================================
     // CreateShortcutAsync
     // =====================================
@@ -502,7 +508,7 @@ var FBInstantLibrary = {
             Runtime.dynCall("vi", callback, [0]);
         });
     },
-	
+
 
     // =====================================
     // LogEvent

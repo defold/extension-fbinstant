@@ -17,17 +17,17 @@ Before the extension can be used you need to add the Facebook Instant Games API 
 ### 2.1 Report loading progress
 Facebook Instant Games can show the progress while the game is loaded. It is quite easy to set this up for a Defold game. All that is required is to override the Progress.updateProgress() function and pass along the value to the Instant Games API (this is done for you in the default index.html provided with this extension):
 
-	```
+```
 	// Set up a progress listener and feed progress to FBInstant
 	Progress.updateProgress = function (percentage, text) {
 		FBInstant.setLoadingProgress(percentage);
 	}
-	```
+```
 
 ### 2.2 Early API initialization
 It has been observed that the progress updates do not work properly on Android. The progress stays at 0 and immediately jumps to 100 when the game has finished loaded. This seems to be caused by the Instant Games API not being initialized until after the game has loaded. In order to avoid this it is recommended to initialize the Instant Games API and flag this to the extension:
 
-	```
+```Lua
     // Do early initialization of FBInstant
     // This is required to be able to properly update the loading
     // progress above.
@@ -35,7 +35,7 @@ It has been observed that the progress updates do not work properly on Android. 
         // This will be checked by the FBInstant Defold extension
 		Module._fbinstant_inited = true;
 	});
-	```
+```
 
 ## 3. Create a Facebook App
 You also need to create a Facebook App where Instant Games is enabled. Please refer to the [Getting Started documentation](https://developers.facebook.com/docs/games/instant-games/getting-started) on the Instant Games page for further instructions.

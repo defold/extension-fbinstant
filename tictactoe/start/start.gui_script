@@ -28,7 +28,7 @@ end
 
 local function show_interstitial_ad(placement)
 	if not supported_apis["getInterstitialAdAsync"] then
-		print("This platform does not supported interstitial ads")
+		print("This platform does not support interstitial ads")
 		return
 	end
 	print("About to attempt to load interstitial")
@@ -46,7 +46,7 @@ end
 
 local function show_rewarded_video(placement)
 	if not supported_apis["getRewardedVideoAsync"] then
-		print("This platform does not supported rewarded videos")
+		print("This platform does not support rewarded videos")
 		return
 	end
 	print("About to attempt to load rewarded video")

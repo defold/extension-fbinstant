@@ -281,6 +281,32 @@ var FBInstantLibrary = {
         return Utils.manageString("playerPhoto", photo);
     },
 
+	
+    // =====================================
+    // CanSubscribeBotAsync
+    // =====================================
+    FBInstant_PlatformCanSubscribeBotAsync: function(callback) {
+        FBInstant.player.canSubscribeBotAsync().then(function() {
+            Runtime.dynCall("vi", callback, [1]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformCanSubscribeBotAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
+        });
+    },
+	
+	
+    // =====================================
+    // SubscribeBotAsync
+    // =====================================
+    FBInstant_PlatformSubscribeBotAsync: function(callback) {
+        FBInstant.player.subscribeBotAsync().then(function() {
+            Runtime.dynCall("vi", callback, [1]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformSubscribeBotAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
+        });
+    },	
+	
 
     // =====================================
     // GetEntryPointData
@@ -451,6 +477,32 @@ var FBInstantLibrary = {
         }
     },
 
+	
+    // =====================================
+    // CanCreateShortcutAsync
+    // =====================================
+    FBInstant_PlatformCanCreateShortcutAsync: function(callback) {
+        FBInstant.canCreateShortcutAsync().then(function() {
+            Runtime.dynCall("vi", callback, [1]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformCanCreateShortcutAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
+        });
+    },
+	
+	
+    // =====================================
+    // CreateShortcutAsync
+    // =====================================
+    FBInstant_PlatformCreateShortcutAsync: function(callback) {
+        FBInstant.createShortcutAsync().then(function() {
+            Runtime.dynCall("vi", callback, [1]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformCreateShortcutAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
+        });
+    },
+	
 
     // =====================================
     // LogEvent

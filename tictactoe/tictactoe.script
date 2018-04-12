@@ -32,23 +32,37 @@ if fbinstant.mock then
 end
 
 
+local function check_init()
+	local info = sys.get_sys_info()
+	if info.system_name == "HTML5" then
+		if tonumber(html5.run("Module._instant_inited")) == 1 then
+			msg.post("#", "start_game")
+		else
+			fbinstant.initialize(function(self, success)
+				msg.post("#", "start_game")
+			end)
+		end
+	else
+		msg.post("#", "start_game")
+	end
+end
+
+
 function init(self)
-	msg.post("#", "initialize")
+	check_init()
 	msg.post("@render:", "clear_color", { color = vmath.vector4(0.1, 0.1, 0.1, 1.0) })
 end
 
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("initialize") then
-		fbinstant.initialize(function(self, success)
-			fbinstant.start_game(function(self, success)
-				local context_id, context_type = fbinstant.get_context()
-				if not context_id or context_type == fbinstant.CONTEXT_SOLO then
-					monarch.show(hash("start"))
-				else
-					monarch.show(hash("game"), nil, { context_id = context_id })
-				end
-			end)
+	if message_id == hash("start_game") then
+		fbinstant.start_game(function(self, success)
+			local context_id, context_type = fbinstant.get_context()
+			if not context_id or context_type == fbinstant.CONTEXT_SOLO then
+				monarch.show(hash("start"))
+			else
+				monarch.show(hash("game"), nil, { context_id = context_id })
+			end
 		end)
 	end
 end

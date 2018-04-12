@@ -121,6 +121,10 @@
         window.console.log("height:" + game_canvas.height + " > "+ game_canvas.style.height)
     }
 
+	FBInstant.initializeAsync().then(function() {
+		Module._instant_inited = 1;
+	});
+	
     resize_game_canvas();
 
     window.addEventListener('resize', resize_game_canvas, false);

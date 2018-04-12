@@ -334,6 +334,66 @@ static int FBInstant_GetPlayer(lua_State* L) {
 
 
 // ===============================================
+// CAN SUBSCRIBE BOT
+// ===============================================
+lua_Listener canSubscribeBotAsyncListener;
+
+static void FBInstant_OnCanSubscribeBot(const int success) {
+	lua_State* L = canSubscribeBotAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, canSubscribeBotAsyncListener);
+	lua_pushboolean(L, success);
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_CanSubscribeBotAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	luaL_checklistener(L, 1, canSubscribeBotAsyncListener);
+	FBInstant_PlatformCanSubscribeBotAsync((OnCanSubscribeBotCallback)FBInstant_OnCanSubscribeBot);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+// ===============================================
+// SUBSCRIBE BOT
+// ===============================================
+lua_Listener subscribeBotAsyncListener;
+
+static void FBInstant_OnSubscribeBot(const int success) {
+	lua_State* L = subscribeBotAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, subscribeBotAsyncListener);
+	lua_pushboolean(L, success);
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_SubscribeBotAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	luaL_checklistener(L, 1, subscribeBotAsyncListener);
+	FBInstant_PlatformSubscribeBotAsync((OnSubscribeBotCallback)FBInstant_OnSubscribeBot);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+// ===============================================
 // GET ENTRY POINT DATA
 // ===============================================
 static int FBInstant_GetEntryPointData(lua_State* L) {
@@ -677,6 +737,66 @@ static int FBInstant_GetSDKVersion(lua_State* L) {
 
 	assert(top + 1 == lua_gettop(L));
 	return 1;
+}
+
+
+// ===============================================
+// CAN CREATE SHORTCUT
+// ===============================================
+lua_Listener canCreateShortcutAsyncListener;
+
+static void FBInstant_OnCanCreateShortcut(const int success) {
+	lua_State* L = canCreateShortcutAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, canCreateShortcutAsyncListener);
+	lua_pushboolean(L, success);
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_CanCreateShortcutAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	luaL_checklistener(L, 1, canCreateShortcutAsyncListener);
+	FBInstant_PlatformCanCreateShortcutAsync((OnCanCreateShortcutCallback)FBInstant_OnCanCreateShortcut);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+// ===============================================
+// CREATE SHORTCUT
+// ===============================================
+lua_Listener createShortcutAsyncListener;
+
+static void FBInstant_OnCreateShortcut(const int success) {
+	lua_State* L = createShortcutAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, createShortcutAsyncListener);
+	lua_pushboolean(L, success);
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_CreateShortcutAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	luaL_checklistener(L, 1, createShortcutAsyncListener);
+	FBInstant_PlatformCreateShortcutAsync((OnCreateShortcutCallback)FBInstant_OnCreateShortcut);
+
+	assert(top == lua_gettop(L));
+	return 0;
 }
 
 
@@ -1105,6 +1225,8 @@ static const luaL_reg Module_methods[] = {
 	{"get_supported_apis", FBInstant_GetSupportedAPIs},
 	{"get_sdk_version", FBInstant_GetSDKVersion},
 	{"share", FBInstant_ShareAsync},
+	{"can_create_shortcut", FBInstant_CanCreateShortcutAsync},
+	{"create_shortcut", FBInstant_CreateShortcutAsync},
 
 	// ads
 	{"load_interstitial_ad", FBInstant_LoadInterstitialAdAsync},
@@ -1126,6 +1248,8 @@ static const luaL_reg Module_methods[] = {
 	{"set_player_stats", FBInstant_SetPlayerStatsAsync},
 	{"increment_player_stats", FBInstant_IncrementPlayerStatsAsync},
 	{"get_connected_players", FBInstant_GetConnectedPlayersAsync},
+	{"can_subscribe_bot", FBInstant_CanSubscribeBotAsync},
+	{"subscribe_bot", FBInstant_SubscribeBotAsync},
 
 	// context functions
 	{"choose_context", FBInstant_ChooseContextAsync},

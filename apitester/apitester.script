@@ -51,27 +51,88 @@ if fbinstant.mock then
 end
 
 
-function init(self)
-	msg.post("#", "initialize")
-	msg.post("@render:", "clear_color", { color = vmath.vector4(0.1, 0.1, 0.1, 1.0) })
+local function check_init()
+	local info = sys.get_sys_info()
+	if info.system_name == "HTML5" then
+		if tonumber(html5.run("Module._instant_inited")) == 1 then
+			msg.post("#", "start_game")
+		else
+			fbinstant.initialize(function(self, success)
+				if not success then
+					popup.show("Failed to initialize fbinstant")
+					return
+				end			
+				msg.post("#", "start_game")
+			end)
+		end
+	else
+		msg.post("#", "start_game")
+	end	
 end
 
-
-function on_message(self, message_id, message, sender)
-	if message_id == hash("initialize") then
-		print("initialize")
-		fbinstant.initialize(function(self, success)
+local function create_shortcut(self)
+	print("About to test creating shortcuts... if it doesn't print anything more it probably means the API for even testing it isn't available.")
+	fbinstant.can_create_shortcut(function(self, success)
+		if not success then
+			print("Could not create shortcut for some reason. This is an Android only feature FYI.")
+			return
+		end
+		print("Can create shortcut! The user should be asked to create a shortcut now.")
+		fbinstant.create_shortcut(function(self, success)
 			if not success then
-				popup.show("Failed to initialize fbinstant")
+				print("Shortcut wasn't created?")
 				return
 			end
-			fbinstant.start_game(function(self, success)
-				if not success then
-					popup.show("Failed to start game")
-					return
-				end
-				monarch.show(hash("overview"))
-			end)
+			print("Shortcut was created!")
+		end)
+	end)
+end
+
+local function subscribe_bot(self)
+	print("Checking to see if can subscribe to bot...")
+	self.can_subscribe = false
+	fbinstant.can_subscribe_bot(function(self, success)
+		if not success then
+			print("API says cannot attempt to subscribe to bot.")
+			return
+		end
+		print("Can subscribe to bot!")
+		self.can_subscribe = true
+	end)
+end
+
+function init(self)
+	check_init()
+	msg.post("@render:", "clear_color", { color = vmath.vector4(0.1, 0.1, 0.1, 1.0) })
+	self.screate_shortcut_attempt = false
+	self.subscribe_bot_attempt = false
+end
+
+function update(self, dt)
+	if self.subscribe_bot_attempt == false and self.can_subscribe == true then
+		self.subscribe_bot_attempt = true
+		print("Attempting to subscribe to bot now...")
+		fbinstant.subscribe_bot(function(self, success)
+			if not success then
+				print("Couldn't subscribe to bot for some reason.")
+				return
+			end
+			print("Player is now subscribed to bot!")
+		end)		
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("start_game") then
+		print("start_game")
+		fbinstant.start_game(function(self, success)
+			if not success then
+				popup.show("Failed to start game")
+				return
+			end
+			monarch.show(hash("overview"))
+			create_shortcut(self)
+			subscribe_bot(self)
 		end)
 		fbinstant.on_pause(function(self)
 			popup.show("Pause!")

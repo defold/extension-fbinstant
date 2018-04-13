@@ -1,6 +1,6 @@
 local monarch = require "monarch.monarch"
 local gooey = require "gooey.gooey"
-local data = require "tictactoe.game.data"
+local data = require "tictactoe.game.data.heroku"
 local rxijson = require "fbinstant.utils.json"
 
 local TEXTURE1_ID = "player1_photo"

@@ -181,8 +181,8 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 0.5
-    y: 0.5
+    x: 0.3
+    y: 0.3
     z: 1.0
     w: 1.0
   }
@@ -232,7 +232,7 @@ nodes {
 nodes {
   position {
     x: 170.0
-    y: 664.0
+    y: 577.0
     z: 0.0
     w: 1.0
   }
@@ -390,7 +390,7 @@ nodes {
 nodes {
   position {
     x: 170.0
-    y: 516.0
+    y: 429.0
     z: 0.0
     w: 1.0
   }
@@ -548,7 +548,7 @@ nodes {
 nodes {
   position {
     x: 63.0
-    y: 475.0
+    y: 388.0
     z: 0.0
     w: 1.0
   }
@@ -610,7 +610,7 @@ nodes {
 nodes {
   position {
     x: 170.0
-    y: 591.0
+    y: 504.0
     z: 0.0
     w: 1.0
   }
@@ -768,7 +768,7 @@ nodes {
 nodes {
   position {
     x: 470.0
-    y: 664.0
+    y: 577.0
     z: 0.0
     w: 1.0
   }
@@ -926,7 +926,7 @@ nodes {
 nodes {
   position {
     x: 470.0
-    y: 589.0
+    y: 502.0
     z: 0.0
     w: 1.0
   }
@@ -1084,7 +1084,7 @@ nodes {
 nodes {
   position {
     x: 470.0
-    y: 514.0
+    y: 427.0
     z: 0.0
     w: 1.0
   }
@@ -1242,7 +1242,7 @@ nodes {
 nodes {
   position {
     x: 361.0
-    y: 475.0
+    y: 388.0
     z: 0.0
     w: 1.0
   }
@@ -1304,7 +1304,7 @@ nodes {
 nodes {
   position {
     x: 320.0
-    y: 1000.0
+    y: 988.0
     z: 0.0
     w: 1.0
   }
@@ -1337,6 +1337,130 @@ nodes {
   text: "..."
   font: "dirtylarry"
   id: "connected_players"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_NW
+  outline {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  shadow {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: true
+  layer: ""
+  inherit_alpha: true
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 320.0
+    y: 1000.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+    z: 1.0E-6
+    w: 1.0
+  }
+  size {
+    x: 600.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "CONNECTED PLAYERS"
+  font: "dirtylarry"
+  id: "connected_players_title"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_NW
+  outline {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  shadow {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: true
+  layer: ""
+  inherit_alpha: true
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 20.0
+    y: 680.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+    z: 1.0E-6
+    w: 1.0
+  }
+  size {
+    x: 600.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "..."
+  font: "dirtylarry"
+  id: "signed_player_info"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_NW

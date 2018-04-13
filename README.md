@@ -128,7 +128,20 @@ The ```player``` table contains the following key-value pairs:
 * ```locale``` (string) - Player locale
 
 
-### fbinstant.get_connected_players()
+### fbinstant.get_signed_player_info(payload, callback)
+Fetch the player's unique identifier along with a signature that verifies that the identifier indeed comes from Facebook without being tampered with.
+
+**PARAMETERS**
+* ```payload``` (string) - A developer-specified payload to include in the signed response.
+* ```callback``` (function) - Function to call with the list of connected players
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```signature``` (string) - A signature to verify this object indeed comes from Facebook.
+
+
+### fbinstant.get_connected_players(callback)
 Get an list of players that are connected to the current player.
 
 **PARAMETERS**
@@ -617,8 +630,3 @@ For fbinstant.get_stores() activity store status
 
 # Tic Tac Toe example
 The original Tic Tac Toe example made in Phaser has been recreated in Defold to show how the API is supposed to be user. Refer to the [tictactoe folder](https://github.com/defold/extension-fbinstant/tree/master/tictactoe) for the example.
-
-
-# TODO
-* Some API functions are missing (see [Missing APIs](#missing-api-functions))
-* Some functions expect JSON data as input. These functions should preferably accept Lua tables instead.

@@ -29,6 +29,7 @@ end
 function M.http_request(url, method, headers, post_data, options)
 	return M.async(function(done)
 		http.request(url, method, function(self, id, response)
+			pprint(response)
 			done(response)
 		end, headers, post_data, options)
 	end)

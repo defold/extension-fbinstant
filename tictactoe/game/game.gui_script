@@ -133,20 +133,41 @@ local function show_rematch()
 end
 
 
-local function handle_game_data(self, server_data)
+local function save_game_data(game_data)
+	assert(coroutine.running(), "You must call save_game_data() this from within a coroutine")
+	local ok, err = data.save(game_data)
+	if not ok then
+		print(err)
+	end
+end
+
+
+local function load_game_data()
+	assert(coroutine.running(), "You must call load_game_data() this from within a coroutine")
+	local game_data, err = data.load()
+	if err then
+		print(err)
+	elseif game_data and not next(game_data) then
+		game_data = nil
+	end
+	return game_data
+end
+
+
+local function handle_game_data(self, game_data)
 	assert(coroutine.running())
-	if not server_data then
+	if not game_data then
 		-- new game, player is Player 1
 		self.game_data.players = { self.player.id }
 		self.game_data.playerTurn = 1
-		data.save(self.game_data)
+		save_game_data(self.game_data)
 	else
-		self.game_data = server_data
+		self.game_data = game_data
 		if #self.game_data.players == 1 and self.game_data[1] ~= self.player.id then
 			-- player is accepting a challenge as Player 2
 			self.game_data.players[2] = self.player.id
 			self.game_data.playerTurn = 2
-			data.save(self.game_data)
+			save_game_data(self.game_data)
 		end
 	end
 	update_cells(self)
@@ -174,21 +195,10 @@ local function handle_game_data(self, server_data)
 end
 
 
-local function load_game_data(self)
-	coroutine.wrap(function()
-		local server_data = data.load()
-		if server_data and not next(server_data) then
-			server_data = nil
-		end
-		handle_game_data(self, server_data)
-		show_players()
-	end)()
-end
-
 
 local function finish_game(self, player_won)
 	coroutine.wrap(function()
-		data.save(self.game_data)
+		save_game_data(self.game_data)
 		fbinstant.get_player_data(rxisjon.encode({"score"}), function(self, data)
 			local score = data.score
 			local current_win_streak = 0
@@ -236,7 +246,7 @@ local function play_in_cell(self, index)
 			update_message(self, "Sending your move")
 			self.game_data.playerTurn = (self.game_data.playerTurn == 1) and 2 or 1
 		end
-		data.save(self.game_data)
+		save_game_data(self.game_data)
 		update_context(self, self.player.name .. " played their move");
 	end)()
 end
@@ -287,7 +297,11 @@ function init(self)
 	gui.set_enabled(gui.get_node("rematch/bg"), false)
 	update_message(self, "")
 	reset_game_data(self)
-	load_game_data(self)
+	coroutine.wrap(function()
+		local game_data = load_game_data()
+		handle_game_data(self, game_data)
+		show_players()
+	end)()
 end
 
 

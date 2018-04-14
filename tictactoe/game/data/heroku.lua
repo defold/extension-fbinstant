@@ -34,22 +34,20 @@ function M.save(data)
 
 	local response = async.http_request(ignore_cache(BACKEND_URL .. "/save-match"), "POST", HEADERS, post_data)
 	if response.status < 200 or response.status > 399 then
-		print("Error when saving data", response.status)
-		return
+		return false, ("Error when saving data. Status: %d"):format(response.status)
 	end
-	
+
 	local decoded_response = nil
 	local ok, err = pcall(function()
 		decoded_response = json.decode(response.response)
-		if not decoded_response.success then
-			print("Request wasn't sent successfully. Err: ", decoded_response.error)
-			decoded_response = nil
-		end
 	end)
 	if not ok then
-		print("Unable to decode response", err)
+		return false, ("Unable to decode response. Err: %s"):format(err)
 	end
-	return decoded_response
+	if not decoded_response.success then
+		return false, ("Request wasn't successful. Err: %s"):format(decoded_response.error)
+	end
+	return true
 end
 
 function M.load()
@@ -59,24 +57,29 @@ function M.load()
 	local post_data = rxijson.encode({
 		signature = get_signed_player_info(context_id),
 	})
-		
+
 	local response = async.http_request(ignore_cache(BACKEND_URL .. "/get-match"), "POST", HEADERS, post_data)
 	if response.status < 200 or response.status > 399 then
-		print("Error when loading data", response.status)
-		return
+		return nil, ("Error when loading data. Status: %d"):format(response.status)
+	end
+
+	local decoded_response = nil
+	local ok, err = pcall(function()
+		decoded_response = json.decode(response.response)
+	end)
+	if not ok then
+		return nil, ("Unable to decode response. Err: %s"):format(err)
+	end
+	if not decoded_response.success then
+		return nil, ("Request wasn't successful. Err: %s"):format(decoded_response.error)
 	end
 
 	local match_data = nil
 	local ok, err = pcall(function()
-		local decoded_response = json.decode(response.response)
-		if not decoded_response.success then
-			print("Request wasn't sent successfully. Err: ", decoded_response.error)
-		else
-			match_data = json.decode(decoded_response.data)
-		end
+		match_data = json.decode(decoded_response.data)
 	end)
 	if not ok then
-		print("Unable to decode response", err)
+		return nil, ("Unable to decode match data. Err: %s"):format(err)
 	end
 	return match_data
 end

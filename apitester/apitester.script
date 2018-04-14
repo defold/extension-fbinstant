@@ -98,7 +98,7 @@ function update(self, dt)
 				return
 			end
 			print("Player is now subscribed to bot!")
-		end)		
+		end)
 	end
 end
 

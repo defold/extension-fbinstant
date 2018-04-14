@@ -128,7 +128,20 @@ The ```player``` table contains the following key-value pairs:
 * ```locale``` (string) - Player locale
 
 
-### fbinstant.get_connected_players()
+### fbinstant.get_signed_player_info(payload, callback)
+Fetch the player's unique identifier along with a signature that verifies that the identifier indeed comes from Facebook without being tampered with.
+
+**PARAMETERS**
+* ```payload``` (string) - A developer-specified payload to include in the signed response.
+* ```callback``` (function) - Function to call with the list of connected players
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```signature``` (string) - A signature to verify this object indeed comes from Facebook.
+
+
+### fbinstant.get_connected_players(callback)
 Get an list of players that are connected to the current player.
 
 **PARAMETERS**
@@ -618,7 +631,7 @@ For fbinstant.get_stores() activity store status
 # Tic Tac Toe example
 The original Tic Tac Toe example made in Phaser has been recreated in Defold to show how the API is supposed to be user. Refer to the [tictactoe folder](https://github.com/defold/extension-fbinstant/tree/master/tictactoe) for the example.
 
+The example has support for two different backends:
 
-# TODO
-* Some API functions are missing (see [Missing APIs](#missing-api-functions))
-* Some functions expect JSON data as input. These functions should preferably accept Lua tables instead.
+1. Activity Store - This stores the game state using the Facebook Instant Games Activity Store API (2018-04-16: activity stores are currently disabled). Change `game.gui_script` so that it requires `tictactoe.game.data.activity_store` to use this solution.
+2. Node.js server - This stores the game state in a simple Node.js backend and a Postgres database. This is what the official Facebook Instant Games Tic Tac Toe example uses. The server code, created by a Facebook engineer, is located in the `tictactoe-server` folder. It's quite easy to get the server up an running on Heroku. Change `game.gui_script` so that it requires `tictactoe.game.data.heroku` to use this solution.

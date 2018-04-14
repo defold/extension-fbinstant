@@ -114,6 +114,20 @@ var FBInstantLibrary = {
 
 
     // =====================================
+    // GetSignedPlayerInfoAsync
+    // =====================================
+    FBInstant_PlatformGetSignedPlayerInfoAsync: function(callback, cpayload) {
+        var payload = Pointer_stringify(cpayload);
+        FBInstant.player.getSignedPlayerInfoAsync(payload).then(function(result) {
+            Utils.dynCall(callback, [result.getSignature()]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformGetSignedPlayerInfoAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
+        });
+    },
+
+
+    // =====================================
     // Get/Set/Flush PlayerData
     // =====================================
     FBInstant_PlatformGetPlayerDataAsync: function(callback, ckeysjson) {

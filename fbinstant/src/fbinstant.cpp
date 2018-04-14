@@ -1208,6 +1208,39 @@ static int FBInstant_ShowRewardedVideoAsync(lua_State* L) {
 
 
 
+// ===============================================
+// GET SIGNED PLAYER INFO
+// ===============================================
+lua_Listener getSignedPlayerInfoAsyncListener;
+
+static void FBInstant_OnSignedPlayerInfo(const char* signature) {
+	lua_State* L = getSignedPlayerInfoAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, getSignedPlayerInfoAsyncListener);
+	lua_pushstring(L, signature);
+
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_GetSignedPlayerInfoAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* requestPayload = luaL_checkstring(L, 1);
+	luaL_checklistener(L, 2, getSignedPlayerInfoAsyncListener);
+	FBInstant_PlatformGetSignedPlayerInfoAsync((OnSignedPlayerInfoCallback)FBInstant_OnSignedPlayerInfo, requestPayload);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+
 static const luaL_reg Module_methods[] = {
 	// lifecycle functions
 	{"initialize", FBInstant_InitializeAsync},
@@ -1250,6 +1283,7 @@ static const luaL_reg Module_methods[] = {
 	{"get_connected_players", FBInstant_GetConnectedPlayersAsync},
 	{"can_subscribe_bot", FBInstant_CanSubscribeBotAsync},
 	{"subscribe_bot", FBInstant_SubscribeBotAsync},
+	{"get_signed_player_info", FBInstant_GetSignedPlayerInfoAsync},
 
 	// context functions
 	{"choose_context", FBInstant_ChooseContextAsync},

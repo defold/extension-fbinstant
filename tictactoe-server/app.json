@@ -1,0 +1,8 @@
+{
+  "name": "Instant Game Backend Template",
+  "description": "A sample backend solution for Instant Games",
+  "repository": "https://github.com/edgarjcfn/fbinstant-server",
+  "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/master/public/node.svg",
+  "keywords": ["node", "express", "heroku", "fbinstant"],
+  "image": "heroku/nodejs"
+}

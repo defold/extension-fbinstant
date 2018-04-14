@@ -10,6 +10,7 @@ function init(self)
 	msg.post(".", "acquire_input_focus")
 	msg.post("#", "update_player")
 	msg.post("#", "update_connected_players")
+	msg.post("#", "update_signed_player_info")
 end
 
 function on_message(self, message_id, message, sender)
@@ -24,6 +25,10 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("update_connected_players") then
 		fbinstant.get_connected_players(function(self, players)
 			gui.set_text(gui.get_node("connected_players"), prettify(json.decode(players)))
+		end)
+	elseif message_id == hash("update_signed_player_info") then
+		fbinstant.get_signed_player_info("lorem ipsum", function(self, signature)
+			gui.set_text(gui.get_node("signed_player_info"), signature)
 		end)
 	end
 end

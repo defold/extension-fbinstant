@@ -3,7 +3,7 @@ title = XOXO
 dependencies = https://github.com/britzl/gooey/archive/5.2.0.zip,https://github.com/britzl/monarch/archive/1.0.zip
 
 [bootstrap]
-main_collection = /apitester/apitester.collectionc
+main_collection = /tictactoe/tictactoe.collectionc
 
 [input]
 game_binding = /input/game.input_bindingc

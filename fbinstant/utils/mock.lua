@@ -22,6 +22,7 @@ end
 
 local rxijson = require "fbinstant.utils.json"
 
+
 fbinstant.mock = true
 
 fbinstant.CONTEXT_SOLO = "SOLO"
@@ -176,6 +177,11 @@ end
 function fbinstant.get_player()
 	print("get_player")
 	return fbinstant.PLAYER
+end
+
+function fbinstant.get_signed_player_info(payload, cb)
+	print("get_signed_player_info", payload)
+	return cb(get_self(), "AvmB5jEYtr3X6rGyzOj57KJBK6Noz-CsnlCEstbYaSo.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImlzc3VlZF9hdCI6MTUyMzYwNDE3NSwicGxheWVyX2lkIjoiMTY0NzMwMDQyODY3Mzg1NyIsInJlcXVlc3RfcGF5bG9hZCI6IjE5NTc3MDU5Njc1ODAzODkifQ")
 end
 
 function fbinstant.get_connected_players(cb)

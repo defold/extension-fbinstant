@@ -33,6 +33,8 @@ typedef void (*OnCanCreateShortcutCallback)(const int success);
 typedef void (*OnCreateShortcutCallback)(const int success);
 typedef void (*OnCanSubscribeBotCallback)(const int success);
 typedef void (*OnSubscribeBotCallback)(const int success);
+typedef void (*OnSignedPlayerInfoCallback)(const char* signature);
+
 
 extern "C" {
     void FBInstant_PlatformInitializeAsync(OnInitializedCallback callback);
@@ -41,6 +43,8 @@ extern "C" {
     void FBInstant_PlatformQuit();
     void FBInstant_PlatformOnPause(OnPauseCallback callback);
     void FBInstant_PlatformSetLoadingProgress(int progress);
+
+    void FBInstant_PlatformGetSignedPlayerInfoAsync(OnSignedPlayerInfoCallback callback, const char* payload);
 
     void FBInstant_PlatformGetPlayerDataAsync(OnPlayerDataCallback callback, const char* json);
     void FBInstant_PlatformSetPlayerDataAsync(OnPlayerDataSetCallback callback, const char* json);

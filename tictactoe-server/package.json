@@ -1,0 +1,26 @@
+{
+  "name": "fbinstant-tictactoe-backend",
+  "version": "1.0.0",
+  "description": "A sample backend for the Tic Tac Toe demo",
+  "engines": {
+    "node": "6.10.2"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "cors": "^2.8.3",
+    "crypto-js": "^3.1.9-1",
+    "dotenv": "^5.0.1",
+    "express": "4.15.2",
+    "http": "0.0.0",
+    "pg": "6.x",
+    "request": "^2.81.0"
+  },
+  "keywords": [
+    "node",
+    "express"
+  ]
+}

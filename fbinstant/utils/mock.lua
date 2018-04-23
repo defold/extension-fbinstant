@@ -428,3 +428,13 @@ function fbinstant.show_interstitial_ad(placement, cb)
 	print("show_interstitial_ad")
 	cb(get_self(), true)
 end
+
+function fbinstant.load_rewarded_video(placement, cb)
+	print("load_rewarded_video")
+	cb(get_self(), true)
+end
+
+function fbinstant.show_rewarded_video(placement, cb)
+	print("show_rewarded_video")
+	cb(get_self(), true)
+end

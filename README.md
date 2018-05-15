@@ -15,7 +15,7 @@ Or point to the ZIP file of a [specific release](https://github.com/defold/exten
 Before the extension can be used you need to add the Facebook Instant Games API to the index.html of your game. [Refer to the index.html in the root of this project](https://github.com/defold/extension-fbinstant/blob/master/index.html#L55) for an example of this.
 
 ### 2.1 Report loading progress
-Facebook Instant Games can show the progress while the game is loaded. It is quite easy to set this up for a Defold game. All that is required is to override the Progress.updateProgress() function and pass along the value to the Instant Games API (this is done for you in the default index.html provided with this extension):
+Facebook Instant Games can show the progress while the game is loaded. It is quite easy to set this up for a Defold game. All that is required is to override the Progress.updateProgress() function and pass along the value to the Instant Games API (this is done for you [in the default index.html](https://github.com/defold/extension-fbinstant/blob/master/fbinstant/index.html#L68-L71) provided with this extension):
 
 ```
 	// Set up a progress listener and feed progress to FBInstant
@@ -25,7 +25,7 @@ Facebook Instant Games can show the progress while the game is loaded. It is qui
 ```
 
 ### 2.2 Early API initialization
-It has been observed that the progress updates do not work properly on Android. The progress stays at 0 and immediately jumps to 100 when the game has finished loaded. This seems to be caused by the Instant Games API not being initialized until after the game has loaded. In order to avoid this it is recommended to initialize the Instant Games API and flag this to the extension:
+It has been observed that the progress updates do not work properly on Android. The progress stays at 0 and immediately jumps to 100 when the game has finished loaded. This seems to be caused by the Instant Games API not being initialized until after the game has loaded. In order to avoid this it is recommended to initialize the Instant Games API and flag this to the extension (this is done for you [in the default index.html](https://github.com/defold/extension-fbinstant/blob/master/fbinstant/index.html#L73-L79) provided with this extension):
 
 ```Lua
     // Do early initialization of FBInstant

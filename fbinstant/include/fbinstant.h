@@ -34,6 +34,8 @@ typedef void (*OnCreateShortcutCallback)(const int success);
 typedef void (*OnCanSubscribeBotCallback)(const int success);
 typedef void (*OnSubscribeBotCallback)(const int success);
 typedef void (*OnSignedPlayerInfoCallback)(const char* signature);
+typedef void (*OnLeaderboardCallback)(const char* contextId, const int entryCount);
+typedef void (*OnLeaderboardScoreSetCallback)(const int score, const char* extraData);
 
 
 extern "C" {
@@ -103,6 +105,9 @@ extern "C" {
 
     void FBInstant_PlatformLoadRewardedVideoAsync(OnRewardedVideoLoadedCallback callback, const char* placementId);
     void FBInstant_PlatformShowRewardedVideoAsync(OnRewardedVideoShownCallback callback, const char* placementId);
+
+    void FBInstant_PlatformGetLeaderboardAsync(OnLeaderboardCallback callback, const char* name);
+    void FBInstant_PlatformSetLeaderboardScoreAsync(OnLeaderboardScoreSetCallback callback, const char* name, const int score, const char* extraData);
 
 }
 

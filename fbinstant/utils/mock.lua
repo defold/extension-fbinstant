@@ -51,6 +51,8 @@ local session_data = {}
 
 local player_stats = {}
 
+local leaderboards = {}
+
 
 fbinstant.PLAYER = {}
 fbinstant.PLAYERS = {}
@@ -437,4 +439,45 @@ end
 function fbinstant.show_rewarded_video(placement, cb)
 	print("show_rewarded_video")
 	cb(get_self(), true)
+end
+
+
+--------------------------------
+--------------- LEADERBOARD
+--------------------------------
+local function get_leaderboard(name)
+	leaderboards[name] = leaderboards[name] or {}
+	return leaderboards[name]
+end
+
+local function find_leaderboard_entry(leaderboard, id)
+	for i,entry in ipairs(leaderboard) do
+		if entry.player_id == fbinstant.PLAYER.id then
+			return entry
+		end
+	end
+	return nil
+end
+
+function fbinstant.get_leaderboard(name, cb)
+	print("get_leaderboard")
+	local leaderboard = get_leaderboard(name)
+	cb(get_self(), "1234", #leaderboard)
+end
+
+function fbinstant.set_leaderboard_score(name, score, extra_data, cb)
+	print("get_leaderboard")
+	local leaderboard = get_leaderboard(name)
+	local entry = find_leaderboard_entry(leaderboard, fbinstant.PLAYER.id)
+	if not entry then
+		entry = { player_id = fbinstant.PLAYER.id, score = score, extra_data = extra_data }
+		table.insert(leaderboard, entry)
+	elseif entry.score < score then
+		entry.score = score
+		entry.extra_data = extra_data
+	end
+	table.sort(leaderboard, function(a, b)
+		return a.score < b.score
+	end)
+	cb(get_self(), entry.score, entry.extra_data)
 end

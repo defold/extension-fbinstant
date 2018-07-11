@@ -1241,6 +1241,76 @@ static int FBInstant_GetSignedPlayerInfoAsync(lua_State* L) {
 
 
 
+// ===============================================
+// GET LEADERBOARD
+// ===============================================
+lua_Listener getLeaderboardAsyncListener;
+
+static void FBInstant_OnGetLeaderboard(const char* contextId, const int entryCount) {
+	lua_State* L = getLeaderboardAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, getLeaderboardAsyncListener);
+	lua_pushstring(L, contextId);
+	lua_pushnumber(L, entryCount);
+
+	int ret = lua_pcall(L, 3, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_GetLeaderboardAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* name = luaL_checkstring(L, 1);
+	luaL_checklistener(L, 2, getLeaderboardAsyncListener);
+	FBInstant_PlatformGetLeaderboardAsync((OnLeaderboardCallback)FBInstant_OnGetLeaderboard, name);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+
+// ===============================================
+// SET LEADERBOARD SCORE
+// ===============================================
+lua_Listener setLeaderboardScoreAsyncListener;
+
+static void FBInstant_OnLeaderboardScoreSet(const int score, const char* extraData) {
+	lua_State* L = setLeaderboardScoreAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, setLeaderboardScoreAsyncListener);
+	lua_pushnumber(L, score);
+	lua_pushstring(L, extraData);
+
+	int ret = lua_pcall(L, 3, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_SetLeaderboardScoreAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* name = luaL_checkstring(L, 1);
+	const int score = luaL_checkint(L, 2);
+	const char* extraData = luaL_checkstring(L, 3);
+	luaL_checklistener(L, 4, setLeaderboardScoreAsyncListener);
+	FBInstant_PlatformSetLeaderboardScoreAsync((OnLeaderboardScoreSetCallback)FBInstant_OnLeaderboardScoreSet, name, score, extraData);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+
 static const luaL_reg Module_methods[] = {
 	// lifecycle functions
 	{"initialize", FBInstant_InitializeAsync},
@@ -1300,6 +1370,13 @@ static const luaL_reg Module_methods[] = {
 	{"get_store_data", FBInstant_GetStoreDataAsync},
 	{"save_store_data", FBInstant_SaveStoreDataAsync},
 	{"increment_store_data", FBInstant_IncrementStoreDataAsync},
+
+	// leaderboard functions
+	{"get_leaderboard", FBInstant_GetLeaderboardAsync},
+	{"set_leaderboard_score", FBInstant_SetLeaderboardScoreAsync},
+	//{"set_leaderboard_score", FBInstant_SetLeaderboardScoreAsync},
+	//{"get_leaderboard_entry", FBInstant_GetLeaderboardEntryAsync},
+	//{"get_leaderboard_entries", FBInstant_GetLeaderboardEntriesAsync},
 	{0, 0}
 };
 

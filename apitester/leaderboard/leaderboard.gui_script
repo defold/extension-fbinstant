@@ -1,0 +1,36 @@
+local dirtylarry = require "gooey.themes.dirtylarry.dirtylarry"
+local json = require "fbinstant.utils.json"
+local prettify = require "apitester.prettify"
+local monarch = require "monarch.monarch"
+local popup = require "apitester.popup.popup"
+
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	msg.post("#", "update_leaderboard")
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("update_leaderboard") then
+		local context_id, entry_count = fbinstant.get_leaderboard("Global scores", function(self, context_id, entry_count)
+			print(context_id, entry_count)
+		end)
+	end
+end
+
+function on_input(self, action_id, action)
+	dirtylarry.button("back", action_id, action, function()
+		monarch.back()
+	end)
+	dirtylarry.button("set_score", action_id, action, function()
+		fbinstant.set_leaderboard_score("Global scores", tonumber(self.score.text), "extra_data", function(self, score, entryData)
+			print("Current entry", score, entryData)
+		end)
+	end)
+	self.score = dirtylarry.input("score", gui.KEYBOARD_TYPE_NUMBER_PAD, action_id, action, "Score")
+end
+
+function on_reload(self)
+	-- Add input-handling code here
+	-- Remove this function if not needed
+end

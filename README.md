@@ -583,6 +583,39 @@ The ```callback``` function is expected to accept the following values:
 
 
 
+
+## Leaderboard functions
+
+### fbinstant.get_leaderboard(name, callback)
+Get information about a leaderboard.
+
+**PARAMETERS**
+* ```name``` (string) - Name of the leaderboard to get
+* ```callback``` (function) - Function to call with leaderboard information
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```context_id``` (string) - The ID of the context that the leaderboard is associated with, or nil if the leaderboard is not tied to a particular context
+* ```entry_count``` (number) - The total number of player entries in the leaderboard
+
+### fbinstant.set_leaderboard_score(name, score, extra_data, callback)
+Updates the player's score. If the player has an existing score, the old score will only be replaced if the new score is better than it. NOTE: If the leaderboard is associated with a specific context, the game must be in that context to set a score for the player.
+
+**PARAMETERS**
+* ```name``` (string) - Name of the leaderboard to set score in
+* ```score``` (number) - The new score for the player. Must be a 64-bit integer number.
+* ```extra_data``` (string) - Metadata to associate with the stored score. Must be less than 2KB in size.
+* ```callback``` (function) - Function to call when the score has been set
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```score``` (string) - The current score for the player.
+* ```extra_data``` (number) - Metadata to associate with the stored score.
+
+
+
 ## Constants
 
 ### fbinstant.CONTEXT_SOLO

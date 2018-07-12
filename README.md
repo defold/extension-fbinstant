@@ -579,7 +579,7 @@ Increment the data of an activity store in the current context.
 The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
-* ```data``` (string) - JSON encoded table with the incremented data.
+* ```data``` (string) - JSON encoded table with the incremented data
 
 
 
@@ -611,9 +611,47 @@ Updates the player's score. If the player has an existing score, the old score w
 The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
-* ```score``` (string) - The current score for the player.
-* ```extra_data``` (number) - Metadata to associate with the stored score.
+* ```score``` (number) - The current score for the player
+* ```extra_data``` (string) - Metadata to associate with the stored score
 
+### fbinstant.get_leaderboard_score(name, callback)
+Retrieves the leaderboard's entry for the current player.
+
+**PARAMETERS**
+* ```name``` (string) - Name of the leaderboard to get score from
+* ```callback``` (function) - Function to call when the score has been retrieved
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```rank``` (number) - The current rank of the player
+* ```score``` (number) - The current score for the player
+* ```extra_data``` (string) - Metadata to associate with the stored score
+
+### fbinstant.get_leaderboard_entries(name, count, offset, callback)
+Retrieves a set of leaderboard entries, ordered by score ranking in the leaderboard.
+
+**PARAMETERS**
+* ```name``` (string) - Name of the leaderboard to get entries from
+* ```count``` (number) - The number of entries to attempt to fetch from the leaderboard
+* ```offset``` (number) - The offset from the top of the leaderboard that entries will be fetched from
+* ```callback``` (function) - Function to call when the entries have been retrieved
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```entries``` (string) - JSON encoded table of entries
+
+Each entry in ```entries``` contains:
+
+* ```rank``` (number) - The rank of the player's score in the leaderboard
+* ```score``` (number) - The score associated with the entry
+* ```formatted_score``` (string) - The score associated with the entry, formatted with the score format associated with the leaderboard
+* ```timestamp``` (number) - The timestamp of when the leaderboard entry was last updated
+* ```extra_data``` (string) - The developer-specified payload associated with the score
+* ```player_name``` (string) - The player's localized display name
+* ```player_photo``` (string) - The url to the player's public profile photo
+* ```player_id``` (number) - The game's unique identifier for the player
 
 
 ## Constants

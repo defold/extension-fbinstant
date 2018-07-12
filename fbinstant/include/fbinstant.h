@@ -36,6 +36,8 @@ typedef void (*OnSubscribeBotCallback)(const int success);
 typedef void (*OnSignedPlayerInfoCallback)(const char* signature);
 typedef void (*OnLeaderboardCallback)(const char* contextId, const int entryCount);
 typedef void (*OnLeaderboardScoreSetCallback)(const int score, const char* extraData);
+typedef void (*OnLeaderboardScoreCallback)(const int rank, const int score, const char* extraData);
+typedef void (*OnLeaderboardEntriesCallback)(const char* entries);
 
 
 extern "C" {
@@ -108,6 +110,8 @@ extern "C" {
 
     void FBInstant_PlatformGetLeaderboardAsync(OnLeaderboardCallback callback, const char* name);
     void FBInstant_PlatformSetLeaderboardScoreAsync(OnLeaderboardScoreSetCallback callback, const char* name, const int score, const char* extraData);
+    void FBInstant_PlatformGetLeaderboardScoreAsync(OnLeaderboardScoreCallback callback, const char* name);
+    void FBInstant_PlatformGetLeaderboardEntriesAsync(OnLeaderboardEntriesCallback callback, const char* name, const int count, const int offset);
 
 }
 

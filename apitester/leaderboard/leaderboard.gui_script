@@ -8,12 +8,28 @@ local popup = require "apitester.popup.popup"
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	msg.post("#", "update_leaderboard")
+	dirtylarry.input("score", gui.KEYBOARD_TYPE_NUMBER_PAD)
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("update_leaderboard") then
 		local context_id, entry_count = fbinstant.get_leaderboard("Global scores", function(self, context_id, entry_count)
 			print(context_id, entry_count)
+		end)
+		fbinstant.get_leaderboard_score("Global scores", function(self, rank, score, extra_data)
+			print(rank, score, extra_data)
+			rank = rank or -1
+			score = score or 0
+			extra_data = extra_data or ""
+			gui.set_text(gui.get_node("player_score"), ("You: #%d %d (%s)"):format(rank, score, extra_data))
+		end)
+		fbinstant.get_leaderboard_entries("Global scores", 10, 0, function(self, entries)
+			print(entries)
+			if not entries then
+				gui.set_text(gui.get_node("entries"), "nil")
+			else
+				gui.set_text(gui.get_node("entries"), prettify(json.decode(entries)))
+			end
 		end)
 	end
 end
@@ -23,8 +39,9 @@ function on_input(self, action_id, action)
 		monarch.back()
 	end)
 	dirtylarry.button("set_score", action_id, action, function()
-		fbinstant.set_leaderboard_score("Global scores", tonumber(self.score.text), "extra_data", function(self, score, entryData)
+		fbinstant.set_leaderboard_score("Global scores", tonumber(self.score.text), "extra_data" .. os.time(), function(self, score, entryData)
 			print("Current entry", score, entryData)
+			msg.post("#", "update_leaderboard")
 		end)
 	end)
 	self.score = dirtylarry.input("score", gui.KEYBOARD_TYPE_NUMBER_PAD, action_id, action, "Score")

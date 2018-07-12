@@ -58,6 +58,7 @@ fbinstant.PLAYER = {}
 fbinstant.PLAYERS = {}
 fbinstant.CONNECTED_PLAYERS = {}
 fbinstant.CONTEXT = nil
+fbinstant.LEADERBOARDS = {}
 
 local function get_self()
 	return _G["__dm_script_instance__"]
@@ -129,7 +130,7 @@ function fbinstant.get_supported_apis()
 		--"player.subscribeBotAsync",
 		--"player.getSignedPlayerInfoAsync",
 		--"player.getConnectedPlayersAsync",
-		--"getLeaderboardAsync",
+		"getLeaderboardAsync",
 		--"checkCanPlayerMatchAsync",
 		--"player.canSubscribeBotAsync",
 	})
@@ -446,38 +447,99 @@ end
 --------------- LEADERBOARD
 --------------------------------
 local function get_leaderboard(name)
-	leaderboards[name] = leaderboards[name] or {}
-	return leaderboards[name]
+	local leaderboard = fbinstant.LEADERBOARDS[name]
+	if not leaderboard then
+		return nil
+	end
+	if leaderboard.contextual then
+		leaderboard.entries = leaderboard.entries or {}
+		leaderboard.entries[fbinstant.CONTEXT.id] = leaderboard.entries[fbinstant.CONTEXT.id] or {}
+		return leaderboard.entries[fbinstant.CONTEXT.id]
+	else
+		leaderboard.entries = leaderboard.entries or {}
+		return leaderboard.entries
+	end
 end
 
 local function find_leaderboard_entry(leaderboard, id)
 	for i,entry in ipairs(leaderboard) do
 		if entry.player_id == fbinstant.PLAYER.id then
-			return entry
+			return entry, i
 		end
 	end
 	return nil
 end
 
 function fbinstant.get_leaderboard(name, cb)
-	print("get_leaderboard")
+	print("get_leaderboard", name)
 	local leaderboard = get_leaderboard(name)
+	if not leaderboard then
+		cb(get_self())
+		return
+	end
 	cb(get_self(), "1234", #leaderboard)
 end
 
 function fbinstant.set_leaderboard_score(name, score, extra_data, cb)
-	print("get_leaderboard")
+	print("set_leaderboard_score", name, score, extra_data)
 	local leaderboard = get_leaderboard(name)
+	if not leaderboard then
+		cb(get_self())
+		return
+	end
+
 	local entry = find_leaderboard_entry(leaderboard, fbinstant.PLAYER.id)
 	if not entry then
-		entry = { player_id = fbinstant.PLAYER.id, score = score, extra_data = extra_data }
+		entry = { score = -1 }
 		table.insert(leaderboard, entry)
-	elseif entry.score < score then
+	end
+	if score > entry.score then
 		entry.score = score
+		entry.formatted_score = tostring(score)
 		entry.extra_data = extra_data
+		entry.timestamp = os.time()
+		entry.player_name = fbinstant.PLAYER.name
+		entry.player_photo = fbinstant.PLAYER.photo
+		entry.player_id = fbinstant.PLAYER.id
 	end
 	table.sort(leaderboard, function(a, b)
 		return a.score < b.score
 	end)
 	cb(get_self(), entry.score, entry.extra_data)
+end
+
+function fbinstant.get_leaderboard_score(name, cb)
+	print("get_leaderboard_score")
+	local leaderboard = get_leaderboard(name)
+	if not leaderboard then
+		cb(get_self())
+		return
+	end
+
+	local entry, rank = find_leaderboard_entry(leaderboard, fbinstant.PLAYER.id)
+	if not entry then
+		cb(get_self())
+	else
+		cb(get_self(), rank, entry.score, entry.extra_data)
+	end
+end
+
+function fbinstant.get_leaderboard_entries(name, count, offset, cb)
+	print("get_leaderboard_score", name, count, offset)
+	local leaderboard = get_leaderboard(name)
+	if not leaderboard then
+		cb(get_self())
+		return
+	end
+
+	local entries = {}
+	for i=1,count do
+		local entry = leaderboard[i + offset]
+		if not entry then
+			break
+		end
+		entries[#entries + 1] = entry
+	end
+
+	cb(get_self(), rxijson.encode(entries))
 end

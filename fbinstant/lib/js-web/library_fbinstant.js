@@ -793,7 +793,43 @@ var FBInstantLibrary = {
             Utils.dynCall(callback, [entry.getScore(), entry.getExtraData()]);
         }).catch(function(err) {
             console.log("FBInstant_PlatformSetLeaderboardScoreAsync - error", err);
-            Runtime.dynCall("vi", callback, [0,0]);
+            Runtime.dynCall("vii", callback, [0,0]);
+        });
+    },
+    FBInstant_PlatformGetLeaderboardScoreAsync: function(callback, cname) {
+        var name = Pointer_stringify(cname);
+        FBInstant.getLeaderboardAsync(name).then(function(leaderboard) {
+            return leaderboard.getPlayerEntryAsync();
+        }).then(function(entry) {
+            Utils.dynCall(callback, [entry.getRank(), entry.getScore(), entry.getExtraData()]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformGetLeaderboardScoreAsync - error", err);
+            Runtime.dynCall("viii", callback, [0,0,0]);
+        });
+    },
+    FBInstant_PlatformGetLeaderboardEntriesAsync: function(callback, cname, count, offset) {
+        var name = Pointer_stringify(cname);
+        FBInstant.getLeaderboardAsync(name).then(function(leaderboard) {
+            return leaderboard.getEntriesAsync(count, offset);
+        }).then(function(entries) {
+            var entriesData = [];
+            for(var i=0; i<entries.length; i++) {
+                var entry = entries[i];
+                entriesData.push({
+                    rank: entry.getRank(),
+                    score: entry.getScore(),
+                    formatted_score: entry.getFormattedScore(),
+                    timestamp: entry.getTimestamp(),
+                    extra_data: entry.getExtraData(),
+                    player_name: entry.getPlayer().getName(),
+                    player_id: entry.getPlayer().getID(),
+                    player_photo: entry.getPlayer().getPhoto(),
+                });
+            }
+            Utils.dynCall(callback, [JSON.stringify(entriesData)]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformGetLeaderboardEntriesAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
         });
     },
 

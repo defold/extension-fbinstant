@@ -23,7 +23,7 @@ if fbinstant.mock then
 			locale = "en_US",
 		}
 	}
-	
+
 	fbinstant.CONNECTED_PLAYERS = {
 		{
 			name = "Rick Dangerous",
@@ -41,12 +41,21 @@ if fbinstant.mock then
 			photo = "http://i.pravatar.cc/200?u=5",
 		},
 	}
-	
+
 	-- the current context
 	fbinstant.CONTEXT = {
 		id = "123456fake",
 		type = fbinstant.CONTEXT_THREAD,
 		size = 2,
+	}
+
+	fbinstant.LEADERBOARDS = {
+		["Global scores"] = {
+			contextual = false,
+		},
+		["Session scores"] = {
+			contextual = true,
+		},
 	}
 end
 

@@ -1310,6 +1310,74 @@ static int FBInstant_SetLeaderboardScoreAsync(lua_State* L) {
 }
 
 
+// ===============================================
+// GET LEADERBOARD SCORE
+// ===============================================
+lua_Listener getLeaderboardScoreAsyncListener;
+
+static void FBInstant_OnLeaderboardScore(const int rank, const int score, const char* extraData) {
+	lua_State* L = getLeaderboardScoreAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, getLeaderboardScoreAsyncListener);
+	lua_pushnumber(L, rank);
+	lua_pushnumber(L, score);
+	lua_pushstring(L, extraData);
+
+	int ret = lua_pcall(L, 4, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_GetLeaderboardScoreAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* name = luaL_checkstring(L, 1);
+	luaL_checklistener(L, 2, getLeaderboardScoreAsyncListener);
+	FBInstant_PlatformGetLeaderboardScoreAsync((OnLeaderboardScoreCallback)FBInstant_OnLeaderboardScore, name);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+// ===============================================
+// GET LEADERBOARD ENTRIES
+// ===============================================
+lua_Listener getLeaderboardEntriesAsyncListener;
+
+static void FBInstant_OnLeaderboardEntries(const char* entries) {
+	lua_State* L = getLeaderboardEntriesAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, getLeaderboardEntriesAsyncListener);
+	lua_pushstring(L, entries);
+
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_GetLeaderboardEntriesAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* name = luaL_checkstring(L, 1);
+	const int count = luaL_checkint(L, 2);
+	const int offset = luaL_checkint(L, 3);
+	luaL_checklistener(L, 4, getLeaderboardEntriesAsyncListener);
+	FBInstant_PlatformGetLeaderboardEntriesAsync((OnLeaderboardEntriesCallback)FBInstant_OnLeaderboardEntries, name, count, offset);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
 
 static const luaL_reg Module_methods[] = {
 	// lifecycle functions
@@ -1374,9 +1442,8 @@ static const luaL_reg Module_methods[] = {
 	// leaderboard functions
 	{"get_leaderboard", FBInstant_GetLeaderboardAsync},
 	{"set_leaderboard_score", FBInstant_SetLeaderboardScoreAsync},
-	//{"set_leaderboard_score", FBInstant_SetLeaderboardScoreAsync},
-	//{"get_leaderboard_entry", FBInstant_GetLeaderboardEntryAsync},
-	//{"get_leaderboard_entries", FBInstant_GetLeaderboardEntriesAsync},
+	{"get_leaderboard_score", FBInstant_GetLeaderboardScoreAsync},
+	{"get_leaderboard_entries", FBInstant_GetLeaderboardEntriesAsync},
 	{0, 0}
 };
 

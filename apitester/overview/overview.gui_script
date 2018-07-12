@@ -13,6 +13,7 @@ function init(self)
 	print("init")
 	msg.post(".", "acquire_input_focus")
 	msg.post("#", "update_entrypoint")
+	msg.post("#", "update_supported_apis")
 	dirtylarry.button("activity_store").set_visible(has_context())
 end
 
@@ -25,6 +26,9 @@ function on_message(self, message_id, message, sender)
 			text = text .. prettify(entry_point_data) .. "\n"
 			gui.set_text(gui.get_node("entry_point"), text)
 		end)
+	elseif message_id == hash("update_supported_apis") then
+		local apis = fbinstant.get_supported_apis()
+		gui.set_text(gui.get_node("supported_apis"), "SUPPORTED APIS\n" .. prettify(json.decode(apis)))
 	end
 end
 

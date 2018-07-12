@@ -118,21 +118,50 @@ end
 function fbinstant.get_supported_apis()
 	print("get_supported_apis")
 	return rxijson.encode({
-		"getLocale", "getPlatform", "getSupportedAPIs", "getEntryPointData", "logEvent", "onPause", "initializeAsync", "setLoadingProgress", "setSessionData", "startGameAsync", "shareAsync", "switchGameAsync", "quit", "getEntryPointAsync", "updateAsync",
+		["getLocale"] = true,
+		["getPlatform"] = true,
+		["getSupportedAPIs"] = true,
+		["getEntryPointData"] = true,
+		["logEvent"] = true,
+		["onPause"] = true,
+		["initializeAsync"] = true,
+		["setLoadingProgress"] = true,
+		["setSessionData"] = true,
+		["startGameAsync"] = true,
+		["shareAsync"] = true,
+		["switchGameAsync"] = true,
+		["quit"] = true,
+		["getEntryPointAsync"] = true,
+		["updateAsync"] = true,
+		["getSDKVersion"] = true,
+		
+		["player.getID"] = true,
+		["player.getName"] = true,
+		["player.getPhoto"] = true,
+		["player.flushDataAsync"] = true,
+		["player.getDataAsync"] = true,
+		["player.setDataAsync"] = true,
+		["player.getStatsAsync"] = true,
+		["player.setStatsAsync"] = true,
+		["player.incrementStatsAsync"] = true,
+		["player.getSignedPlayerInfoAsync"] = true,
+		["player.getConnectedPlayersAsync"] = true,
+		["player.subscribeBotAsync"] = true,
+		["player.canSubscribeBotAsync"] = true,
+						
+		["context.getID"] = true,
+		["context.getType"] = true,
+		["context.isSizeBetween"] = true,
+		["context.switchAsync"] = true,
+		["context.chooseAsync"] = true,
+		["context.createAsync"] = true,
+		["context.getPlayersAsync"] = true,
 
-		"player.getID", "player.getName", "player.getPhoto", "player.flushDataAsync", "player.getDataAsync", "player.setDataAsync", "player.getStatsAsync", "player.setStatsAsync", "player.incrementStatsAsync",
+		--["payments.onReady"] = true,
+		--["matchPlayerAsync"] = true,
 
-		"context.getID", "context.getType", "context.isSizeBetween", "context.switchAsync", "context.chooseAsync", "context.createAsync", "context.getPlayersAsync",
-
-		--"getSDKVersion",
-		--"payments.onReady",
-		--"matchPlayerAsync",
-		--"player.subscribeBotAsync",
-		--"player.getSignedPlayerInfoAsync",
-		--"player.getConnectedPlayersAsync",
-		"getLeaderboardAsync",
-		--"checkCanPlayerMatchAsync",
-		--"player.canSubscribeBotAsync",
+		["getLeaderboardAsync"] = true,
+		--["checkCanPlayerMatchAsync"] = true,
 	})
 end
 

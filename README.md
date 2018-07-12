@@ -591,7 +591,6 @@ The ```callback``` function is expected to accept the following values:
 
 
 
-
 ## Leaderboard functions
 
 ### fbinstant.get_leaderboard(name, callback)

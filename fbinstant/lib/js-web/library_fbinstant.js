@@ -476,7 +476,12 @@ var FBInstantLibrary = {
     FBInstant_PlatformGetSupportedAPIs: function() {
         var supportedAPIs = FBInstant.getSupportedAPIs();
         if (supportedAPIs) {
-            return Utils.manageString("supportedAPIs", JSON.stringify(supportedAPIs));
+            var apis = {};
+            for (var i=0; i<supportedAPIs.length; i++) {
+                var api = supportedAPIs[i];
+                apis[api] = true;
+            }
+            return Utils.manageString("supportedAPIs", JSON.stringify(apis));
         }
         else {
             return null;

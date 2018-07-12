@@ -367,10 +367,18 @@ Gets the active platform the game is running on.
 ### fbinstant.get_supported_apis()
 Gets a list of supported apis by the current platform.
 
-Check this list before attempting to use features which don't yet work on all platforms such as ads.
+Check this list before attempting to use features which don't yet work on all platforms such as ads. Refer to the SDK documentation for a complete list of APIs:
+https://developers.facebook.com/docs/games/instant-games/sdk
 
 **RETURN**
-* ```apis``` (string) - In the form of ["getLocale","getPlatform","getSDKVersion", ... "player.incrementStatsAsync","updateAsync"] etc. check the api version docs for complete API list https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.1
+* ```apis``` (string) - JSON encoded string with a key value mapping of supported APIs.
+
+**EXAMPLE**
+```
+if fbinstant.get_supported_apis()["getInterstitialAdAsync"] then
+    -- load/show interstitial
+end
+```
 
 ### fbinstant.get_sdk_version()
 Gets the current SDK version. Can be used as a sanity check.
@@ -580,7 +588,6 @@ The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
 * ```data``` (string) - JSON encoded table with the incremented data
-
 
 
 

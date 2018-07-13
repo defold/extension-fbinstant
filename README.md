@@ -661,6 +661,86 @@ Each entry in ```entries``` contains:
 * ```player_id``` (number) - The game's unique identifier for the player
 
 
+
+## Payment functions
+
+### fbinstant.on_payments_ready(callback)
+Sets a callback to be triggered when Payments operations are available.
+
+**PARAMETERS**
+* ```callback``` (function) - Function to call when Payments operations are available
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+
+### fbinstant.get_product_catalog(callback)
+Fetches the game's product catalog.
+
+**PARAMETERS**
+* ```callback``` (function) - Function to call with the set of products that are registered to the game
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```products``` (table) - The products
+
+Each entry in ```products``` contains:
+
+* ```title``` (string) - The title of the product
+* ```product_id``` (string) - The product's game-specified identifier
+* ```description``` (string) - The product description
+* ```image_uri``` (string) - A link to the product's associated image
+* ```price``` (string) - The price of the product
+* ```price_currency_code``` (string) - The currency code for the product
+
+### fbinstant.get_purchases(callback)
+Fetches all of the player's unconsumed purchases. As a best practice, the game should fetch the current player's purchases as soon as the client indicates that it is ready to perform payments-related operations. The game can then process and consume any purchases that are waiting to be consumed.
+
+**PARAMETERS**
+* ```callback``` (function) - Function to call with the set of purchases that the player has made for the game
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```purchases``` (table) - The set of purchases that the player has made for the game
+
+Each entry in ```purchases``` contains:
+
+* ```developer_payload``` (string) - A developer-specified string, provided during the purchase of the product
+* ```payment_id``` (string) - The identifier for the purchase transaction
+* ```product_id``` (string) - The product description
+* ```purchase_time``` (string) - Unix timestamp of when the purchase occurred
+* ```purchase_token``` (string) - A token representing the purchase that may be used to consume the purchase
+* ```signed_request``` (string) - Server-signed encoding of the purchase request
+
+### fbinstant.purchase(product_id, developer_payload, callback)
+Begins the purchase flow for a specific product. Will fail if called before FBInstant.startGameAsync() has finished.
+
+**PARAMETERS**
+* ```product_id``` (string) - The identifier of the product to purchase
+* ```developer_payload``` (string) - n optional developer-specified payload, to be included in the returned purchase's signed request
+* ```callback``` (function) - Function to call when the product is successfully purchased by the player.
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```purchase``` (table) - Information about the purchase, same data as an entry returned from `fbinstant.get_purchases()`
+
+### fbinstant.consume_purchase(purchase_token, callback)
+Consumes a specific purchase belonging to the current player. Before provisioning a product's effects to the player, the game should request the consumption of the purchased product. Once the purchase is successfully consumed, the game should immediately provide the player with the effects of their purchase.
+
+**PARAMETERS**
+* ```purchase_token``` (string) - The purchase token of the purchase that should be consumed
+* ```callback``` (function) - Function to call when the purchase has been consumed successfully.
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```success``` (boolean) - Boolean indicating if the purchase was successfully consumed or not
+
+
+
 ## Constants
 
 ### fbinstant.CONTEXT_SOLO

@@ -57,6 +57,25 @@ if fbinstant.mock then
 			contextual = true,
 		},
 	}
+
+	fbinstant.PRODUCTS = {
+		{
+			title = "Goldbars S",
+			product_id = "com.defold.fbinstant.gold.s",
+			description = "Small amount of gold",
+			image_uri =  "",
+			price =  "2.39",
+			price_currency_code = "USD",
+		},
+		{
+			title = "Goldbars M",
+			product_id = "com.defold.fbinstant.gold.m",
+			description = "Medium amount of gold",
+			image_uri =  "",
+			price =  "4.39",
+			price_currency_code = "USD",
+		},
+	}
 end
 
 local function create_shortcut(self)

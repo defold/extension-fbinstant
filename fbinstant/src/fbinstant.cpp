@@ -1379,6 +1379,164 @@ static int FBInstant_GetLeaderboardEntriesAsync(lua_State* L) {
 
 
 
+
+// ===============================================
+// ON PAYMENTS READY
+// ===============================================
+lua_Listener onPaymentsReadyListener;
+
+static void FBInstant_OnPaymentsReady() {
+	lua_State* L = onPaymentsReadyListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, onPaymentsReadyListener);
+	int ret = lua_pcall(L, 1, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_OnPaymentsReady(lua_State* L) {
+	int top = lua_gettop(L);
+
+	luaL_checklistener(L, 1, onPaymentsReadyListener);
+	FBInstant_PlatformOnPaymentsReady((OnPauseCallback)FBInstant_OnPaymentsReady);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+// ===============================================
+// GET PRODUCT CATALOG
+// ===============================================
+lua_Listener getProductCatalogAsyncListener;
+
+static void FBInstant_OnProductCatalog(const char* productCatalog) {
+	lua_State* L = getProductCatalogAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, getProductCatalogAsyncListener);
+	lua_pushstring(L, productCatalog);
+
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_GetProductCatalogAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	luaL_checklistener(L, 1, getProductCatalogAsyncListener);
+	FBInstant_PlatformGetProductCatalogAsync((OnProductCatalogCallback)FBInstant_OnProductCatalog);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+// ===============================================
+// PURCHASE
+// ===============================================
+lua_Listener purchaseAsyncListener;
+
+static void FBInstant_OnPurchaseResponse(const char* purchase) {
+	lua_State* L = purchaseAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, purchaseAsyncListener);
+	lua_pushstring(L, purchase);
+
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_PurchaseAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* productId = luaL_checkstring(L, 1);
+	const char* developerPayload = luaL_checkstring(L, 2);
+	luaL_checklistener(L, 3, purchaseAsyncListener);
+	FBInstant_PlatformPurchaseAsync((OnPurchaseResponseCallback)FBInstant_OnPurchaseResponse, productId, developerPayload);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+// ===============================================
+// GET PURCHASES
+// ===============================================
+lua_Listener getPurchasesAsyncListener;
+
+static void FBInstant_OnPurchases(const char* purchases) {
+	lua_State* L = getPurchasesAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, getPurchasesAsyncListener);
+	lua_pushstring(L, purchases);
+
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_GetPurchasesAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	luaL_checklistener(L, 1, getPurchasesAsyncListener);
+	FBInstant_PlatformGetPurchasesAsync((OnPurchasesCallback)FBInstant_OnPurchases);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+// ===============================================
+// CONSUME PURCHASE
+// ===============================================
+lua_Listener consumePurchaseAsyncListener;
+
+static void FBInstant_OnPurchaseConsumed(const int success) {
+	lua_State* L = consumePurchaseAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, consumePurchaseAsyncListener);
+	lua_pushboolean(L, success);
+
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_ConsumePurchaseAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* purchaseToken = luaL_checkstring(L, 1);
+	luaL_checklistener(L, 2, consumePurchaseAsyncListener);
+	FBInstant_PlatformConsumePurchaseAsync((OnPurchaseConsumedCallback)FBInstant_OnPurchaseConsumed, purchaseToken);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+
 static const luaL_reg Module_methods[] = {
 	// lifecycle functions
 	{"initialize", FBInstant_InitializeAsync},
@@ -1444,6 +1602,15 @@ static const luaL_reg Module_methods[] = {
 	{"set_leaderboard_score", FBInstant_SetLeaderboardScoreAsync},
 	{"get_leaderboard_score", FBInstant_GetLeaderboardScoreAsync},
 	{"get_leaderboard_entries", FBInstant_GetLeaderboardEntriesAsync},
+
+
+	// payments functions
+	{"on_payments_ready", FBInstant_OnPaymentsReady},
+	{"get_product_catalog", FBInstant_GetProductCatalogAsync},
+	{"purchase", FBInstant_PurchaseAsync},
+	{"get_purchases", FBInstant_GetPurchasesAsync},
+	{"consume_purchase", FBInstant_ConsumePurchaseAsync},
+
 	{0, 0}
 };
 

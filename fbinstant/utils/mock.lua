@@ -137,7 +137,7 @@ function fbinstant.get_supported_apis()
 		["getEntryPointAsync"] = true,
 		["updateAsync"] = true,
 		["getSDKVersion"] = true,
-		
+
 		["player.getID"] = true,
 		["player.getName"] = true,
 		["player.getPhoto"] = true,
@@ -151,7 +151,7 @@ function fbinstant.get_supported_apis()
 		["player.getConnectedPlayersAsync"] = true,
 		["player.subscribeBotAsync"] = true,
 		["player.canSubscribeBotAsync"] = true,
-						
+
 		["context.getID"] = true,
 		["context.getType"] = true,
 		["context.isSizeBetween"] = true,
@@ -577,6 +577,15 @@ function fbinstant.get_leaderboard_entries(name, count, offset, cb)
 end
 
 
+local function get_product(product_id)
+	for _,product in pairs(fbinstant.PRODUCTS) do
+		if product.product_id == product_id then
+			return product
+		end
+	end
+	return nil
+end
+
 function fbinstant.on_payments_ready(callback)
 	print("on_payments_ready")
 	callback(get_self())
@@ -590,23 +599,6 @@ end
 function fbinstant.get_purchases(callback)
 	print("get_purchases")
 	callback(get_self(), rxijson.encode(purchases))
-end
-
-
-local function get_product(product_id)
-	for _,product in pairs(fbinstant.PRODUCTS) do
-		if product.product_id == product_id then
-			return product
-		end
-	end
-	return nil
-end
-
-local function invoke_callback(callback, ...)
-	local args = {...}
-	timer.delay(0.1, false, function(self)
-		callback(self, unpack(args))
-	end)
 end
 
 function fbinstant.purchase(product_id, developer_payload, callback)
@@ -625,7 +617,7 @@ function fbinstant.purchase(product_id, developer_payload, callback)
 		signed_request = "signed_request"
 	}
 	purchases[#purchases + 1] = purchase
-	invoke_callback(callback, rxijson.encode(purchase))
+	callback(get_self(), rxijson.encode(purchase))
 end
 
 
@@ -637,8 +629,5 @@ function fbinstant.consume_purchase(purchase_token, callback)
 			callback(get_self(), true)
 		end
 	end
-	invoke_callback(callback, false)
+	callback(get_self(), false)
 end
-
-
-

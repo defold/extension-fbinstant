@@ -38,7 +38,11 @@ typedef void (*OnLeaderboardCallback)(const char* contextId, const int entryCoun
 typedef void (*OnLeaderboardScoreSetCallback)(const int score, const char* extraData);
 typedef void (*OnLeaderboardScoreCallback)(const int rank, const int score, const char* extraData);
 typedef void (*OnLeaderboardEntriesCallback)(const char* entries);
-
+typedef void (*OnPaymentsReadyCallback)();
+typedef void (*OnProductCatalogCallback)(const char* productCatalog);
+typedef void (*OnPurchaseResponseCallback)(const char* purchase);
+typedef void (*OnPurchaseConsumedCallback)(const int success);
+typedef void (*OnPurchasesCallback)(const char* purchases);
 
 extern "C" {
     void FBInstant_PlatformInitializeAsync(OnInitializedCallback callback);
@@ -113,6 +117,11 @@ extern "C" {
     void FBInstant_PlatformGetLeaderboardScoreAsync(OnLeaderboardScoreCallback callback, const char* name);
     void FBInstant_PlatformGetLeaderboardEntriesAsync(OnLeaderboardEntriesCallback callback, const char* name, const int count, const int offset);
 
+    void FBInstant_PlatformOnPaymentsReady(OnPaymentsReadyCallback callback);
+    void FBInstant_PlatformGetProductCatalogAsync(OnProductCatalogCallback callback);
+    void FBInstant_PlatformPurchaseAsync(OnPurchaseResponseCallback callback, const char* productId, const char* developerPayload);
+    void FBInstant_PlatformGetPurchasesAsync(OnPurchasesCallback callback);
+    void FBInstant_PlatformConsumePurchaseAsync(OnPurchaseConsumedCallback callback, const char* purchaseToken);
 }
 
 #endif

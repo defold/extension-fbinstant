@@ -40,6 +40,16 @@ var FBInstantLibrary = {
         allocateString: function(str) {
             return allocate(intArrayFromString(str), "i8", ALLOC_NORMAL);
         },
+        convertPurchase: function(purchase) {
+            return {
+                developer_payload: purchase.developerPayload,
+                payment_id: purchase.paymentID,
+                product_id: purchase.productID,
+                purchase_time: purchase.purchaseTime,
+                purchase_token: purchase.purchaseToken,
+                signed_request: purchase.signedRequest,
+            };
+        },
         dynCall: function(fn, in_args) {
             var signature = "v";
             var out_args = [];
@@ -834,6 +844,95 @@ var FBInstantLibrary = {
             Utils.dynCall(callback, [JSON.stringify(entriesData)]);
         }).catch(function(err) {
             console.log("FBInstant_PlatformGetLeaderboardEntriesAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
+        });
+    },
+
+
+    // =====================================
+    // OnPaymentsReady
+    // =====================================
+    FBInstant_PlatformOnPaymentsReady: function(callback) {
+        FBInstant.payments.onReady(function() {
+            Runtime.dynCall("v", callback, []);
+        });
+    },
+
+
+    // =====================================
+    // GetCatalogAsync
+    // =====================================
+    FBInstant_PlatformGetProductCatalogAsync: function(callback) {
+        FBInstant.payments.getCatalogAsync().then(function(catalog) {
+            var products = [];
+            for(var i=0; i<catalog.length; i++) {
+                var product = catalog[i];
+                products.push({
+                    title: product.title,
+                    product_id: product.productID,
+                    description: product.description,
+                    image_uri: product.imageURI,
+                    price: product.price,
+                    price_currency_code: product.priceCurrencyCode,
+                });
+            }
+            Utils.dynCall(callback, [JSON.stringify(products)]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformGetProductCatalogAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
+        });
+    },
+
+
+
+    // =====================================
+    // PurchaseAsync
+    // =====================================
+    FBInstant_PlatformPurchaseAsync: function(callback, cproductId, cdeveloperPayload) {
+        var purchaseConfig = {
+            productID: Pointer_stringify(cproductId),
+            developerPayload: Pointer_stringify(cdeveloperPayload),
+        };
+        FBInstant.payments.purchaseAsync(purchaseConfig).then(function(purchase) {
+            var result = Utils.convertPurchase(purchase);
+            Utils.dynCall(callback, [JSON.stringify(result)]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformPurchaseAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
+        });
+    },
+
+
+
+
+    // =====================================
+    // GetPurchasesAsync
+    // =====================================
+    FBInstant_PlatformGetPurchasesAsync: function(callback) {
+        FBInstant.payments.getPurchasesAsync().then(function(purchases) {
+            var result = [];
+            for(var i=0; i<purchases.length; i++) {
+                var purchase = purchases[i];
+                result.push(Utils.convertPurchase(purchase));
+            }
+            Utils.dynCall(callback, [JSON.stringify(result)]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformPurchaseAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
+        });
+    },
+
+
+
+    // =====================================
+    // ConsumePurchaseAsync
+    // =====================================
+    FBInstant_PlatformConsumePurchaseAsync: function(callback, cpurchaseToken) {
+        var purchaseToken = Pointer_stringify(cpurchaseToken);
+        FBInstant.payments.consumePurchaseAsync(purchaseToken).then(function() {
+            Runtime.dynCall("vi", callback, [1]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformConsumePurchaseAsync - error", err);
             Runtime.dynCall("vi", callback, [0]);
         });
     },

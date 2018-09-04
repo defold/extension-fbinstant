@@ -19,7 +19,7 @@ end
 function on_message(self, message_id, message, sender)
 	if message_id == hash("update_context") then
 		local context_id, context_type = fbinstant.get_context()
-		if context_id and context_type then
+		if context_id or context_type then
 			local text = "CONTEXT\n"
 			text = text .. "ID: " .. (context_id or "nil") .. "\n"
 			text = text .. "TYPE: " .. (context_type or "nil") .. "\n"

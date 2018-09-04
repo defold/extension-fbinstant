@@ -629,12 +629,16 @@ static int FBInstant_GetContext(lua_State* L) {
 	const char* id = FBInstant_PlatformGetContextID();
 	const char* type = FBInstant_PlatformGetContextType();
 
-	if(id == 0 || type == 0) {
-		lua_pushnil(L);
+	if(id == 0) {
 		lua_pushnil(L);
 	}
 	else {
 		lua_pushstring(L, id);
+	}
+	if(type == 0) {
+		lua_pushnil(L);
+	}
+	else {
 		lua_pushstring(L, type);
 	}
 

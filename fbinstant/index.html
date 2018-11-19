@@ -105,7 +105,7 @@
         function load_engine() {
             var engineJS = document.createElement('script');
             engineJS.type = 'text/javascript';
-            if (false) {
+            if (Module['isWASMSupported']) {
                 engineJS.src = '{{DEFOLD_BINARY_PREFIX}}_wasm.js';
             } else {
                 engineJS.src = '{{DEFOLD_BINARY_PREFIX}}_asmjs.js';

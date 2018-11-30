@@ -40,6 +40,15 @@ It has been observed that the progress updates do not work properly on Android. 
 ## 3. Create a Facebook App
 You also need to create a Facebook App where Instant Games is enabled. Please refer to the [Getting Started documentation](https://developers.facebook.com/docs/games/instant-games/getting-started) on the Instant Games page for further instructions.
 
+## 4. Create a Bundle Configuration file (optional)
+You can include an `fbapp-config.json` configuration file in the application bundle that you publish. The file is put in the root directory of your bundle to specify settings for your application. These settings will apply to all users who the bundle is served to. This enables you to launch different bundles along with different application settings to different audiences. Read more about the format [here](https://developers.facebook.com/docs/games/instant-games/sdk/bundle-config).
+
+Defold can automatically include this file in the HTML5 bundle using the [Bundle Resources setting](https://www.defold.com/manuals/project-settings/#_project) in `game.project`. Create a folder in your project to hold the configuration file:
+
+`/my_bundle_resources/web/fbapp-config.json`
+
+And set `my_bundle_resources` as the value in the Bundle Resources field in `game.project`.
+
 # Usage
 ## FBInstant API
 The extension wraps the Instant Games Javascript API in a Lua interface. The API is designed to wrap [version 6.0 of the Instant Games API](https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.0).

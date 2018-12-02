@@ -50,14 +50,29 @@ Defold can automatically include this file in the HTML5 bundle using the [Bundle
 And set `my_bundle_resources` as the value in the Bundle Resources field in `game.project`.
 
 # Usage
+
 ## FBInstant API
-The extension wraps the Instant Games Javascript API in a Lua interface. The API is designed to wrap [version 6.0 of the Instant Games API](https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.0).
+The extension wraps the Instant Games Javascript API in a Lua interface. The API is designed to wrap [version 6.2 of the Instant Games API](https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.2).
 
 ### From promises to callbacks
 The async API functions are [Promise based](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) in Javascript while the Lua counterparts are callback based.
 
 ## Missing API functions
 The Facebook Instant Games platform is still evolving and new APIs are added by Facebook quite frequently. This means that there's likely parts of the API that isn't yet provided by this extension. Refer to the [GitHub Issues tagged "Missing API"](https://github.com/defold/extension-fbinstant/issues?q=is%3Aissue+is%3Aopen+label%3A%22missing+api%22) for a list of know missing APIs.
+
+## Facebook Instant Games and LiveUpdate
+The [LiveUpdate functionality of Defold](https://www.defold.com/manuals/live-update/) can be combined with Facebook Instant Games to create really small application bundles where additional content can be downloaded while the player is progressing through game. Combine the excluded content with the application bundle in a single zip file when [uploading to the web hosting provided by Facebook Instant Games](https://developers.facebook.com/docs/games/instant-games/test-publish-share#upload). When loading the excluded content you're required to load the content from the same base URL as the rest of the game is loaded from. There is a helper module that will get the base URL from the browser:
+
+```Lua
+	local baseurl = require "fbinstant.baseurl"
+
+	local missing_resources = collectionproxy.missing_resources("#level3")
+	for _,resource in ipairs(missing_resources) do
+		local id = http.request(baseurl.get() .. resource, "GET", callback)
+	end
+```
+
+# FBInstant API reference
 
 ## Lifecycle functions
 

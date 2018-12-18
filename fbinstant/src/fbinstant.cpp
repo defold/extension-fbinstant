@@ -1638,6 +1638,7 @@ static const luaL_reg Module_methods[] = {
 	{"set_leaderboard_score", FBInstant_SetLeaderboardScoreAsync},
 	{"get_leaderboard_score", FBInstant_GetLeaderboardScoreAsync},
 	{"get_leaderboard_entries", FBInstant_GetLeaderboardEntriesAsync},
+    {"get_connected_player_entries", FBInstant_GetConnectedPlayerEntriesAsync},
 
 
 	// payments functions

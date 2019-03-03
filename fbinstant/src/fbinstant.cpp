@@ -1305,7 +1305,14 @@ static int FBInstant_SetLeaderboardScoreAsync(lua_State* L) {
 
 	const char* name = luaL_checkstring(L, 1);
 	const int score = luaL_checkint(L, 2);
-	const char* extraData = luaL_checkstring(L, 3);
+	const char* extraData;
+	if (lua_isstring(L, 3)) {
+		extraData = luaL_checkstring(L, 3);
+	}
+	else {
+		extraData = "";
+	}
+	//const char* extraData = luaL_checkstring(L, 3);
 	luaL_checklistener(L, 4, setLeaderboardScoreAsyncListener);
 	FBInstant_PlatformSetLeaderboardScoreAsync((OnLeaderboardScoreSetCallback)FBInstant_OnLeaderboardScoreSet, name, score, extraData);
 

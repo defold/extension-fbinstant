@@ -636,7 +636,7 @@ Updates the player's score. If the player has an existing score, the old score w
 **PARAMETERS**
 * ```name``` (string) - Name of the leaderboard to set score in
 * ```score``` (number) - The new score for the player. Must be a 64-bit integer number.
-* ```extra_data``` (string) - Metadata to associate with the stored score. Must be less than 2KB in size.
+* ```extra_data``` (string|nil) - Metadata to associate with the stored score. Must be less than 2KB in size.
 * ```callback``` (function) - Function to call when the score has been set
 
 The ```callback``` function is expected to accept the following values:

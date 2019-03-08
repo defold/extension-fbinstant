@@ -84,6 +84,11 @@ function fbinstant.start_game(cb)
 	cb(get_self(), true)
 end
 
+function fbinstant.switch_game(app_id, data, cb)
+	print("switch_game", app_id, data)
+	cb(get_self(), true)
+end
+
 function fbinstant.update(jsondata, cb)
 	print("update", jsondata)
 	cb(get_self(), true)

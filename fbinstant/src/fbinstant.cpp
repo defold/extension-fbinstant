@@ -305,11 +305,49 @@ static void FBInstant_OnGameStarted(const int success) {
 	assert(top == lua_gettop(L));
 }
 
-static int FBInstant_startGameAsync(lua_State* L) {
+static int FBInstant_StartGameAsync(lua_State* L) {
 	int top = lua_gettop(L);
 
 	luaL_checklistener(L, 1, startGameAsyncListener);
 	FBInstant_PlatformStartGameAsync((OnGameStartedCallback)FBInstant_OnGameStarted);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+// ===============================================
+// SWITCH GAME
+// ===============================================
+lua_Listener switchGameAsyncListener;
+
+static void FBInstant_OnGameSwitched(const int success) {
+	lua_State* L = switchGameAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, switchGameAsyncListener);
+	lua_pushboolean(L, success);
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_SwitchGameAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* appId = luaL_checkstring(L, 1);
+	const char* dataJson;
+	if (lua_isstring(L, 2)) {
+		dataJson = luaL_checkstring(L, 2);
+	}
+	else {
+		dataJson = "";
+	}
+	luaL_checklistener(L, 3, switchGameAsyncListener);
+	FBInstant_PlatformSwitchGameAsync((OnGameSwitchedCallback)FBInstant_OnGameSwitched);
 
 	assert(top == lua_gettop(L));
 	return 0;
@@ -1576,7 +1614,8 @@ static const luaL_reg Module_methods[] = {
 	// lifecycle functions
 	{"initialize", FBInstant_InitializeAsync},
 	{"set_loading_progress", FBInstant_SetLoadingProgress},
-	{"start_game", FBInstant_startGameAsync},
+	{"start_game", FBInstant_StartGameAsync},
+	{"switch_game", FBInstant_SwitchGameAsync},
 	{"update", FBInstant_UpdateAsync},
 	{"on_pause", FBInstant_OnPause},
 	{"quit", FBInstant_Quit},

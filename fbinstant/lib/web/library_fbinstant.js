@@ -251,6 +251,22 @@ var FBInstantLibrary = {
 
 
     // =====================================
+    // SwitchGameAsync
+    // =====================================
+    FBInstant_PlatformSwitchGameAsync: function(cappId, cdataJson, callback) {
+        var appId = Pointer_stringify(cappId);
+        var dataJson = Pointer_stringify(cdataJson);
+        var data = dataJson != "" ? JSON.parse(dataJson) : null;
+        FBInstant.switchGameAsync(appId, data).then(function() {
+            Runtime.dynCall("vi", callback, [1]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformSwitchGameAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
+        });
+    },
+
+
+    // =====================================
     // OnPause
     // =====================================
     FBInstant_PlatformOnPause: function(callback) {

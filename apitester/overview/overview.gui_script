@@ -85,6 +85,11 @@ function on_input(self, action_id, action)
 	dirtylarry.button("quit", action_id, action, function()
 		fbinstant.quit()
 	end)
+	dirtylarry.button("switch_game", action_id, action, function()
+		fbinstant.switch_game("130801227620858", "", function(self, success)
+			
+		end)
+	end)
 end
 
 function on_reload(self)

@@ -12,6 +12,7 @@ typedef void (*OnPlayerStatsCallback)(const char* stats);
 typedef void (*OnPlayerStatsSetCallback)(const int success);
 typedef void (*OnPlayerStatsIncrementedCallback)(const char* stats);
 typedef void (*OnGameStartedCallback)(const int success);
+typedef void (*OnGameSwitchedCallback)(const int success);
 typedef void (*OnUpdatedCallback)(const int success);
 typedef void (*OnShareCallback)(const int success);
 typedef void (*OnPauseCallback)();
@@ -47,6 +48,7 @@ typedef void (*OnPurchasesCallback)(const char* purchases);
 extern "C" {
     void FBInstant_PlatformInitializeAsync(OnInitializedCallback callback);
     void FBInstant_PlatformStartGameAsync(OnGameStartedCallback callback);
+    void FBInstant_PlatformSwitchGameAsync(OnGameSwitchedCallback callback);
     void FBInstant_PlatformUpdateAsync(OnUpdatedCallback callback, const char* json);
     void FBInstant_PlatformQuit();
     void FBInstant_PlatformOnPause(OnPauseCallback callback);

@@ -100,6 +100,20 @@ The ```callback``` function is expected to accept the following values:
 * ```success``` (boolean) - Indicating if the operation was successful or not
 
 
+### fbinstant.switch_game(app_id, data, callback)
+Request that the client switch to a different Instant Game. The API will reject if the switch fails - else, the client will load the new game
+
+**PARAMETERS**
+* ```app_id``` (string) - The Application ID of the Instant Game to switch to.
+* ```data``` (string) - Optional JSON encoded object containing entrypoint data for the game being switched to.
+* ```callback``` (function) - Function to call if the switch fails
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```success``` (boolean) - Indicating if the operation was successful or not
+
+
 ### fbinstant.update(data, callback)
 Update the game session.
 

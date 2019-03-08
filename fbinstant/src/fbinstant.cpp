@@ -546,7 +546,13 @@ static int FBInstant_ChooseContextAsync(lua_State* L) {
 		FBInstant_PlatformChooseContextAsync((OnContextCallback)FBInstant_OnContextChosen, "");
 	}
 	else {
-		const char* optionsJson = luaL_checkstring(L, 1);
+		const char* optionsJson;
+		if (lua_isstring(L, 1)) {
+			optionsJson = luaL_checkstring(L, 1);
+		}
+		else {
+			optionsJson = "";
+		}
 		luaL_checklistener(L, 2, chooseContextAsyncListener);
 		FBInstant_PlatformChooseContextAsync((OnContextCallback)FBInstant_OnContextChosen, optionsJson);
 	}
@@ -1312,7 +1318,6 @@ static int FBInstant_SetLeaderboardScoreAsync(lua_State* L) {
 	else {
 		extraData = "";
 	}
-	//const char* extraData = luaL_checkstring(L, 3);
 	luaL_checklistener(L, 4, setLeaderboardScoreAsyncListener);
 	FBInstant_PlatformSetLeaderboardScoreAsync((OnLeaderboardScoreSetCallback)FBInstant_OnLeaderboardScoreSet, name, score, extraData);
 

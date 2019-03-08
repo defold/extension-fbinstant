@@ -77,6 +77,7 @@ extern "C" {
     void FBInstant_PlatformSubscribeBotAsync(OnSubscribeBotCallback callback);
 
     char* FBInstant_PlatformGetPlatform();
+    char* FBInstant_PlatformGetLocale();
     char* FBInstant_PlatformGetSupportedAPIs();
     char* FBInstant_PlatformGetSDKVersion();
     void FBInstant_PlatformCanCreateShortcutAsync(OnCanCreateShortcutCallback callback);

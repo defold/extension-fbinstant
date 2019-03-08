@@ -118,6 +118,11 @@ function fbinstant.get_platform()
 	return "WEB"
 end
 
+function fbinstant.get_locale()
+	print("get_locale")
+	return sys.get_sys_info().device_language
+end
+
 function fbinstant.get_supported_apis()
 	print("get_supported_apis")
 	return rxijson.encode({

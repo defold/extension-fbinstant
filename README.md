@@ -272,6 +272,7 @@ The ```callback``` function is expected to accept the following values:
 * ```self``` (userdata) - Script self reference
 * ```success``` (boolean) - Indicating if the operation was successful or not
 
+
 ### fbinstant.subscribe_bot(callback)
 Prompts the player to subscribe to the chat bot. Player will only be able to see this bot subscription dialog once for a specific game.
 
@@ -388,6 +389,14 @@ Gets the active platform the game is running on.
 **RETURN**
 * ```platform``` (string) - The current platform one of "IOS" or "ANDROID" or "WEB" or "MOBILE_WEB".
 
+
+### fbinstant.get_locale()
+The current locale. See https://origincache.facebook.com/developers/resources/?id=FacebookLocales.xml for a complete list of supported locale values. Use this to determine what languages the current game should be localized with. The value will not be accurate until FBInstant.startGameAsync() resolves.
+
+**RETURN**
+* ```locale``` (string) - The locale
+
+
 ### fbinstant.get_supported_apis()
 Gets a list of supported apis by the current platform.
 
@@ -410,6 +419,7 @@ Gets the current SDK version. Can be used as a sanity check.
 **RETURN**
 * ```version``` (string) - Example "6.1"
 
+
 ### fbinstant.can_create_shortcut(callback)
 
 Returns whether or not the user is eligible to have shortcut creation requested.
@@ -425,6 +435,7 @@ The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
 * ```success``` (boolean) - Indicating if the operation was successful or not
+
 
 ### fbinstant.create_shortcut(callback)
 Prompts the user to create a shortcut to the game if they are eligible to. For now, only for adding a shortcut to the Android home screen. Can only be called once per session.

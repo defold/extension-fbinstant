@@ -480,6 +480,21 @@ var FBInstantLibrary = {
         }
     },
 
+
+    // =====================================
+    // GetLocale
+    // =====================================
+    FBInstant_PlatformGetLocale: function() {
+        var locale = FBInstant.getLocale();
+        if (locale) {
+            return Utils.manageString("locale", locale);
+        }
+        else {
+            return null;
+        }
+    },
+
+
     // =====================================
     // GetSupportedAPIs
     // =====================================

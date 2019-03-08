@@ -298,7 +298,7 @@ Get the current context.
 Opens a context selection dialog for the player.
 
 **PARAMETERS**
-* ```options``` (string) - OPTIONAL! JSON encoded object containing options (refer to the documentation for chooseAsync)
+* ```options``` (string|nil) - OPTIONAL! JSON encoded object containing options (refer to the documentation for chooseAsync)
 * ```callback``` (function) - Function to call when a context has been selected. It is now possible to call get_context() to get the context.
 
 The ```callback``` function is expected to accept the following values:

@@ -102,7 +102,7 @@ var FBInstantLibrary = {
         FBInstant.initializeAsync().then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformInitializeAsync - error", err);
+            console.log("FBInstant_PlatformInitializeAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -117,7 +117,7 @@ var FBInstantLibrary = {
         FBInstant.updateAsync(payload).then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformUpdateAsync - error", err);
+            console.log("FBInstant_PlatformUpdateAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -131,7 +131,7 @@ var FBInstantLibrary = {
         FBInstant.player.getSignedPlayerInfoAsync(payload).then(function(result) {
             Utils.dynCall(callback, [result.getSignature()]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformGetSignedPlayerInfoAsync - error", err);
+            console.log("FBInstant_PlatformGetSignedPlayerInfoAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -146,7 +146,7 @@ var FBInstantLibrary = {
         FBInstant.player.getDataAsync(keys).then(function(data) {
             Utils.dynCall(callback, [JSON.stringify(data)]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformGetDataAsync - error", err);
+            console.log("FBInstant_PlatformGetDataAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -156,7 +156,7 @@ var FBInstantLibrary = {
         FBInstant.player.setDataAsync(data).then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformSetPlayerDataAsync - error", err);
+            console.log("FBInstant_PlatformSetPlayerDataAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -164,7 +164,7 @@ var FBInstantLibrary = {
         FBInstant.player.flushDataAsync().then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformFlushPlayerDataAsync - error", err);
+            console.log("FBInstant_PlatformFlushPlayerDataAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -179,7 +179,7 @@ var FBInstantLibrary = {
         FBInstant.player.getStatsAsync(keys).then(function(stats) {
             Utils.dynCall(callback, [JSON.stringify(stats)]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformGetPlayerStatsAsync - error", err);
+            console.log("FBInstant_PlatformGetPlayerStatsAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -189,7 +189,7 @@ var FBInstantLibrary = {
         FBInstant.player.setStatsAsync(stats).then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformSetPlayerStatsAsync - error", err);
+            console.log("FBInstant_PlatformSetPlayerStatsAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -199,7 +199,7 @@ var FBInstantLibrary = {
         FBInstant.player.incrementStatsAsync(increments).then(function(stats) {
             Utils.dynCall(callback, [JSON.stringify(stats)]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformIncrementPlayerStatsAsync - error", err);
+            console.log("FBInstant_PlatformIncrementPlayerStatsAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -221,7 +221,7 @@ var FBInstantLibrary = {
             }
             Utils.dynCall(callback, [JSON.stringify(players)]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformGetConnectedPlayersAsync - error", err);
+            console.log("FBInstant_PlatformGetConnectedPlayersAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -244,7 +244,7 @@ var FBInstantLibrary = {
         FBInstant.startGameAsync().then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformStartGameAsync - error", err);
+            console.log("FBInstant_PlatformStartGameAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -260,7 +260,7 @@ var FBInstantLibrary = {
         FBInstant.switchGameAsync(appId, data).then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformSwitchGameAsync - error", err);
+            console.log("FBInstant_PlatformSwitchGameAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -335,7 +335,7 @@ var FBInstantLibrary = {
         FBInstant.player.canSubscribeBotAsync().then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformCanSubscribeBotAsync - error", err);
+            console.log("FBInstant_PlatformCanSubscribeBotAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -348,7 +348,7 @@ var FBInstantLibrary = {
         FBInstant.player.subscribeBotAsync().then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformSubscribeBotAsync - error", err);
+            console.log("FBInstant_PlatformSubscribeBotAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -375,7 +375,7 @@ var FBInstantLibrary = {
         FBInstant.getEntryPointAsync().then(function(entrypoint) {
             Utils.dynCall(callback, [entrypoint]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformGetEntryPoint - error", err);
+            console.log("FBInstant_PlatformGetEntryPoint - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -387,13 +387,12 @@ var FBInstantLibrary = {
     FBInstant_PlatformChooseContextAsync: function(callback, coptionsJson) {
         var optionsJson = Pointer_stringify(coptionsJson);
         var options = optionsJson != "" ? JSON.parse(optionsJson) : null;
-        console.log("FBInstant_PlatformChooseContextAsync", optionsJson, options);
         FBInstant.context.chooseAsync(options).then(function() {
             var ctxId = FBInstant.context.getID();
             var ctxType = FBInstant.context.getType();
             Utils.dynCall(callback, [ctxId, ctxType]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformChooseContextAsync - error", err);
+            console.log("FBInstant_PlatformChooseContextAsync - error: " + err.message);
             Runtime.dynCall("vii", callback, [0,0]);
         });
     },
@@ -409,7 +408,7 @@ var FBInstantLibrary = {
             var ctxType = FBInstant.context.getType();
             Utils.dynCall(callback, [ctxId, ctxType]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformCreateContextAsync - error", err);
+            console.log("FBInstant_PlatformCreateContextAsync - error: " + err.message);
             Runtime.dynCall("vii", callback, [0,0]);
         });
     },
@@ -425,7 +424,7 @@ var FBInstantLibrary = {
             var ctxType = FBInstant.context.getType();
             Utils.dynCall(callback, [ctxId, ctxType]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformSwitchContextAsync - error", err);
+            console.log("FBInstant_PlatformSwitchContextAsync - error: " + err.message);
             Runtime.dynCall("vii", callback, [0,0]);
         });
     },
@@ -459,7 +458,7 @@ var FBInstantLibrary = {
             Context.setPlayers(players);
             Runtime.dynCall("vi", callback, [ players.length ]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformGetPlayersInContextAsync - error", err);
+            console.log("FBInstant_PlatformGetPlayersInContextAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [ 0 ]);
         });
     },
@@ -551,7 +550,7 @@ var FBInstantLibrary = {
         FBInstant.canCreateShortcutAsync().then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformCanCreateShortcutAsync - error", err);
+            console.log("FBInstant_PlatformCanCreateShortcutAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -564,7 +563,7 @@ var FBInstantLibrary = {
         FBInstant.createShortcutAsync().then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformCreateShortcutAsync - error", err);
+            console.log("FBInstant_PlatformCreateShortcutAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -579,7 +578,7 @@ var FBInstantLibrary = {
         var parameters = JSON.parse(parametersJson);
         var logged = FBInstant.logEvent(eventName, valueToSum, parameters);
         if (logged != null) {
-            console.log("FBInstant_PlatformLogEvent - error", logged.code, logged.message);
+            console.log("FBInstant_PlatformLogEvent - error: " + String(logged.code) + " " + String(logged.message));
         }
     },
 
@@ -603,7 +602,7 @@ var FBInstantLibrary = {
         FBInstant.shareAsync(payload).then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformShareAsync - error", err);
+            console.log("FBInstant_PlatformShareAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -618,7 +617,7 @@ var FBInstantLibrary = {
             var storeId = store.getID();
             Utils.dynCall(callback, [storeId]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformCreateStoreAsync - error", err);
+            console.log("FBInstant_PlatformCreateStoreAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -635,7 +634,7 @@ var FBInstantLibrary = {
                 store.endAsync().then(function() {
                     Runtime.dynCall("vi", callback, [1]);
                 }).catch(function(err) {
-                    console.log("FBInstant_PlatformCloseStoreAsync - error", err);
+                    console.log("FBInstant_PlatformCloseStoreAsync - error: " + err.message);
                     Runtime.dynCall("vi", callback, [0]);
                 });
             }
@@ -644,7 +643,7 @@ var FBInstantLibrary = {
                 Runtime.dynCall("vi", callback, [0]);
             }
         }).catch(function(err) {
-            console.log("FBInstant_PlatformCloseStoreAsync - error", err);
+            console.log("FBInstant_PlatformCloseStoreAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -663,7 +662,7 @@ var FBInstantLibrary = {
                 store.getDataAsync(keys).then(function(data) {
                     Utils.dynCall(callback, [JSON.stringify(data)]);
                 }).catch(function(err) {
-                    console.log("FBInstant_PlatformGetStoreDataAsync - getDataAsync - error", err);
+                    console.log("FBInstant_PlatformGetStoreDataAsync - getDataAsync - error: " + err.message);
                     Runtime.dynCall("vi", callback, [0]);
                 });
             }
@@ -672,7 +671,7 @@ var FBInstantLibrary = {
                 Runtime.dynCall("vi", callback, [0]);
             }
         }).catch(function(err) {
-            console.log("FBInstant_PlatformGetStoreDataAsync - error", err);
+            console.log("FBInstant_PlatformGetStoreDataAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -691,7 +690,7 @@ var FBInstantLibrary = {
                 store.incrementDataAsync(increments).then(function(data) {
                     Utils.dynCall(callback, [data]);
                 }).catch(function(err) {
-                    console.log("FBInstant_PlatformIncrementStoreDataAsync - incrementDataAsync - error", err);
+                    console.log("FBInstant_PlatformIncrementStoreDataAsync - incrementDataAsync - error: " + err.message);
                     Runtime.dynCall("vi", callback, [0]);
                 });
             }
@@ -700,7 +699,7 @@ var FBInstantLibrary = {
                 Runtime.dynCall("vi", callback, [0]);
             }
         }).catch(function(err) {
-            console.log("FBInstant_PlatformIncrementStoreDataAsync - error", err);
+            console.log("FBInstant_PlatformIncrementStoreDataAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -722,7 +721,7 @@ var FBInstantLibrary = {
             var storesJson = JSON.stringify(results);
             Utils.dynCall(callback, [storesJson]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformGetStoresAsync - error", err);
+            console.log("FBInstant_PlatformGetStoresAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -741,7 +740,7 @@ var FBInstantLibrary = {
                 store.saveDataAsync(data).then(function() {
                     Runtime.dynCall("vi", callback, [1]);
                 }).catch(function(err) {
-                    console.log("FBInstant_PlatformSaveStoreDataAsync - saveDataAsync - error", err);
+                    console.log("FBInstant_PlatformSaveStoreDataAsync - saveDataAsync - error: " + err.message);
                     Runtime.dynCall("vi", callback, [0]);
                 });
             }
@@ -750,7 +749,7 @@ var FBInstantLibrary = {
                 Runtime.dynCall("vi", callback, [0]);
             }
         }).catch(function(err) {
-            console.log("FBInstant_PlatformSaveStoreDataAsync - error", err);
+            console.log("FBInstant_PlatformSaveStoreDataAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -796,7 +795,7 @@ var FBInstantLibrary = {
             Ads.insert(placementId, adInstance);
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformLoadRewardedVideoAsync - error", err);
+            console.log("FBInstant_PlatformLoadRewardedVideoAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -807,6 +806,7 @@ var FBInstantLibrary = {
             ad.showAsync().then(function() {
                 Runtime.dynCall("vi", callback, [1]);
             }).catch(function(err) {
+                console.log("FBInstant_PlatformShowRewardedVideoAsync - error: " + err.message);
                 Runtime.dynCall("vi", callback, [0]);
             });
         }
@@ -826,7 +826,7 @@ var FBInstantLibrary = {
         }).then(function(count) {
             Utils.dynCall(callback, [contextId, count]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformGetLeaderboardAsync - error", err);
+            console.log("FBInstant_PlatformGetLeaderboardAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -838,7 +838,7 @@ var FBInstantLibrary = {
         }).then(function(entry) {
             Utils.dynCall(callback, [entry.getScore(), entry.getExtraData()]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformSetLeaderboardScoreAsync - error", err);
+            console.log("FBInstant_PlatformSetLeaderboardScoreAsync - error: " + err.message);
             Runtime.dynCall("vii", callback, [0,0]);
         });
     },
@@ -849,7 +849,7 @@ var FBInstantLibrary = {
         }).then(function(entry) {
             Utils.dynCall(callback, [entry.getRank(), entry.getScore(), entry.getExtraData()]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformGetLeaderboardScoreAsync - error", err);
+            console.log("FBInstant_PlatformGetLeaderboardScoreAsync - error: " + err.message);
             Runtime.dynCall("viii", callback, [0,0,0]);
         });
     },
@@ -874,7 +874,7 @@ var FBInstantLibrary = {
             }
             Utils.dynCall(callback, [JSON.stringify(entriesData)]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformGetLeaderboardEntriesAsync - error", err);
+            console.log("FBInstant_PlatformGetLeaderboardEntriesAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -909,7 +909,7 @@ var FBInstantLibrary = {
             }
             Utils.dynCall(callback, [JSON.stringify(products)]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformGetProductCatalogAsync - error", err);
+            console.log("FBInstant_PlatformGetProductCatalogAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -928,7 +928,7 @@ var FBInstantLibrary = {
             var result = Utils.convertPurchase(purchase);
             Utils.dynCall(callback, [JSON.stringify(result)]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformPurchaseAsync - error", err);
+            console.log("FBInstant_PlatformPurchaseAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -948,7 +948,7 @@ var FBInstantLibrary = {
             }
             Utils.dynCall(callback, [JSON.stringify(result)]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformPurchaseAsync - error", err);
+            console.log("FBInstant_PlatformPurchaseAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },
@@ -963,7 +963,7 @@ var FBInstantLibrary = {
         FBInstant.payments.consumePurchaseAsync(purchaseToken).then(function() {
             Runtime.dynCall("vi", callback, [1]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformConsumePurchaseAsync - error", err);
+            console.log("FBInstant_PlatformConsumePurchaseAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
         });
     },

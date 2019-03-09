@@ -1140,18 +1140,57 @@ static int FBInstant_IncrementStoreDataAsync(lua_State* L) {
 
 
 // ===============================================
+// GET INTERSTITIAL AD
+// ===============================================
+lua_Listener getInterstitialAdAsyncListener;
+
+static void FBInstant_OnInterstitialAd(const char* id, const char* error) {
+	dmLogInfo("FBInstant_OnInterstitialAd");
+	dmLogInfo("FBInstant_OnInterstitialAd %s %s", id, error);
+	lua_State* L = getInterstitialAdAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, getInterstitialAdAsyncListener);
+	if (id) { lua_pushstring(L, id); } else { lua_pushnil(L); }
+	if (error) { lua_pushstring(L, error); } else { lua_pushnil(L); }
+
+	int ret = lua_pcall(L, 3, 0, 0);
+	if (ret != 0) {
+		dmLogInfo("FBInstant_OnInterstitialAd error invoking callback");
+		lua_pop(L, 1);
+	}
+
+	dmLogInfo("FBInstant_OnInterstitialAd done");
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_GetInterstitialAdAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* placementId = luaL_checkstring(L, 1);
+	luaL_checklistener(L, 2, getInterstitialAdAsyncListener);
+	FBInstant_PlatformGetInterstitialAdAsync((OnInterstitialAdCallback)FBInstant_OnInterstitialAd, placementId);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+// ===============================================
 // LOAD INTERSTITIAL AD
 // ===============================================
 lua_Listener loadInterstitialAdAsyncListener;
 
-static void FBInstant_OnInterstitialAdLoaded(const int success) {
+static void FBInstant_OnInterstitialAdLoaded(const int success, const char* error) {
+	dmLogInfo("FBInstant_OnInterstitialAdLoaded");
 	lua_State* L = loadInterstitialAdAsyncListener.m_L;
 	int top = lua_gettop(L);
 
 	lua_pushlistener(L, loadInterstitialAdAsyncListener);
 	lua_pushboolean(L, success);
+	if (error) { lua_pushstring(L, error); } else { lua_pushnil(L); }
 
-	int ret = lua_pcall(L, 2, 0, 0);
+	int ret = lua_pcall(L, 3, 0, 0);
 	if (ret != 0) {
 		lua_pop(L, 1);
 	}
@@ -1162,15 +1201,13 @@ static void FBInstant_OnInterstitialAdLoaded(const int success) {
 static int FBInstant_LoadInterstitialAdAsync(lua_State* L) {
 	int top = lua_gettop(L);
 
-	const char* placementId = luaL_checkstring(L, 1);
+	const char* adId = luaL_checkstring(L, 1);
 	luaL_checklistener(L, 2, loadInterstitialAdAsyncListener);
-	FBInstant_PlatformLoadInterstitialAdAsync((OnInterstitialAdLoadedCallback)FBInstant_OnInterstitialAdLoaded, placementId);
+	FBInstant_PlatformLoadInterstitialAdAsync((OnInterstitialAdLoadedCallback)FBInstant_OnInterstitialAdLoaded, adId);
 
 	assert(top == lua_gettop(L));
 	return 0;
 }
-
-
 
 
 // ===============================================
@@ -1178,14 +1215,16 @@ static int FBInstant_LoadInterstitialAdAsync(lua_State* L) {
 // ===============================================
 lua_Listener showInterstitialAdAsyncListener;
 
-static void FBInstant_OnInterstitialAdShown(const int success) {
+static void FBInstant_OnInterstitialAdShown(const int success, const char* error) {
+	dmLogInfo("FBInstant_OnInterstitialAdShown");
 	lua_State* L = showInterstitialAdAsyncListener.m_L;
 	int top = lua_gettop(L);
 
 	lua_pushlistener(L, showInterstitialAdAsyncListener);
 	lua_pushboolean(L, success);
+	if (error) { lua_pushstring(L, error); } else { lua_pushnil(L); }
 
-	int ret = lua_pcall(L, 2, 0, 0);
+	int ret = lua_pcall(L, 3, 0, 0);
 	if (ret != 0) {
 		lua_pop(L, 1);
 	}
@@ -1196,9 +1235,9 @@ static void FBInstant_OnInterstitialAdShown(const int success) {
 static int FBInstant_ShowInterstitialAdAsync(lua_State* L) {
 	int top = lua_gettop(L);
 
-	const char* placementId = luaL_checkstring(L, 1);
+	const char* adId = luaL_checkstring(L, 1);
 	luaL_checklistener(L, 2, showInterstitialAdAsyncListener);
-	FBInstant_PlatformShowInterstitialAdAsync((OnInterstitialAdShownCallback)FBInstant_OnInterstitialAdShown, placementId);
+	FBInstant_PlatformShowInterstitialAdAsync((OnInterstitialAdShownCallback)FBInstant_OnInterstitialAdShown, adId);
 
 	assert(top == lua_gettop(L));
 	return 0;
@@ -1207,20 +1246,57 @@ static int FBInstant_ShowInterstitialAdAsync(lua_State* L) {
 
 
 
+// ===============================================
+// GET REWARDED VIDEO
+// ===============================================
+lua_Listener getRewardedVideoAsyncListener;
+
+static void FBInstant_OnRewardedVideo(const char* id, const char* error) {
+	dmLogInfo("FBInstant_OnRewardedVideo");
+	dmLogInfo("FBInstant_OnRewardedVideo %s %s", id, error);
+	lua_State* L = getRewardedVideoAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, getRewardedVideoAsyncListener);
+	if (id) { lua_pushstring(L, id); } else { lua_pushnil(L); }
+	if (error) { lua_pushstring(L, error); } else { lua_pushnil(L); }
+
+	int ret = lua_pcall(L, 3, 0, 0);
+	if (ret != 0) {
+		dmLogInfo("FBInstant_OnRewardedVideo error invoking callback");
+		lua_pop(L, 1);
+	}
+
+	dmLogInfo("FBInstant_OnRewardedVideo done");
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_GetRewardedVideoAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* placementId = luaL_checkstring(L, 1);
+	luaL_checklistener(L, 2, getRewardedVideoAsyncListener);
+	FBInstant_PlatformGetRewardedVideoAsync((OnRewardedVideoCallback)FBInstant_OnRewardedVideo, placementId);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
 
 // ===============================================
 // LOAD REWARDED VIDEO
 // ===============================================
 lua_Listener loadRewardedVideoAsyncListener;
 
-static void FBInstant_OnRewardedVideoLoaded(const int success) {
+static void FBInstant_OnRewardedVideoLoaded(const int success, const char* error) {
 	lua_State* L = loadRewardedVideoAsyncListener.m_L;
 	int top = lua_gettop(L);
 
 	lua_pushlistener(L, loadRewardedVideoAsyncListener);
 	lua_pushboolean(L, success);
+	if (error) { lua_pushstring(L, error); } else { lua_pushnil(L); }
 
-	int ret = lua_pcall(L, 2, 0, 0);
+	int ret = lua_pcall(L, 3, 0, 0);
 	if (ret != 0) {
 		lua_pop(L, 1);
 	}
@@ -1231,15 +1307,13 @@ static void FBInstant_OnRewardedVideoLoaded(const int success) {
 static int FBInstant_LoadRewardedVideoAsync(lua_State* L) {
 	int top = lua_gettop(L);
 
-	const char* placementId = luaL_checkstring(L, 1);
+	const char* adId = luaL_checkstring(L, 1);
 	luaL_checklistener(L, 2, loadRewardedVideoAsyncListener);
-	FBInstant_PlatformLoadRewardedVideoAsync((OnRewardedVideoLoadedCallback)FBInstant_OnRewardedVideoLoaded, placementId);
+	FBInstant_PlatformLoadRewardedVideoAsync((OnRewardedVideoLoadedCallback)FBInstant_OnRewardedVideoLoaded, adId);
 
 	assert(top == lua_gettop(L));
 	return 0;
 }
-
-
 
 
 // ===============================================
@@ -1247,14 +1321,15 @@ static int FBInstant_LoadRewardedVideoAsync(lua_State* L) {
 // ===============================================
 lua_Listener showRewardedVideoAsyncListener;
 
-static void FBInstant_OnRewardedVideoShown(const int success) {
+static void FBInstant_OnRewardedVideoShown(const int success, const char* error) {
 	lua_State* L = showRewardedVideoAsyncListener.m_L;
 	int top = lua_gettop(L);
 
 	lua_pushlistener(L, showRewardedVideoAsyncListener);
 	lua_pushboolean(L, success);
+	if (error) { lua_pushstring(L, error); } else { lua_pushnil(L); }
 
-	int ret = lua_pcall(L, 2, 0, 0);
+	int ret = lua_pcall(L, 3, 0, 0);
 	if (ret != 0) {
 		lua_pop(L, 1);
 	}
@@ -1265,9 +1340,9 @@ static void FBInstant_OnRewardedVideoShown(const int success) {
 static int FBInstant_ShowRewardedVideoAsync(lua_State* L) {
 	int top = lua_gettop(L);
 
-	const char* placementId = luaL_checkstring(L, 1);
+	const char* adId = luaL_checkstring(L, 1);
 	luaL_checklistener(L, 2, showRewardedVideoAsyncListener);
-	FBInstant_PlatformShowRewardedVideoAsync((OnRewardedVideoShownCallback)FBInstant_OnRewardedVideoShown, placementId);
+	FBInstant_PlatformShowRewardedVideoAsync((OnRewardedVideoShownCallback)FBInstant_OnRewardedVideoShown, adId);
 
 	assert(top == lua_gettop(L));
 	return 0;
@@ -1633,8 +1708,10 @@ static const luaL_reg Module_methods[] = {
 	{"create_shortcut", FBInstant_CreateShortcutAsync},
 
 	// ads
+	{"get_interstitial_ad", FBInstant_GetInterstitialAdAsync},
 	{"load_interstitial_ad", FBInstant_LoadInterstitialAdAsync},
 	{"show_interstitial_ad", FBInstant_ShowInterstitialAdAsync},
+	{"get_rewarded_video", FBInstant_GetRewardedVideoAsync},
 	{"load_rewarded_video", FBInstant_LoadRewardedVideoAsync},
 	{"show_rewarded_video", FBInstant_ShowRewardedVideoAsync},
 
@@ -1709,6 +1786,13 @@ static void LuaInit(lua_State* L) {
 
 	lua_setfieldstringstring(L, "STORE_ACTIVE", "ACTIVE");
 	lua_setfieldstringstring(L, "STORE_ENDED", "ENDED");
+
+	lua_setfieldstringstring(L, "ERROR_ADS_FREQUENT_LOAD", "ADS_FREQUENT_LOAD");
+	lua_setfieldstringstring(L, "ERROR_ADS_NO_FILL", "ADS_NO_FILL");
+	lua_setfieldstringstring(L, "ERROR_ADS_NOT_LOADED", "ADS_NOT_LOADED");
+	lua_setfieldstringstring(L, "ERROR_ADS_TOO_MANY_INSTANCES", "ADS_TOO_MANY_INSTANCES");
+	lua_setfieldstringstring(L, "ERROR_RATE_LIMITED", "RATE_LIMITED");
+	lua_setfieldstringstring(L, "ERROR_INVALID_PARAM", "INVALID_PARAM");
 
     lua_pop(L, 1);
     assert(top == lua_gettop(L));

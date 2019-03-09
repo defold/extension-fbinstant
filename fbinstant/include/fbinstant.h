@@ -25,8 +25,10 @@ typedef void (*OnStoresCallback)(const char* stores);
 typedef void (*OnStoreDataCallback)(const char* data);
 typedef void (*OnStoreDataSavedCallback)(const int success);
 typedef void (*OnStoreDataIncrementedCallback)(const char* data);
-typedef void (*OnInterstitialAdLoadedCallback)(const int success);
-typedef void (*OnInterstitialAdShownCallback)(const int success);
+typedef void (*OnInterstitialAdCallback)(const char* adId, const char* error);
+typedef void (*OnInterstitialAdLoadedCallback)(const int success, const char* error);
+typedef void (*OnInterstitialAdShownCallback)(const int success, const char* error);
+typedef void (*OnRewardedVideoCallback)(const char* adId, const char* error);
 typedef void (*OnRewardedVideoLoadedCallback)(const int success);
 typedef void (*OnRewardedVideoShownCallback)(const int success);
 typedef void (*OnConnectedPlayersCallback)(const char* players);
@@ -109,11 +111,13 @@ extern "C" {
     void FBInstant_PlatformSaveStoreDataAsync(OnStoreDataSavedCallback callback, const char* storeName, const char* dataJson);
     void FBInstant_PlatformIncrementStoreDataAsync(OnStoreDataIncrementedCallback callback, const char* storeName, const char* dataJson);
 
-    void FBInstant_PlatformLoadInterstitialAdAsync(OnInterstitialAdLoadedCallback callback, const char* placementId);
-    void FBInstant_PlatformShowInterstitialAdAsync(OnInterstitialAdShownCallback callback, const char* placementId);
+    void FBInstant_PlatformGetInterstitialAdAsync(OnInterstitialAdCallback callback, const char* placementId);
+    void FBInstant_PlatformLoadInterstitialAdAsync(OnInterstitialAdLoadedCallback callback, const char* adId);
+    void FBInstant_PlatformShowInterstitialAdAsync(OnInterstitialAdShownCallback callback, const char* adId);
 
-    void FBInstant_PlatformLoadRewardedVideoAsync(OnRewardedVideoLoadedCallback callback, const char* placementId);
-    void FBInstant_PlatformShowRewardedVideoAsync(OnRewardedVideoShownCallback callback, const char* placementId);
+    void FBInstant_PlatformGetRewardedVideoAsync(OnRewardedVideoCallback callback, const char* placementId);
+    void FBInstant_PlatformLoadRewardedVideoAsync(OnRewardedVideoLoadedCallback callback, const char* adId);
+    void FBInstant_PlatformShowRewardedVideoAsync(OnRewardedVideoShownCallback callback, const char* adId);
 
     void FBInstant_PlatformGetLeaderboardAsync(OnLeaderboardCallback callback, const char* name);
     void FBInstant_PlatformSetLeaderboardScoreAsync(OnLeaderboardScoreSetCallback callback, const char* name, const int score, const char* extraData);

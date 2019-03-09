@@ -42,6 +42,11 @@ fbinstant.FILTER_NEW_PLAYERS_ONL = "NEW_PLAYERS_ONLY"
 fbinstant.STORE_ACTIVE = "ACTIVE"
 fbinstant.STORE_ENDED = "ENDED"
 
+fbinstant.ERROR_INVALID_PARAM = "INVALID_PARAM"
+fbinstant.ERROR_ADS_FREQUENT_LOAD = "ADS_FREQUENT_LOAD"
+fbinstant.ERROR_ADS_NO_FILL = "ADS_NO_FILL"
+fbinstant.ERROR_ADS_NOT_LOADED = "ADS_NOT_LOADED"
+fbinstant.ERROR_ADS_TOO_MANY_INSTANCES = "ADS_TOO_MANY_INSTANCES"
 
 local player_data = {}
 
@@ -464,24 +469,115 @@ end
 --------------- ADS
 --------------------------------
 
-function fbinstant.load_interstitial_ad(placement, cb)
-	print("load_interstitial_ad")
-	cb(get_self(), true)
+local interstitial_ads = {}
+local rewarded_videos = {}
+local instance_count = 0
+local function get_ads(ads, placement)
+	ads[placement] = ads[placement] or {}
+	return ads[placement]
+end
+local function find_ad(ads, id)
+	for placement,instances in pairs(ads) do
+		for _,ad in pairs(instances) do
+			if ad.id == id then
+				return ad
+			end
+		end
+	end
+end
+local function insert_ad(ads, ad)
+	ads[#ads + 1] = ad
+end
+local function remove_ad(ads, id)
+	for i,ad in pairs(ads) do
+		if ad.id == id then
+			table.remove(ads, i)
+			break
+		end
+	end
 end
 
-function fbinstant.show_interstitial_ad(placement, cb)
-	print("show_interstitial_ad")
-	cb(get_self(), true)
+function fbinstant.get_interstitial_ad(placement, cb)
+	print("get_interstitial_ad", placement)
+	local ads = get_ads(interstitial_ads, placement)
+	if #ads == 3 then
+		cb(get_self(), nil, fbinstant.ERROR_ADS_TOO_MANY_INSTANCES)
+	else
+		instance_count = instance_count + 1
+		local ad = {
+			placement = placement,
+			id = tostring(instance_count),
+			loaded = false,
+		}
+		insert_ad(ads, ad)
+		cb(get_self(), ad.id)
+	end
+end
+function fbinstant.load_interstitial_ad(id, cb)
+	print("load_interstitial_ad", id)
+	local ad = find_ad(interstitial_ads, id)
+	if not ad then
+		cb(get_self(), false, fbinstant.ERROR_INVALID_PARAM)
+	elseif ad.loaded then
+		cb(get_self(), false, fbinstant.ERROR_INVALID_PARAM)
+	else
+		ad.loaded = true
+		cb(get_self(), true)
+	end
+end
+function fbinstant.show_interstitial_ad(id, cb)
+	print("show_interstitial_ad", id)
+	local ad = find_ad(interstitial_ads, id)
+	if not ad then
+		cb(get_self(), false, fbinstant.ERROR_INVALID_PARAM)
+	elseif not ad.loaded then
+		cb(get_self(), false, fbinstant.ERROR_ADS_NOT_LOADED)
+	else
+		remove_ad(get_ads(interstitial_ads, ad.placement), ad.id)
+		cb(get_self(), true)
+	end
 end
 
-function fbinstant.load_rewarded_video(placement, cb)
-	print("load_rewarded_video")
-	cb(get_self(), true)
-end
 
-function fbinstant.show_rewarded_video(placement, cb)
-	print("show_rewarded_video")
-	cb(get_self(), true)
+function fbinstant.get_rewarded_video(placement, cb)
+	print("get_rewarded_video", placement)
+	local ads = get_ads(rewarded_videos, placement)
+	if #ads == 3 then
+		cb(get_self(), nil, fbinstant.ERROR_ADS_TOO_MANY_INSTANCES)
+	else
+		instance_count = instance_count + 1
+		local ad = {
+			placement = placement,
+			id = tostring(instance_count),
+			loaded = false,
+		}
+		insert_ad(ads, ad)
+		cb(get_self(), ad.id)
+	end
+end
+function fbinstant.load_rewarded_video(id, cb)
+	print("load_rewarded_video", id)
+	local ad = find_ad(rewarded_videos, id)
+	if not ad then
+		cb(get_self(), false, fbinstant.ERROR_INVALID_PARAM)
+	elseif ad.loaded then
+		cb(get_self(), false, fbinstant.ERROR_INVALID_PARAM)
+	else
+		ad.loaded = true
+		cb(get_self(), true)
+	end
+end
+function fbinstant.show_rewarded_video(id, cb)
+	print("show_rewarded_video", id)
+	local ad = find_ad(rewarded_videos, id)
+	if not ad then
+		cb(get_self(), false, fbinstant.ERROR_INVALID_PARAM)
+	elseif not ad.loaded then
+		cb(get_self(), false, fbinstant.ERROR_ADS_NOT_LOADED)
+	else
+		remove_ad(get_ads(rewarded_videos, ad.placement), ad.id)
+		cb(get_self(), true)
+	end
 end
 
 

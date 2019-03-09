@@ -67,24 +67,35 @@ var FBInstantLibrary = {
 
     $Ads: {
         instances: [],
-        remove: function(placementId) {
+        instanceCount: 0,
+        remove: function(id) {
             for(var i=0; i<Ads.instances.length; i++) {
                 var instance = Ads.instances[i];
-                if (instance.placementId == placementId) {
+                if (instance.id == id) {
                     Ads.instances.splice(i, 1);
                     return instance.ad;
                 }
             }
             return null;
         },
+        find: function(id) {
+            for(var i=0; i<Ads.instances.length; i++) {
+                var instance = Ads.instances[i];
+                if (instance.id == id) {
+                    return instance.ad;
+                }
+            }
+            return null;
+        },
         insert: function(placementId, ad) {
-            console.log("Ads.insert()");
-            console.log("Ads.insert() " + placementId.toString() + " " + ad.toString());
+            Ads.instanceCount = Ads.instanceCount + 1;
+            var id = Ads.instanceCount.toString();
             Ads.instances.push({
                 placementId: placementId,
                 ad: ad,
+                id: id,
             });
-            console.log("Ads.insert() done");
+            return id;
         }
     },
 
@@ -754,69 +765,100 @@ var FBInstantLibrary = {
         });
     },
 
-    FBInstant_PlatformLoadInterstitialAdAsync: function(callback, cplacementId) {
+    // =====================================
+    // Interstitial Ads
+    // =====================================
+    FBInstant_PlatformGetInterstitialAdAsync: function(callback, cplacementId) {
         var placementId = Pointer_stringify(cplacementId);
-        var adInstance;
         FBInstant.getInterstitialAdAsync(placementId).then(function(interstitial) {
-            adInstance = interstitial;
-            return interstitial.loadAsync();
-        }).then(function() {
-            Ads.insert(placementId, adInstance);
-            Runtime.dynCall("vi", callback, [1]);
+            var id = Ads.insert(placementId, interstitial);
+            Utils.dynCall(callback, [id, 0]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformLoadInterstitialAdAsync - error", err);
-            Runtime.dynCall("vi", callback, [0]);
+            console.log("FBInstant_PlatformGetInterstitialAdAsync - error: " + err.message);
+            Utils.dynCall(callback, [1, err.code]);
         });
     },
-    FBInstant_PlatformShowInterstitialAdAsync: function(callback, cplacementId) {
-        var placementId = Pointer_stringify(cplacementId);
-        var ad = Ads.remove(placementId);
-        if (ad) {
-            ad.showAsync().then(function() {
-                Runtime.dynCall("vi", callback, [1]);
-            }).catch(function(err) {
-                Runtime.dynCall("vi", callback, [0]);
-            });
+    FBInstant_PlatformLoadInterstitialAdAsync: function(callback, cid) {
+        var id = Pointer_stringify(cid);
+        var adInstance = Ads.find(id);
+        if (!adInstance) {
+            console.log("FBInstant_PlatformLoadInterstitialAdAsync - unable to find ad with id: " + id);
+            Utils.dynCall(callback, [1, "INVALID_PARAM"]);
+            return;
         }
-        else {
-            console.log("FBInstant_PlatformShowInterstitialAdAsync - unable to find ad. Did you load it?");
-            Runtime.dynCall("vi", callback, [0]);
+        adInstance.loadAsync().then(function() {
+            Runtime.dynCall("vii", callback, [1, 0]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformLoadInterstitialAdAsync - error: " + err.message);
+            Utils.dynCall(callback, [0, err.code]);
+        });
+    },
+    FBInstant_PlatformShowInterstitialAdAsync: function(callback, cid) {
+        var id = Pointer_stringify(cid);
+        var adInstance = Ads.remove(id);
+        if (!adInstance) {
+            console.log("FBInstant_PlatformShowInterstitialAdAsync - unable to find ad with id: " + id);
+            Utils.dynCall(callback, [1, "INVALID_PARAM"]);
+            return;
         }
+        adInstance.showAsync().then(function() {
+            Runtime.dynCall("vii", callback, [1, 0]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformShowInterstitialAdAsync - error: " + err.message);
+            Utils.dynCall(callback, [0, err.code]);
+        });
     },
 
 
-    FBInstant_PlatformLoadRewardedVideoAsync: function(callback, cplacementId) {
+
+    // =====================================
+    // Rewarded Ads
+    // =====================================
+    FBInstant_PlatformGetRewardedVideoAsync: function(callback, cplacementId) {
         var placementId = Pointer_stringify(cplacementId);
-        var adInstance;
-        FBInstant.getRewardedVideoAsync(placementId).then(function(rewardedVideo) {
-            adInstance = rewardedVideo;
-            return rewardedVideo.loadAsync();
-        }).then(function() {
-            Ads.insert(placementId, adInstance);
-            Runtime.dynCall("vi", callback, [1]);
+        FBInstant.getRewardedVideoAsync(placementId).then(function(rewarded) {
+            var id = Ads.insert(placementId, rewarded);
+            Utils.dynCall(callback, [id, 0]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformGetRewardedVideoAsync - error: " + err.message);
+            Utils.dynCall(callback, [1, err.code]);
+        });
+    },
+    FBInstant_PlatformLoadRewardedVideoAsync: function(callback, cid) {
+        var id = Pointer_stringify(cid);
+        var adInstance = Ads.find(id);
+        if (!adInstance) {
+            console.log("FBInstant_PlatformLoadRewardedVideoAsync - unable to find ad with id: " + id);
+            Utils.dynCall(callback, [1, "INVALID_PARAM"]);
+            return;
+        }
+        adInstance.loadAsync().then(function() {
+            Runtime.dynCall("vii", callback, [1, 0]);
         }).catch(function(err) {
             console.log("FBInstant_PlatformLoadRewardedVideoAsync - error: " + err.message);
-            Runtime.dynCall("vi", callback, [0]);
+            Utils.dynCall(callback, [0, err.code]);
         });
     },
-    FBInstant_PlatformShowRewardedVideoAsync: function(callback, cplacementId) {
-        var placementId = Pointer_stringify(cplacementId);
-        var ad = Ads.remove(placementId);
-        if (ad) {
-            ad.showAsync().then(function() {
-                Runtime.dynCall("vi", callback, [1]);
-            }).catch(function(err) {
-                console.log("FBInstant_PlatformShowRewardedVideoAsync - error: " + err.message);
-                Runtime.dynCall("vi", callback, [0]);
-            });
+    FBInstant_PlatformShowRewardedVideoAsync: function(callback, cid) {
+        var id = Pointer_stringify(cid);
+        var adInstance = Ads.remove(id);
+        if (!adInstance) {
+            console.log("FBInstant_PlatformShowRewardedVideoAsync - unable to find ad with id: " + id);
+            Utils.dynCall(callback, [1, "INVALID_PARAM"]);
+            return;
         }
-        else {
-            console.log("FBInstant_PlatformShowRewardedVideoAsync - unable to find video. Did you load it?");
-            Runtime.dynCall("vi", callback, [0]);
-        }
+        adInstance.showAsync().then(function() {
+            Runtime.dynCall("vii", callback, [1, 0]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformShowRewardedVideoAsync - error: " + err.message);
+            Utils.dynCall(callback, [0, err.code]);
+        });
     },
 
 
+    // =====================================
+    // Leaderboard
+    // =====================================
     FBInstant_PlatformGetLeaderboardAsync: function(callback, cname) {
         var name = Pointer_stringify(cname);
         var contextId;

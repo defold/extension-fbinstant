@@ -496,34 +496,56 @@ Log an app event with FB Analytics.
 
 ## Ads functions
 
-### fbinstant.load_interstitial_ad(placement, callback)
-Preload an interstitial ad.
+Displaying an ad is a three step process:
+
+1. Creating an ad instance for a placement (using a placement id)
+2. Preloading the ad instance (using the ad id returned from #1)
+3. Showing the ad instance (using the ad id returned from #1)
+
+### fbinstant.get_interstitial_ad(placement, callback)
+Get an interstitial ad instance.
 
 **PARAMETERS**
 * ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
+* ```callback``` (function) - Function to call when the interstitial ad has been created
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```ad_id``` (string) - Id of the ad instance
+* ```error``` (string) - Error code if something went wrong
+
+
+### fbinstant.load_interstitial_ad(ad_id, callback)
+Preload an interstitial ad.
+
+**PARAMETERS**
+* ```ad_id``` (string) - Id of the ad instance to preload
 * ```callback``` (function) - Function to call when the interstitial ad has loaded
 
 The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
 * ```success``` (boolean) - Indicating if the operation was successful or not
+* ```error``` (string) - Error code if something went wrong
 
 
-### fbinstant.show_interstitial_ad(placement, callback)
+### fbinstant.show_interstitial_ad(ad_id, callback)
 Present an interstitial ad.
 
 **PARAMETERS**
-* ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
+* ```ad_id``` (string) - Id of the ad instance to show
 * ```callback``` (function) - Function to call when user finished watching the ad
 
 The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
 * ```success``` (boolean) - Indicating if the operation was successful or not
+* ```error``` (string) - Error code if something went wrong
 
 
-### fbinstant.load_rewarded_video(placement, callback)
-Preload a rewarded video.
+### fbinstant.get_rewarded_video(placement, callback)
+Get a rewarded video instance.
 
 **PARAMETERS**
 * ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
@@ -532,21 +554,36 @@ Preload a rewarded video.
 The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
+* ```ad_id``` (boolean) - Id of the crated ad instance
+* ```error``` (string) - Error code if something went wrong
+
+
+### fbinstant.load_rewarded_video(ad_id, callback)
+Preload a rewarded video.
+
+**PARAMETERS**
+* ```ad_id``` (string) - Id of the ad instance to preload
+* ```callback``` (function) - Function to call when the rewarded video has loaded
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
 * ```success``` (boolean) - Indicating if the operation was successful or not
+* ```error``` (string) - Error code if something went wrong
 
 
-### fbinstant.show_rewarded_video(placement, callback)
+### fbinstant.show_rewarded_video(ad_id, callback)
 Present the rewarded video.
 
 **PARAMETERS**
-* ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
+* ```placement``` (string) - Id of the ad instance to show
 * ```callback``` (function) - Function to call when user finished watching the ad
 
 The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
 * ```success``` (boolean) - Indicating if the operation was successful or not
-
+* ```error``` (string) - Error code if something went wrong
 
 
 
@@ -792,47 +829,60 @@ The ```callback``` function is expected to accept the following values:
 
 ## Constants
 
-### fbinstant.CONTEXT_SOLO
+### Context
+#### fbinstant.CONTEXT_SOLO
 fbinstant.get_context().type
 
-### fbinstant.CONTEXT_POST
+#### fbinstant.CONTEXT_POST
 fbinstant.get_context().type
 
-### fbinstant.CONTEXT_THREAD
+#### fbinstant.CONTEXT_THREAD
 fbinstant.get_context().type
 
-### fbinstant.CONTEXT_GROUP
+#### fbinstant.CONTEXT_GROUP
 fbinstant.get_context().type
 
 
-### fbinstant.SHARE_INTENT_INVITE
+### Share
+#### fbinstant.SHARE_INTENT_INVITE
 For fbinstant.share() payload table
 
-### fbinstant.SHARE_INTENT_REQUEST
+#### fbinstant.SHARE_INTENT_REQUEST
 For fbinstant.share() payload table
 
-### fbinstant.SHARE_INTENT_CHALLENGE
+#### fbinstant.SHARE_INTENT_CHALLENGE
 For fbinstant.share() payload table
 
-### fbinstant.SHARE_INTENT_SHARE
+#### fbinstant.SHARE_INTENT_SHARE
 For fbinstant.share() payload table
 
 
-### FILTER_NEW_CONTEXT_ONLY
+### Filter
+#### fbinstant.FILTER_NEW_CONTEXT_ONLY
 For fbinstant.choose_context() options table
 
-### FILTER_INCLUDE_EXISTING_CHALLENGES
+#### fbinstant.FILTER_INCLUDE_EXISTING_CHALLENGES
 For fbinstant.choose_context() options table
 
-### FILTER_NEW_PLAYERS_ONLY
+#### fbinstant.FILTER_NEW_PLAYERS_ONLY
 For fbinstant.choose_context() options table
 
 
-### STORE_ACTIVE
+### Activity Store
+#### fbinstant.STORE_ACTIVE
 For fbinstant.get_stores() activity store status
 
-### STORE_ENDED
+#### fbinstant.STORE_ENDED
 For fbinstant.get_stores() activity store status
+
+
+### Error Codes
+#### fbinstant.ADS_FREQUENT_LOAD
+#### fbinstant.ADS_NO_FILL
+#### fbinstant.ADS_NOT_LOADED
+#### fbinstant.ADS_TOO_MANY_INSTANCES
+#### fbinstant.RATE_LIMITED
+#### fbinstant.INVALID_PARAM
 
 
 # Tic Tac Toe example

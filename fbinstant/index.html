@@ -6,7 +6,7 @@
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no,width=device-width,minimal-ui" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>{{DEFOLD_APP_TITLE}}</title>
+    <title>{{project.title}} {{project.version}}</title>
     <style>
     canvas {
         vertical-align: middle;
@@ -52,13 +52,14 @@
         background-color: rgb(0, 0, 0);
     }
     </style>
+    {{{DEFOLD_DEV_HEAD}}}
 </head>
 
 <body oncontextmenu="return false;">
     <script src="https://connect.facebook.net/en_US/fbinstant.6.2.js"></script>
     <div id="fb-root"></div>
     <div id="app-container" class="canvas-app-container">
-        <canvas id="canvas" class="canvas-app-canvas" tabindex="1" width="{{DEFOLD_DISPLAY_WIDTH}}" height="{{DEFOLD_DISPLAY_HEIGHT}}"></canvas>
+        <canvas id="canvas" class="canvas-app-canvas" tabindex="1" width="{{display.width}}" height="{{display.height}}"></canvas>
     </div>
 
     <!-- -->
@@ -85,7 +86,8 @@
             },
             engine_arguments: ["--verify-graphics-calls=false"],
             splash_image: "{{DEFOLD_SPLASH_IMAGE}}",
-            custom_heap_size: {{DEFOLD_HEAP_SIZE}}
+            custom_heap_size: {{DEFOLD_HEAP_SIZE}},
+            disable_context_menu: true
         }
 
         Module['onRuntimeInitialized'] = function() {
@@ -97,7 +99,7 @@
             // dmengine*.wasm is hardcoded in the built JS loader for WASM,
             // we need to replace it here with the correct project name.
             if (path == "dmengine.wasm" || path == "dmengine_release.wasm" || path == "dmengine_headless.wasm") {
-                path = "{{DEFOLD_BINARY_PREFIX}}.wasm";
+                path = "{{exe-name}}.wasm";
             }
             return scriptDirectory + path;
         };
@@ -106,9 +108,9 @@
             var engineJS = document.createElement('script');
             engineJS.type = 'text/javascript';
             if (Module['isWASMSupported']) {
-                engineJS.src = '{{DEFOLD_BINARY_PREFIX}}_wasm.js';
+                engineJS.src = '{{exe-name}}_wasm.js';
             } else {
-                engineJS.src = '{{DEFOLD_BINARY_PREFIX}}_asmjs.js';
+                engineJS.src = '{{exe-name}}_asmjs.js';
             }
             document.head.appendChild(engineJS);
         }
@@ -122,7 +124,7 @@
             var dpi=window.devicePixelRatio || 1
             var width=window.innerWidth;
             var height=window.innerHeight;
-            var targetRatio = {{DEFOLD_DISPLAY_WIDTH}}/{{DEFOLD_DISPLAY_HEIGHT}};
+            var targetRatio = {{display.width}}/{{display.height}};
             var actualRatio = width/height;
             if (actualRatio > targetRatio) {
                 width = height * targetRatio;

@@ -920,7 +920,7 @@ var FBInstantLibrary = {
             Runtime.dynCall("vi", callback, [0]);
         });
     },
-    FBInstant_PlatformGetConnectedPlayerEntriesAsync: function(callback, cname, count, offset) {
+    FBInstant_PlatformGetLeaderboardConnectedPlayerEntriesAsync: function(callback, cname, count, offset) {
         var name = Pointer_stringify(cname);
         FBInstant.getLeaderboardAsync(name).then(function(leaderboard) {
             return leaderboard.getConnectedPlayerEntriesAsync(count, offset);
@@ -941,7 +941,7 @@ var FBInstantLibrary = {
             }
             Utils.dynCall(callback, [JSON.stringify(entriesData)]);
         }).catch(function(err) {
-            console.log("FBInstant_PlatformGetConnectedPlayerEntriesAsync - error", err);
+            console.log("FBInstant_PlatformGetLeaderboardConnectedPlayerEntriesAsync - error", err);
             Runtime.dynCall("vi", callback, [0]);
         });
     },

@@ -746,6 +746,31 @@ Each entry in ```entries``` contains:
 * ```player_photo``` (string) - The url to the player's public profile photo
 * ```player_id``` (number) - The game's unique identifier for the player
 
+### fbinstant.get_leaderboard_connected_player_entries(name, count, offset, callback)
+Retrieves the leaderboard score entries of the current player's connected players (including the current player), ordered by local rank within the set of connected players.
+
+**PARAMETERS**
+* ```name``` (string) - Name of the leaderboard to get entries from
+* ```count``` (number) - The number of entries to attempt to fetch from the leaderboard
+* ```offset``` (number) - The offset from the top of the leaderboard that entries will be fetched from
+* ```callback``` (function) - Function to call when the entries have been retrieved
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```entries``` (string) - JSON encoded table of entries
+
+Each entry in ```entries``` contains:
+
+* ```rank``` (number) - The rank of the player's score in the leaderboard
+* ```score``` (number) - The score associated with the entry
+* ```formatted_score``` (string) - The score associated with the entry, formatted with the score format associated with the leaderboard
+* ```timestamp``` (number) - The timestamp of when the leaderboard entry was last updated
+* ```extra_data``` (string) - The developer-specified payload associated with the score
+* ```player_name``` (string) - The player's localized display name
+* ```player_photo``` (string) - The url to the player's public profile photo
+* ```player_id``` (number) - The game's unique identifier for the player
+
 
 
 ## Payment functions

@@ -1526,6 +1526,38 @@ static int FBInstant_GetLeaderboardEntriesAsync(lua_State* L) {
 }
 
 
+// ===============================================
+// GET LEADERBOARD CONNECTED PLAYER ENTRIES
+// ===============================================
+lua_Listener getLeaderboardConnectedPlayerEntriesAsyncListener;
+
+static void FBInstant_OnLeaderboardConnectedPlayerEntries(const char* entries) {
+	lua_State* L = getLeaderboardConnectedPlayerEntriesAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, getLeaderboardConnectedPlayerEntriesAsyncListener);
+	lua_pushstring(L, entries);
+
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_GetLeaderboardConnectedPlayerEntriesAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* name = luaL_checkstring(L, 1);
+	const int count = luaL_checkint(L, 2);
+	const int offset = luaL_checkint(L, 3);
+	luaL_checklistener(L, 4, getLeaderboardConnectedPlayerEntriesAsyncListener);
+	FBInstant_PlatformGetLeaderboardConnectedPlayerEntriesAsync((OnLeaderboardConnectedPlayerEntriesCallback)FBInstant_OnLeaderboardConnectedPlayerEntries, name, count, offset);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
 
 
 // ===============================================
@@ -1754,6 +1786,7 @@ static const luaL_reg Module_methods[] = {
 	{"set_leaderboard_score", FBInstant_SetLeaderboardScoreAsync},
 	{"get_leaderboard_score", FBInstant_GetLeaderboardScoreAsync},
 	{"get_leaderboard_entries", FBInstant_GetLeaderboardEntriesAsync},
+	{"get_leaderboard_connected_player_entries", FBInstant_GetLeaderboardConnectedPlayerEntriesAsync},
 
 
 	// payments functions

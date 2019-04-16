@@ -920,6 +920,31 @@ var FBInstantLibrary = {
             Runtime.dynCall("vi", callback, [0]);
         });
     },
+    FBInstant_PlatformGetLeaderboardConnectedPlayerEntriesAsync: function(callback, cname, count, offset) {
+        var name = Pointer_stringify(cname);
+        FBInstant.getLeaderboardAsync(name).then(function(leaderboard) {
+            return leaderboard.getConnectedPlayerEntriesAsync(count, offset);
+        }).then(function(entries) {
+            var entriesData = [];
+            for(var i=0; i<entries.length; i++) {
+                var entry = entries[i];
+                entriesData.push({
+                    rank: entry.getRank(),
+                    score: entry.getScore(),
+                    formatted_score: entry.getFormattedScore(),
+                    timestamp: entry.getTimestamp(),
+                    extra_data: entry.getExtraData(),
+                    player_name: entry.getPlayer().getName(),
+                    player_id: entry.getPlayer().getID(),
+                    player_photo: entry.getPlayer().getPhoto(),
+                });
+            }
+            Utils.dynCall(callback, [JSON.stringify(entriesData)]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformGetLeaderboardConnectedPlayerEntriesAsync - error", err);
+            Runtime.dynCall("vi", callback, [0]);
+        });
+    },
 
 
     // =====================================

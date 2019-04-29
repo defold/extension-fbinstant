@@ -121,27 +121,36 @@
             var app_container = document.getElementById('app-container');
             var game_canvas = document.getElementById('canvas');
 
-            var dpi=window.devicePixelRatio || 1
-            var width=window.innerWidth;
-            var height=window.innerHeight;
-            var targetRatio = {{display.width}}/{{display.height}};
-            var actualRatio = width/height;
-            if (actualRatio > targetRatio) {
-                width = height * targetRatio;
-                app_container.style.marginLeft = ((window.innerWidth - width) / 2) + "px"
-                app_container.style.marginTop = "0px"
-            }
-            else {
-                height = width / targetRatio;
-                app_container.style.marginLeft = "0px"
-                app_container.style.marginTop = ((window.innerHeight - height) / 2) + "px"
-            }
+            var dpi = window.devicePixelRatio || 1;
+            var width = window.innerWidth;
+            var height = window.innerHeight;
+            var targetRatio = {{display.width}} / {{display.height}};
+            var actualRatio = width / height;
 
-            app_container.style.width = width+"px";
-            app_container.style.height = height+"px";
+            var isStretchCanvas = {{fb_instant.stretch_canvas}} + 0;
+            if (isStretchCanvas) {
+                app_container.style.width = width + "px";
+                app_container.style.height = height + "px";
+                game_canvas.width = width * dpi;
+                game_canvas.height = height * dpi;
+            } else {
+                if (actualRatio > targetRatio) {
+                    width = height * targetRatio;
+                    app_container.style.marginLeft = ((window.innerWidth - width) / 2) + "px"
+                    app_container.style.marginTop = "0px"
+                }
+                else {
+                    height = width / targetRatio;
+                    app_container.style.marginLeft = "0px"
+                    app_container.style.marginTop = ((window.innerHeight - height) / 2) + "px"
+                }
 
-            game_canvas.width = width*dpi;
-            game_canvas.height = height*dpi;
+                app_container.style.width = width+"px";
+                app_container.style.height = height+"px";
+
+                game_canvas.width = width*dpi;
+                game_canvas.height = height*dpi;
+            }
 
             window.console.log("width: " + game_canvas.width + " > "+ game_canvas.style.width)
             window.console.log("height:" + game_canvas.height + " > "+ game_canvas.style.height)

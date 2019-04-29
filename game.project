@@ -28,3 +28,6 @@ app_manifest = /tictactoe/tictactoe.appmanifest
 [graphics]
 texture_profiles = /tictactoe/tictactoe.texture_profiles
 
+[fb_instant]
+stretch_canvas = 0
+

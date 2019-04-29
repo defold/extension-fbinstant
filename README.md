@@ -36,6 +36,12 @@ It has been observed that the progress updates do not work properly on Android. 
 		Module._fbinstant_inited = true;
 	});
 ```
+### 2.3 game.project options
+By default, game canvas fit into the browser window bounds if you want to stretch canvas, add next lines to your game.project file:
+```
+[fb_instant]
+stretch_canvas = 1
+```
 
 ## 3. Create a Facebook App
 You also need to create a Facebook App where Instant Games is enabled. Please refer to the [Getting Started documentation](https://developers.facebook.com/docs/games/instant-games/getting-started) on the Instant Games page for further instructions.

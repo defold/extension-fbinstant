@@ -37,7 +37,7 @@ It has been observed that the progress updates do not work properly on Android. 
 	});
 ```
 ### 2.3 game.project options
-Please add the following lines to your game.project file:
+Add the following lines to your game.project file:
 ```
 [fb_instant]
 stretch_canvas = 1

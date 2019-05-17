@@ -270,7 +270,7 @@ The ```callback``` function is expected to accept the following values:
 * ```success``` (boolean) - Indicating if the operation was successful or not
 
 
-### fbinstant.increment_player_stats(stats)
+### fbinstant.increment_player_stats(increments, callback)
 Increment stats saved in the designated cloud storage of the current player.
 
 **PARAMETERS**
@@ -367,7 +367,7 @@ Get entry point data.
 * ```data``` (string) - The entry point data as a JSON string
 
 
-### fbinstant.get_entry_point()
+### fbinstant.get_entry_point(callback)
 Get the entry point that the game was launched from.
 
 **PARAMETERS**
@@ -386,7 +386,7 @@ Set data associated with the session.
 * ```data``` (string) - JSON encoded object containing session data
 
 
-### fbinstant.get_players()
+### fbinstant.get_players(callback)
 Get the players in the current context.
 
 **PARAMETERS**

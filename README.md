@@ -380,6 +380,17 @@ Each entry in the ```players``` table has the following values:
 * ```photo``` (string) - URL to a photo of the user
 
 
+### fbinstant.post_session_score(score)
+Posts the player's best score for the session to Facebook.
+
+**PARAMETERS**
+* ```score``` (number) - An integer value representing the player's best score in a session.
+
+
+### fbinstant.get_players()
+Get the players in the current context.
+
+
 ## Platform functions
 
 ### fbinstant.get_platform()

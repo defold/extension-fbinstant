@@ -12,6 +12,7 @@ typedef void (*OnPlayerStatsCallback)(const char* stats);
 typedef void (*OnPlayerStatsSetCallback)(const int success);
 typedef void (*OnPlayerStatsIncrementedCallback)(const char* stats);
 typedef void (*OnGameStartedCallback)(const int success);
+typedef void (*OnGameSwitchedCallback)(const int success);
 typedef void (*OnUpdatedCallback)(const int success);
 typedef void (*OnShareCallback)(const int success);
 typedef void (*OnPauseCallback)();
@@ -24,8 +25,10 @@ typedef void (*OnStoresCallback)(const char* stores);
 typedef void (*OnStoreDataCallback)(const char* data);
 typedef void (*OnStoreDataSavedCallback)(const int success);
 typedef void (*OnStoreDataIncrementedCallback)(const char* data);
-typedef void (*OnInterstitialAdLoadedCallback)(const int success);
-typedef void (*OnInterstitialAdShownCallback)(const int success);
+typedef void (*OnInterstitialAdCallback)(const char* adId, const char* error);
+typedef void (*OnInterstitialAdLoadedCallback)(const int success, const char* error);
+typedef void (*OnInterstitialAdShownCallback)(const int success, const char* error);
+typedef void (*OnRewardedVideoCallback)(const char* adId, const char* error);
 typedef void (*OnRewardedVideoLoadedCallback)(const int success);
 typedef void (*OnRewardedVideoShownCallback)(const int success);
 typedef void (*OnConnectedPlayersCallback)(const char* players);
@@ -38,6 +41,7 @@ typedef void (*OnLeaderboardCallback)(const char* contextId, const int entryCoun
 typedef void (*OnLeaderboardScoreSetCallback)(const int score, const char* extraData);
 typedef void (*OnLeaderboardScoreCallback)(const int rank, const int score, const char* extraData);
 typedef void (*OnLeaderboardEntriesCallback)(const char* entries);
+typedef void (*OnLeaderboardConnectedPlayerEntriesCallback)(const char* entries);
 typedef void (*OnPaymentsReadyCallback)();
 typedef void (*OnProductCatalogCallback)(const char* productCatalog);
 typedef void (*OnPurchaseResponseCallback)(const char* purchase);
@@ -47,6 +51,7 @@ typedef void (*OnPurchasesCallback)(const char* purchases);
 extern "C" {
     void FBInstant_PlatformInitializeAsync(OnInitializedCallback callback);
     void FBInstant_PlatformStartGameAsync(OnGameStartedCallback callback);
+    void FBInstant_PlatformSwitchGameAsync(OnGameSwitchedCallback callback);
     void FBInstant_PlatformUpdateAsync(OnUpdatedCallback callback, const char* json);
     void FBInstant_PlatformQuit();
     void FBInstant_PlatformOnPause(OnPauseCallback callback);
@@ -58,7 +63,7 @@ extern "C" {
     void FBInstant_PlatformSetPlayerDataAsync(OnPlayerDataSetCallback callback, const char* json);
     void FBInstant_PlatformFlushPlayerDataAsync(OnPlayerDataFlushedCallback callback);
 
-	void FBInstant_PlatformGetPlayerStatsAsync(OnPlayerStatsCallback callback, const char* json);
+    void FBInstant_PlatformGetPlayerStatsAsync(OnPlayerStatsCallback callback, const char* json);
     void FBInstant_PlatformSetPlayerStatsAsync(OnPlayerStatsSetCallback callback, const char* json);
     void FBInstant_PlatformIncrementPlayerStatsAsync(OnPlayerStatsIncrementedCallback callback, const char* json);
 
@@ -77,6 +82,7 @@ extern "C" {
     void FBInstant_PlatformSubscribeBotAsync(OnSubscribeBotCallback callback);
 
     char* FBInstant_PlatformGetPlatform();
+    char* FBInstant_PlatformGetLocale();
     char* FBInstant_PlatformGetSupportedAPIs();
     char* FBInstant_PlatformGetSDKVersion();
     void FBInstant_PlatformCanCreateShortcutAsync(OnCanCreateShortcutCallback callback);
@@ -106,16 +112,19 @@ extern "C" {
     void FBInstant_PlatformSaveStoreDataAsync(OnStoreDataSavedCallback callback, const char* storeName, const char* dataJson);
     void FBInstant_PlatformIncrementStoreDataAsync(OnStoreDataIncrementedCallback callback, const char* storeName, const char* dataJson);
 
-    void FBInstant_PlatformLoadInterstitialAdAsync(OnInterstitialAdLoadedCallback callback, const char* placementId);
-    void FBInstant_PlatformShowInterstitialAdAsync(OnInterstitialAdShownCallback callback, const char* placementId);
+    void FBInstant_PlatformGetInterstitialAdAsync(OnInterstitialAdCallback callback, const char* placementId);
+    void FBInstant_PlatformLoadInterstitialAdAsync(OnInterstitialAdLoadedCallback callback, const char* adId);
+    void FBInstant_PlatformShowInterstitialAdAsync(OnInterstitialAdShownCallback callback, const char* adId);
 
-    void FBInstant_PlatformLoadRewardedVideoAsync(OnRewardedVideoLoadedCallback callback, const char* placementId);
-    void FBInstant_PlatformShowRewardedVideoAsync(OnRewardedVideoShownCallback callback, const char* placementId);
+    void FBInstant_PlatformGetRewardedVideoAsync(OnRewardedVideoCallback callback, const char* placementId);
+    void FBInstant_PlatformLoadRewardedVideoAsync(OnRewardedVideoLoadedCallback callback, const char* adId);
+    void FBInstant_PlatformShowRewardedVideoAsync(OnRewardedVideoShownCallback callback, const char* adId);
 
     void FBInstant_PlatformGetLeaderboardAsync(OnLeaderboardCallback callback, const char* name);
     void FBInstant_PlatformSetLeaderboardScoreAsync(OnLeaderboardScoreSetCallback callback, const char* name, const int score, const char* extraData);
     void FBInstant_PlatformGetLeaderboardScoreAsync(OnLeaderboardScoreCallback callback, const char* name);
     void FBInstant_PlatformGetLeaderboardEntriesAsync(OnLeaderboardEntriesCallback callback, const char* name, const int count, const int offset);
+    void FBInstant_PlatformGetLeaderboardConnectedPlayerEntriesAsync(OnLeaderboardConnectedPlayerEntriesCallback callback, const char* name, const int count, const int offset);
 
     void FBInstant_PlatformOnPaymentsReady(OnPaymentsReadyCallback callback);
     void FBInstant_PlatformGetProductCatalogAsync(OnProductCatalogCallback callback);

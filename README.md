@@ -12,7 +12,7 @@ https://github.com/defold/extension-fbinstant/archive/master.zip
 Or point to the ZIP file of a [specific release](https://github.com/defold/extension-fbinstant/releases).
 
 ## 2. Preparing index.html
-Before the extension can be used you need to add the Facebook Instant Games API to the index.html of your game. [Refer to the index.html in the root of this project](https://github.com/defold/extension-fbinstant/blob/master/index.html#L55) for an example of this.
+Before the extension can be used you need to add the Facebook Instant Games API to the index.html of your game. [Refer to the index.html in the root of this project](https://github.com/defold/extension-fbinstant/blob/master/fbinstant/index.html#L58) for an example of this.
 
 ### 2.1 Report loading progress
 Facebook Instant Games can show the progress while the game is loaded. It is quite easy to set this up for a Defold game. All that is required is to override the Progress.updateProgress() function and pass along the value to the Instant Games API (this is done for you [in the default index.html](https://github.com/defold/extension-fbinstant/blob/master/fbinstant/index.html#L68-L71) provided with this extension):
@@ -36,6 +36,15 @@ It has been observed that the progress updates do not work properly on Android. 
 		Module._fbinstant_inited = true;
 	});
 ```
+### 2.3 game.project options
+Add the following lines to your game.project file:
+```
+[fb_instant]
+stretch_canvas = 1
+```
+`stretch_canvas = 0` if you want to fit canvas into the browser window bounds. 
+
+`stretch_canvas = 1` if you want to stretch canvas.
 
 ## 3. Create a Facebook App
 You also need to create a Facebook App where Instant Games is enabled. Please refer to the [Getting Started documentation](https://developers.facebook.com/docs/games/instant-games/getting-started) on the Instant Games page for further instructions.
@@ -93,6 +102,20 @@ Indicate that the game is ready to start.
 
 **PARAMETERS**
 * ```callback``` (function) - Function to call when the game has started
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```success``` (boolean) - Indicating if the operation was successful or not
+
+
+### fbinstant.switch_game(app_id, data, callback)
+Request that the client switch to a different Instant Game. The API will reject if the switch fails - else, the client will load the new game
+
+**PARAMETERS**
+* ```app_id``` (string) - The Application ID of the Instant Game to switch to.
+* ```data``` (string) - Optional JSON encoded object containing entrypoint data for the game being switched to.
+* ```callback``` (function) - Function to call if the switch fails
 
 The ```callback``` function is expected to accept the following values:
 
@@ -247,7 +270,7 @@ The ```callback``` function is expected to accept the following values:
 * ```success``` (boolean) - Indicating if the operation was successful or not
 
 
-### fbinstant.increment_player_stats(stats)
+### fbinstant.increment_player_stats(increments, callback)
 Increment stats saved in the designated cloud storage of the current player.
 
 **PARAMETERS**
@@ -271,6 +294,7 @@ The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
 * ```success``` (boolean) - Indicating if the operation was successful or not
+
 
 ### fbinstant.subscribe_bot(callback)
 Prompts the player to subscribe to the chat bot. Player will only be able to see this bot subscription dialog once for a specific game.
@@ -298,7 +322,7 @@ Get the current context.
 Opens a context selection dialog for the player.
 
 **PARAMETERS**
-* ```options``` (string) - OPTIONAL! JSON encoded object containing options (refer to the documentation for chooseAsync)
+* ```options``` (string|nil) - OPTIONAL! JSON encoded object containing options (refer to the documentation for chooseAsync)
 * ```callback``` (function) - Function to call when a context has been selected. It is now possible to call get_context() to get the context.
 
 The ```callback``` function is expected to accept the following values:
@@ -343,7 +367,7 @@ Get entry point data.
 * ```data``` (string) - The entry point data as a JSON string
 
 
-### fbinstant.get_entry_point()
+### fbinstant.get_entry_point(callback)
 Get the entry point that the game was launched from.
 
 **PARAMETERS**
@@ -362,7 +386,7 @@ Set data associated with the session.
 * ```data``` (string) - JSON encoded object containing session data
 
 
-### fbinstant.get_players()
+### fbinstant.get_players(callback)
 Get the players in the current context.
 
 **PARAMETERS**
@@ -399,6 +423,14 @@ Gets the active platform the game is running on.
 **RETURN**
 * ```platform``` (string) - The current platform one of "IOS" or "ANDROID" or "WEB" or "MOBILE_WEB".
 
+
+### fbinstant.get_locale()
+The current locale. See https://origincache.facebook.com/developers/resources/?id=FacebookLocales.xml for a complete list of supported locale values. Use this to determine what languages the current game should be localized with. The value will not be accurate until FBInstant.startGameAsync() resolves.
+
+**RETURN**
+* ```locale``` (string) - The locale
+
+
 ### fbinstant.get_supported_apis()
 Gets a list of supported apis by the current platform.
 
@@ -421,6 +453,7 @@ Gets the current SDK version. Can be used as a sanity check.
 **RETURN**
 * ```version``` (string) - Example "6.1"
 
+
 ### fbinstant.can_create_shortcut(callback)
 
 Returns whether or not the user is eligible to have shortcut creation requested.
@@ -436,6 +469,7 @@ The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
 * ```success``` (boolean) - Indicating if the operation was successful or not
+
 
 ### fbinstant.create_shortcut(callback)
 Prompts the user to create a shortcut to the game if they are eligible to. For now, only for adding a shortcut to the Android home screen. Can only be called once per session.
@@ -482,34 +516,56 @@ Log an app event with FB Analytics.
 
 ## Ads functions
 
-### fbinstant.load_interstitial_ad(placement, callback)
-Preload an interstitial ad.
+Displaying an ad is a three step process:
+
+1. Creating an ad instance for a placement (using a placement id)
+2. Preloading the ad instance (using the ad id returned from #1)
+3. Showing the ad instance (using the ad id returned from #1)
+
+### fbinstant.get_interstitial_ad(placement, callback)
+Get an interstitial ad instance.
 
 **PARAMETERS**
 * ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
+* ```callback``` (function) - Function to call when the interstitial ad has been created
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```ad_id``` (string) - Id of the ad instance
+* ```error``` (string) - Error code if something went wrong
+
+
+### fbinstant.load_interstitial_ad(ad_id, callback)
+Preload an interstitial ad.
+
+**PARAMETERS**
+* ```ad_id``` (string) - Id of the ad instance to preload
 * ```callback``` (function) - Function to call when the interstitial ad has loaded
 
 The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
 * ```success``` (boolean) - Indicating if the operation was successful or not
+* ```error``` (string) - Error code if something went wrong
 
 
-### fbinstant.show_interstitial_ad(placement, callback)
+### fbinstant.show_interstitial_ad(ad_id, callback)
 Present an interstitial ad.
 
 **PARAMETERS**
-* ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
+* ```ad_id``` (string) - Id of the ad instance to show
 * ```callback``` (function) - Function to call when user finished watching the ad
 
 The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
 * ```success``` (boolean) - Indicating if the operation was successful or not
+* ```error``` (string) - Error code if something went wrong
 
 
-### fbinstant.load_rewarded_video(placement, callback)
-Preload a rewarded video.
+### fbinstant.get_rewarded_video(placement, callback)
+Get a rewarded video instance.
 
 **PARAMETERS**
 * ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
@@ -518,21 +574,36 @@ Preload a rewarded video.
 The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
+* ```ad_id``` (boolean) - Id of the crated ad instance
+* ```error``` (string) - Error code if something went wrong
+
+
+### fbinstant.load_rewarded_video(ad_id, callback)
+Preload a rewarded video.
+
+**PARAMETERS**
+* ```ad_id``` (string) - Id of the ad instance to preload
+* ```callback``` (function) - Function to call when the rewarded video has loaded
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
 * ```success``` (boolean) - Indicating if the operation was successful or not
+* ```error``` (string) - Error code if something went wrong
 
 
-### fbinstant.show_rewarded_video(placement, callback)
+### fbinstant.show_rewarded_video(ad_id, callback)
 Present the rewarded video.
 
 **PARAMETERS**
-* ```placement``` (string) - The placement ID that's been setup in your Audience Network settings
+* ```placement``` (string) - Id of the ad instance to show
 * ```callback``` (function) - Function to call when user finished watching the ad
 
 The ```callback``` function is expected to accept the following values:
 
 * ```self``` (userdata) - Script self reference
 * ```success``` (boolean) - Indicating if the operation was successful or not
-
+* ```error``` (string) - Error code if something went wrong
 
 
 
@@ -647,7 +718,7 @@ Updates the player's score. If the player has an existing score, the old score w
 **PARAMETERS**
 * ```name``` (string) - Name of the leaderboard to set score in
 * ```score``` (number) - The new score for the player. Must be a 64-bit integer number.
-* ```extra_data``` (string) - Metadata to associate with the stored score. Must be less than 2KB in size.
+* ```extra_data``` (string|nil) - Metadata to associate with the stored score. Must be less than 2KB in size.
 * ```callback``` (function) - Function to call when the score has been set
 
 The ```callback``` function is expected to accept the following values:
@@ -672,6 +743,31 @@ The ```callback``` function is expected to accept the following values:
 
 ### fbinstant.get_leaderboard_entries(name, count, offset, callback)
 Retrieves a set of leaderboard entries, ordered by score ranking in the leaderboard.
+
+**PARAMETERS**
+* ```name``` (string) - Name of the leaderboard to get entries from
+* ```count``` (number) - The number of entries to attempt to fetch from the leaderboard
+* ```offset``` (number) - The offset from the top of the leaderboard that entries will be fetched from
+* ```callback``` (function) - Function to call when the entries have been retrieved
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```entries``` (string) - JSON encoded table of entries
+
+Each entry in ```entries``` contains:
+
+* ```rank``` (number) - The rank of the player's score in the leaderboard
+* ```score``` (number) - The score associated with the entry
+* ```formatted_score``` (string) - The score associated with the entry, formatted with the score format associated with the leaderboard
+* ```timestamp``` (number) - The timestamp of when the leaderboard entry was last updated
+* ```extra_data``` (string) - The developer-specified payload associated with the score
+* ```player_name``` (string) - The player's localized display name
+* ```player_photo``` (string) - The url to the player's public profile photo
+* ```player_id``` (number) - The game's unique identifier for the player
+
+### fbinstant.get_leaderboard_connected_player_entries(name, count, offset, callback)
+Retrieves the leaderboard score entries of the current player's connected players (including the current player), ordered by local rank within the set of connected players.
 
 **PARAMETERS**
 * ```name``` (string) - Name of the leaderboard to get entries from
@@ -778,47 +874,60 @@ The ```callback``` function is expected to accept the following values:
 
 ## Constants
 
-### fbinstant.CONTEXT_SOLO
+### Context
+#### fbinstant.CONTEXT_SOLO
 fbinstant.get_context().type
 
-### fbinstant.CONTEXT_POST
+#### fbinstant.CONTEXT_POST
 fbinstant.get_context().type
 
-### fbinstant.CONTEXT_THREAD
+#### fbinstant.CONTEXT_THREAD
 fbinstant.get_context().type
 
-### fbinstant.CONTEXT_GROUP
+#### fbinstant.CONTEXT_GROUP
 fbinstant.get_context().type
 
 
-### fbinstant.SHARE_INTENT_INVITE
+### Share
+#### fbinstant.SHARE_INTENT_INVITE
 For fbinstant.share() payload table
 
-### fbinstant.SHARE_INTENT_REQUEST
+#### fbinstant.SHARE_INTENT_REQUEST
 For fbinstant.share() payload table
 
-### fbinstant.SHARE_INTENT_CHALLENGE
+#### fbinstant.SHARE_INTENT_CHALLENGE
 For fbinstant.share() payload table
 
-### fbinstant.SHARE_INTENT_SHARE
+#### fbinstant.SHARE_INTENT_SHARE
 For fbinstant.share() payload table
 
 
-### FILTER_NEW_CONTEXT_ONLY
+### Filter
+#### fbinstant.FILTER_NEW_CONTEXT_ONLY
 For fbinstant.choose_context() options table
 
-### FILTER_INCLUDE_EXISTING_CHALLENGES
+#### fbinstant.FILTER_INCLUDE_EXISTING_CHALLENGES
 For fbinstant.choose_context() options table
 
-### FILTER_NEW_PLAYERS_ONLY
+#### fbinstant.FILTER_NEW_PLAYERS_ONLY
 For fbinstant.choose_context() options table
 
 
-### STORE_ACTIVE
+### Activity Store
+#### fbinstant.STORE_ACTIVE
 For fbinstant.get_stores() activity store status
 
-### STORE_ENDED
+#### fbinstant.STORE_ENDED
 For fbinstant.get_stores() activity store status
+
+
+### Error Codes
+#### fbinstant.ADS_FREQUENT_LOAD
+#### fbinstant.ADS_NO_FILL
+#### fbinstant.ADS_NOT_LOADED
+#### fbinstant.ADS_TOO_MANY_INSTANCES
+#### fbinstant.RATE_LIMITED
+#### fbinstant.INVALID_PARAM
 
 
 # Tic Tac Toe example

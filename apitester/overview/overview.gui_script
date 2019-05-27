@@ -21,6 +21,7 @@ function init(self)
 	fbinstant.on_payments_ready(function()
 		dirtylarry.button("payments").set_visible(true)
 	end)
+	fbinstant.post_session_score(12345)
 end
 
 function on_message(self, message_id, message, sender)

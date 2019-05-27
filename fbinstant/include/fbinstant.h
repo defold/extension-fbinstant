@@ -131,6 +131,8 @@ extern "C" {
     void FBInstant_PlatformPurchaseAsync(OnPurchaseResponseCallback callback, const char* productId, const char* developerPayload);
     void FBInstant_PlatformGetPurchasesAsync(OnPurchasesCallback callback);
     void FBInstant_PlatformConsumePurchaseAsync(OnPurchaseConsumedCallback callback, const char* purchaseToken);
+
+    void FBInstant_PlatformPostSessionScore(const int score);
 }
 
 #endif

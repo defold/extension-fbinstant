@@ -1035,6 +1035,14 @@ var FBInstantLibrary = {
         });
     },
 
+
+    // =====================================
+    // PostSessionScore
+    // =====================================
+    FBInstant_PlatformPostSessionScore: function(score) {
+        FBInstant.postSessionScore(score);
+    },
+
 };
 
 autoAddDeps(FBInstantLibrary, "$Context");

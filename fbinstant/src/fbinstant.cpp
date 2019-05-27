@@ -1717,6 +1717,20 @@ static int FBInstant_ConsumePurchaseAsync(lua_State* L) {
 
 
 
+// ===============================================
+// POST SESSION SCORE
+// ===============================================
+static int FBInstant_PostSessionScore(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const int sessionScore = luaL_checknumber(L, 1);
+	FBInstant_PlatformPostSessionScore(sessionScore);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
 static const luaL_reg Module_methods[] = {
 	// lifecycle functions
 	{"initialize", FBInstant_InitializeAsync},
@@ -1751,6 +1765,8 @@ static const luaL_reg Module_methods[] = {
 	{"get_entry_point_data", FBInstant_GetEntryPointData},
 	{"get_entry_point", FBInstant_GetEntryPointAsync},
 	{"set_session_data", FBInstant_SetSessionData},
+
+	{"post_session_score", FBInstant_PostSessionScore},
 
 	// player functions
 	{"get_player", FBInstant_GetPlayer},

@@ -64,7 +64,7 @@ fbinstant.LEADERBOARDS = {}
 fbinstant.PRODUCTS = {}
 
 local function get_self()
-	return _G["__dm_script_instance__"]
+	return _G[3700146495]
 end
 --------------------------------
 --------------- LIFECYCLE
@@ -630,4 +630,9 @@ function fbinstant.consume_purchase(purchase_token, callback)
 		end
 	end
 	callback(get_self(), false)
+end
+
+
+function fbinstant.post_session_score(score)
+	print("post_session_score", score)
 end

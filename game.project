@@ -1,6 +1,8 @@
 [project]
 title = XOXO
 dependencies = https://github.com/britzl/gooey/archive/6.5.0.zip,https://github.com/britzl/monarch/archive/2.13.0.zip
+bundle_resources = /bundle_resources
+bundle_exclude_resources = 
 
 [bootstrap]
 main_collection = /tictactoe/tictactoe.collectionc

@@ -1,0 +1,34 @@
+{
+  "instant_games": {
+    "custom_update_templates": {
+      "first_place": {
+        "example": "Player X just became the first place!"
+      }
+    },
+    "surfaceable_stats": {
+      "rank": {
+        "priority": 1,
+        "order": 1,
+        "label": {
+          "localizations": {
+            "en_US": "Rank",
+          },
+          "fallback": "Rank"
+        },
+        "values": {
+          "0": "Unranked",
+          "1": "Bronze",
+          "2": "Silver",
+          "3": "Gold"
+        }
+      }
+    },
+    "orientation": "PORTRAIT",
+    "override_web_orientation": "PORTRAIT",
+    "navigation_menu_version": "NAV_FLOATING",
+    "match_player_config": {
+      "min_context_size": 2,
+      "max_context_size": 20
+    }
+  }
+}

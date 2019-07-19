@@ -88,7 +88,7 @@ extern "C" {
     void FBInstant_PlatformCanCreateShortcutAsync(OnCanCreateShortcutCallback callback);
     void FBInstant_PlatformCreateShortcutAsync(OnCreateShortcutCallback callback);
 
-    void FBInstant_PlatformLogEvent(const char* eventName, int valueToSum, const char* parametersJson);
+    void FBInstant_PlatformLogEvent(const char* eventName, const int valueToSum, const char* parametersJson);
 
     void FBInstant_PlatformShareAsync(OnShareCallback callback, const char* payloadJson);
 

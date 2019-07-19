@@ -343,8 +343,13 @@ var FBInstantLibrary = {
     // CanSubscribeBotAsync
     // =====================================
     FBInstant_PlatformCanSubscribeBotAsync: function(callback) {
-        FBInstant.player.canSubscribeBotAsync().then(function() {
-            Runtime.dynCall("vi", callback, [1]);
+        FBInstant.player.canSubscribeBotAsync().then(function(canSubscribe) {
+            if (canSubscribe) {
+                Runtime.dynCall("vi", callback, [1]);
+            }
+            else {
+                Runtime.dynCall("vi", callback, [0]);
+            }
         }).catch(function(err) {
             console.log("FBInstant_PlatformCanSubscribeBotAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);

@@ -905,7 +905,7 @@ static int FBInstant_LogEvent(lua_State* L) {
 	int top = lua_gettop(L);
 
 	const char* eventName = luaL_checkstring(L, 1);
-	int valueToSum = luaL_checknumber(L, 2);
+	const int valueToSum = luaL_checknumber(L, 2);
 	const char* parametersJson = luaL_checkstring(L, 3);
 	FBInstant_PlatformLogEvent(eventName, valueToSum, parametersJson);
 
@@ -1718,6 +1718,88 @@ static int FBInstant_ConsumePurchaseAsync(lua_State* L) {
 
 
 // ===============================================
+// CHECK CAN PLAYER MATCH ASYNC
+// ===============================================
+lua_Listener checkCanPlayerMatchAsyncListener;
+
+static void FBInstant_OnCheckCanPlayerMatchAsync(const int canMatch, const char* error) {
+	lua_State* L = canSubscribeBotAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, checkCanPlayerMatchAsyncListener);
+	lua_pushboolean(L, canMatch);
+	if (error) { lua_pushstring(L, error); } else { lua_pushnil(L); }
+	int ret = lua_pcall(L, 3, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_CheckCanPlayerMatchAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	luaL_checklistener(L, 1, checkCanPlayerMatchAsyncListener);
+	FBInstant_PlatformCheckCanPlayerMatchAsync((OnCheckCanPlayerMatchAsyncCallback)FBInstant_OnCheckCanPlayerMatchAsync);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+// ===============================================
+// MATCH PLAYER ASYNC
+// ===============================================
+lua_Listener matchPlayerAsyncListener;
+
+static void FBInstant_OnMatchPlayerAsync(const char* error) {
+	lua_State* L = canSubscribeBotAsyncListener.m_L;
+	int top = lua_gettop(L);
+
+	lua_pushlistener(L, matchPlayerAsyncListener);
+	if (error) { lua_pushstring(L, error); } else { lua_pushnil(L); }
+	int ret = lua_pcall(L, 2, 0, 0);
+	if (ret != 0) {
+		lua_pop(L, 1);
+	}
+
+	assert(top == lua_gettop(L));
+}
+
+static int FBInstant_MatchPlayerAsync(lua_State* L) {
+	int top = lua_gettop(L);
+
+	const char* matchTag;
+	if (lua_isstring(L, 1)) {
+		matchTag = luaL_checkstring(L, 1);
+	}
+	else {
+		matchTag = 0;
+	}
+	int switchContextWhenMatched;
+	if (lua_isboolean(L, 2)) {
+		switchContextWhenMatched = luaL_checkinteger(L, 2);
+	}
+	else {
+		switchContextWhenMatched = 0;
+	}
+	int offlineMatch;
+	if (lua_isboolean(L, 3)) {
+		offlineMatch = luaL_checkinteger(L, 3);
+	}
+	else {
+		offlineMatch = 0;
+	}
+	luaL_checklistener(L, 4, matchPlayerAsyncListener);
+	FBInstant_PlatformMatchPlayerAsync((OnMatchPlayerAsyncCallback)FBInstant_OnMatchPlayerAsync, matchTag, switchContextWhenMatched, offlineMatch);
+
+	assert(top == lua_gettop(L));
+	return 0;
+}
+
+
+// ===============================================
 // POST SESSION SCORE
 // ===============================================
 static int FBInstant_PostSessionScore(lua_State* L) {
@@ -1804,13 +1886,16 @@ static const luaL_reg Module_methods[] = {
 	{"get_leaderboard_entries", FBInstant_GetLeaderboardEntriesAsync},
 	{"get_leaderboard_connected_player_entries", FBInstant_GetLeaderboardConnectedPlayerEntriesAsync},
 
-
 	// payments functions
 	{"on_payments_ready", FBInstant_OnPaymentsReady},
 	{"get_product_catalog", FBInstant_GetProductCatalogAsync},
 	{"purchase", FBInstant_PurchaseAsync},
 	{"get_purchases", FBInstant_GetPurchasesAsync},
 	{"consume_purchase", FBInstant_ConsumePurchaseAsync},
+
+	// matchmaking functions
+	{"match_player", FBInstant_MatchPlayerAsync},
+	{"check_can_player_match_async", FBInstant_CheckCanPlayerMatchAsync},
 
 	{0, 0}
 };
@@ -1842,6 +1927,18 @@ static void LuaInit(lua_State* L) {
 	lua_setfieldstringstring(L, "ERROR_ADS_TOO_MANY_INSTANCES", "ADS_TOO_MANY_INSTANCES");
 	lua_setfieldstringstring(L, "ERROR_RATE_LIMITED", "RATE_LIMITED");
 	lua_setfieldstringstring(L, "ERROR_INVALID_PARAM", "INVALID_PARAM");
+	lua_setfieldstringstring(L, "ERROR_ANALYTICS_POST_EXCEPTION", "ANALYTICS_POST_EXCEPTION");
+	lua_setfieldstringstring(L, "ERROR_CLIENT_REQUIRES_UPDATE", "CLIENT_REQUIRES_UPDATE");
+	lua_setfieldstringstring(L, "ERROR_CLIENT_UNSUPPORTED_OPERATION", "CLIENT_UNSUPPORTED_OPERATION");
+	lua_setfieldstringstring(L, "ERROR_INVALID_OPERATION", "INVALID_OPERATION");
+	lua_setfieldstringstring(L, "ERROR_LEADERBOARD_NOT_FOUND", "LEADERBOARD_NOT_FOUND");
+	lua_setfieldstringstring(L, "ERROR_LEADERBOARD_WRONG_CONTEXT", "LEADERBOARD_WRONG_CONTEXT");
+	lua_setfieldstringstring(L, "ERROR_NETWORK_FAILURE", "NETWORK_FAILURE");
+	lua_setfieldstringstring(L, "ERROR_PAYMENTS_NOT_INITIALIZED", "PAYMENTS_NOT_INITIALIZED");
+	lua_setfieldstringstring(L, "ERROR_PENDING_REQUEST", "PENDING_REQUEST");
+	lua_setfieldstringstring(L, "ERROR_SAME_CONTEXT", "SAME_CONTEXT");
+	lua_setfieldstringstring(L, "ERROR_UNKNOWN", "UNKNOWN");
+	lua_setfieldstringstring(L, "ERROR_USER_INPUT", "USER_INPUT");
 
     lua_pop(L, 1);
     assert(top == lua_gettop(L));

@@ -343,8 +343,13 @@ var FBInstantLibrary = {
     // CanSubscribeBotAsync
     // =====================================
     FBInstant_PlatformCanSubscribeBotAsync: function(callback) {
-        FBInstant.player.canSubscribeBotAsync().then(function() {
-            Runtime.dynCall("vi", callback, [1]);
+        FBInstant.player.canSubscribeBotAsync().then(function(canSubscribe) {
+            if (canSubscribe) {
+                Runtime.dynCall("vi", callback, [1]);
+            }
+            else {
+                Runtime.dynCall("vi", callback, [0]);
+            }
         }).catch(function(err) {
             console.log("FBInstant_PlatformCanSubscribeBotAsync - error: " + err.message);
             Runtime.dynCall("vi", callback, [0]);
@@ -1041,6 +1046,41 @@ var FBInstantLibrary = {
     // =====================================
     FBInstant_PlatformPostSessionScore: function(score) {
         FBInstant.postSessionScore(score);
+    },
+
+    // =====================================
+    // MatchPlayerAsync
+    // =====================================
+    FBInstant_PlatformMatchPlayerAsync: function(callback, cmatchTag, cswitchContextWhenMatched, cofflineMatch) {
+        var matchTag = Pointer_stringify(cmatchTag);
+        if (matchTag == "") {
+            matchTag = null;
+        }
+        var switchContextWhenMatched = cswitchContextWhenMatched == 1;
+        var offlineMatch = cofflineMatch == 1;
+        FBInstant.matchPlayerAsync(matchTag, switchContextWhenMatched, offlineMatch).then(function() {
+            Runtime.dynCall("vi", callback, [0]);
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformConsumePurchaseAsync - error: " + err.message);
+            Runtime.dynCall("vi", callback, [err.code]);
+        });
+    },
+
+    // =====================================
+    // CheckCanPlayerMatchAsync
+    // =====================================
+    FBInstant_PlatformCheckCanPlayerMatchAsync: function(callback) {
+        FBInstant.checkCanPlayerMatchAsync().then(function(canMatch) {
+            if (canMatch) {
+                Runtime.dynCall("vii", callback, [1, 0]);
+            }
+            else {
+                Runtime.dynCall("vii", callback, [0, 0]);
+            }
+        }).catch(function(err) {
+            console.log("FBInstant_PlatformCanSubscribeBotAsync - error: " + err.message);
+            Runtime.dynCall("vii", callback, [0, err.code]);
+        });
     },
 
 };

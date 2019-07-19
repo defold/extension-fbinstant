@@ -32,3 +32,6 @@ texture_profiles = /tictactoe/tictactoe.texture_profiles
 [fb_instant]
 stretch_canvas = 0
 
+[collection_proxy]
+max_count = 9
+

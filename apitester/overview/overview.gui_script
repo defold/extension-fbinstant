@@ -64,6 +64,9 @@ function on_input(self, action_id, action)
 	dirtylarry.button("payments", action_id, action, function()
 		monarch.show(hash("payments"))
 	end)
+	dirtylarry.button("match_player", action_id, action, function()
+		monarch.show(hash("match_player"))
+	end)
 	dirtylarry.button("share", action_id, action, function()
 		local payload = {
 			intent = fbinstant.SHARE_INTENT_CHALLENGE,

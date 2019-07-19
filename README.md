@@ -42,7 +42,7 @@ Add the following lines to your game.project file:
 [fb_instant]
 stretch_canvas = 1
 ```
-`stretch_canvas = 0` if you want to fit canvas into the browser window bounds. 
+`stretch_canvas = 0` if you want to fit canvas into the browser window bounds.
 
 `stretch_canvas = 1` if you want to stretch canvas.
 
@@ -872,6 +872,36 @@ The ```callback``` function is expected to accept the following values:
 
 
 
+## Matchmaking
+
+### fbinstant.check_can_player_match_async(callback)
+Checks if the current player is eligible for the matchPlayerAsync API.
+
+**PARAMETERS**
+* ```callback``` (function) - Function to call when the check has completed
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```can_match``` (boolean) - true if the player is eligible to match with other players and false otherwise
+* ```error``` (string) - Error code if something went wrong
+
+### fbinstant.match_player(match_tag, switch_context_when_matched, offline_match, callback)
+Attempts to match the current player with other users looking for people to play with.
+
+**PARAMETERS**
+* ```match_tag``` (string) - Optional extra information about the player used to group them with similar players
+* ```switch_context_when_matched``` (boolean) - Optional extra parameter that specifies whether the player should be immediately switched to the new context when a match is found
+* ```offline_match``` (boolean) - Optional extra parameter that specifies whether to start a match asynchronously.
+* ```callback``` (function) - Function to call when the player has been added to a group thread and switched into the thread's context.
+
+The ```callback``` function is expected to accept the following values:
+
+* ```self``` (userdata) - Script self reference
+* ```error``` (string) - Error code if something went wrong
+
+
+
 ## Constants
 
 ### Context
@@ -922,12 +952,24 @@ For fbinstant.get_stores() activity store status
 
 
 ### Error Codes
-#### fbinstant.ADS_FREQUENT_LOAD
-#### fbinstant.ADS_NO_FILL
-#### fbinstant.ADS_NOT_LOADED
-#### fbinstant.ADS_TOO_MANY_INSTANCES
-#### fbinstant.RATE_LIMITED
-#### fbinstant.INVALID_PARAM
+#### fbinstant.ERROR_ADS_FREQUENT_LOAD
+#### fbinstant.ERROR_ADS_NO_FILL
+#### fbinstant.ERROR_ADS_NOT_LOADED
+#### fbinstant.ERROR_ADS_TOO_MANY_INSTANCES
+#### fbinstant.ERROR_RATE_LIMITED
+#### fbinstant.ERROR_INVALID_PARAM
+#### fbinstant.ERROR_ANALYTICS_POST_EXCEPTION
+#### fbinstant.ERROR_CLIENT_REQUIRES_UPDATE
+#### fbinstant.ERROR_CLIENT_UNSUPPORTED_OPERATION
+#### fbinstant.ERROR_INVALID_OPERATION
+#### fbinstant.ERROR_LEADERBOARD_NOT_FOUND
+#### fbinstant.ERROR_LEADERBOARD_WRONG_CONTEXT
+#### fbinstant.ERROR_NETWORK_FAILURE
+#### fbinstant.ERROR_PAYMENTS_NOT_INITIALIZED
+#### fbinstant.ERROR_PENDING_REQUEST
+#### fbinstant.ERROR_SAME_CONTEXT
+#### fbinstant.ERROR_UNKNOWN
+#### fbinstant.ERROR_USER_INPUT
 
 
 # Tic Tac Toe example

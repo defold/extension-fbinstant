@@ -47,6 +47,20 @@ fbinstant.ERROR_ADS_FREQUENT_LOAD = "ADS_FREQUENT_LOAD"
 fbinstant.ERROR_ADS_NO_FILL = "ADS_NO_FILL"
 fbinstant.ERROR_ADS_NOT_LOADED = "ADS_NOT_LOADED"
 fbinstant.ERROR_ADS_TOO_MANY_INSTANCES = "ADS_TOO_MANY_INSTANCES"
+fbinstant.ERROR_RATE_LIMITED = "RATE_LIMITED"
+fbinstant.ERROR_INVALID_PARAM = "INVALID_PARAM"
+fbinstant.ERROR_ANALYTICS_POST_EXCEPTION = "ANALYTICS_POST_EXCEPTION"
+fbinstant.ERROR_CLIENT_REQUIRES_UPDATE = "CLIENT_REQUIRES_UPDATE"
+fbinstant.ERROR_CLIENT_UNSUPPORTED_OPERATION = "CLIENT_UNSUPPORTED_OPERATION"
+fbinstant.ERROR_INVALID_OPERATION = "INVALID_OPERATION"
+fbinstant.ERROR_LEADERBOARD_NOT_FOUND = "LEADERBOARD_NOT_FOUND"
+fbinstant.ERROR_LEADERBOARD_WRONG_CONTEXT = "LEADERBOARD_WRONG_CONTEXT"
+fbinstant.ERROR_NETWORK_FAILURE = "NETWORK_FAILURE"
+fbinstant.ERROR_PAYMENTS_NOT_INITIALIZED = "PAYMENTS_NOT_INITIALIZED"
+fbinstant.ERROR_PENDING_REQUEST = "PENDING_REQUEST"
+fbinstant.ERROR_SAME_CONTEXT = "SAME_CONTEXT"
+fbinstant.ERROR_UNKNOWN = "UNKNOWN"
+fbinstant.ERROR_USER_INPUT = "USER_INPUT"
 
 local player_data = {}
 
@@ -682,6 +696,9 @@ function fbinstant.get_leaderboard_entries(name, count, offset, cb)
 	cb(get_self(), rxijson.encode(entries))
 end
 
+--------------------------------
+--------------- IAP
+--------------------------------
 
 local function get_product(product_id)
 	for _,product in pairs(fbinstant.PRODUCTS) do
@@ -738,7 +755,26 @@ function fbinstant.consume_purchase(purchase_token, callback)
 	callback(get_self(), false)
 end
 
+--------------------------------
+--------------- SESSION SCORE
+--------------------------------
 
 function fbinstant.post_session_score(score)
 	print("post_session_score", score)
 end
+
+
+--------------------------------
+--------------- MATCHMAKING
+--------------------------------
+
+function fbinstant.match_player(match_tag, switch_context_when_matched, offline_match, callback)
+	print("match_player", match_tag, switch_context_when_matched, offline_match)
+	callback(get_self(), nil)
+end
+
+function fbinstant.check_can_player_match_async(callback)
+	print("check_can_player_match_async")
+	callback(get_self(), true)
+end
+

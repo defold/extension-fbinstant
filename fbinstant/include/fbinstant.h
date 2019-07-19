@@ -47,6 +47,8 @@ typedef void (*OnProductCatalogCallback)(const char* productCatalog);
 typedef void (*OnPurchaseResponseCallback)(const char* purchase);
 typedef void (*OnPurchaseConsumedCallback)(const int success);
 typedef void (*OnPurchasesCallback)(const char* purchases);
+typedef void (*OnCheckCanPlayerMatchAsyncCallback)(const int canMatch, const char* error);
+typedef void (*OnMatchPlayerAsyncCallback)(const char* error);
 
 extern "C" {
     void FBInstant_PlatformInitializeAsync(OnInitializedCallback callback);
@@ -133,6 +135,9 @@ extern "C" {
     void FBInstant_PlatformConsumePurchaseAsync(OnPurchaseConsumedCallback callback, const char* purchaseToken);
 
     void FBInstant_PlatformPostSessionScore(const int score);
+
+    void FBInstant_PlatformMatchPlayerAsync(OnMatchPlayerAsyncCallback callback, const char* matchTag, const int switchContextWhenMatched, const int offlineMatch);
+    void FBInstant_PlatformCheckCanPlayerMatchAsync(OnCheckCanPlayerMatchAsyncCallback callback);
 }
 
 #endif

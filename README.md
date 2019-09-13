@@ -508,7 +508,7 @@ Log an app event with FB Analytics.
 
 **PARAMETERS**
 * ```event_name``` (string) - Name of the event (refer to the [Javascript API](https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.0) for event name limitations)
-* ```value_to_sum``` (number) - An numeric value that FB Analytics can calculate a sum with.
+* ```value_to_sum``` (number|nil) - An numeric value that FB Analytics can calculate a sum with.
 * ```parameters``` (string) - JSON encoded object of key value pairs (refer to the [Javascript API](https://developers.facebook.com/docs/games/instant-games/sdk/fbinstant6.0) for parameter limitations)
 
 

@@ -13,6 +13,8 @@ Or point to the ZIP file of a [specific release](https://github.com/defold/exten
 
 ## 2. Preparing index.html
 
+Configure your `game.project` HTML5 section according to the [manual](https://defold.com/manuals/html5/).
+
 ### 2.1 Report loading progress
 Facebook Instant Games can show the progress while the game is loaded. It is quite easy to set this up for a Defold game. All that is required is to override the Progress.updateProgress() function and pass along the value to the Instant Games API (this is done for you [in the default index.html](https://github.com/defold/extension-fbinstant/blob/master/fbinstant/index.html#L68-L71) provided with this extension):
 

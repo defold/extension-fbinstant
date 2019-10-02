@@ -1,0 +1,31 @@
+<html>
+<head>
+    <style>
+
+    .canvas-app-progress {
+        visibility: hidden;
+    }
+
+    .canvas-app-progress-bar {
+        visibility: hidden;
+    }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+    <script src="https://connect.facebook.net/en_US/fbinstant.6.3.js"></script>
+    <script type='text/javascript'>
+        // Set up a progress listener and feed progress to FBInstant
+        Progress.updateProgress = function (percentage, text) {
+            FBInstant.setLoadingProgress(percentage);
+        }
+
+        // Do early initialization of FBInstant
+        // This is required to be able to properly update the loading
+        // progress above.
+        FBInstant.initializeAsync().then(function() {
+            // This will be checked by the FBInstant Defold extension
+    		Module._fbinstant_inited = true;
+    	});
+    </script>
+</body>
+</html>

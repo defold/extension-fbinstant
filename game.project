@@ -17,9 +17,6 @@ height = 1136
 [script]
 shared_state = 1
 
-[html5]
-htmlfile = /fbinstant/index.html
-
 [library]
 include_dirs = fbinstant
 
@@ -29,9 +26,11 @@ app_manifest = /tictactoe/tictactoe.appmanifest
 [graphics]
 texture_profiles = /tictactoe/tictactoe.texture_profiles
 
-[fb_instant]
-stretch_canvas = 0
-
 [collection_proxy]
 max_count = 9
+
+[html5]
+scale_mode = stretch
+show_fullscreen_button = 0
+show_made_with_defold = 0
 

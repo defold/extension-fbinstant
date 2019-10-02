@@ -12,7 +12,6 @@ https://github.com/defold/extension-fbinstant/archive/master.zip
 Or point to the ZIP file of a [specific release](https://github.com/defold/extension-fbinstant/releases).
 
 ## 2. Preparing index.html
-Before the extension can be used you need to add the Facebook Instant Games API to the index.html of your game. [Refer to the index.html in the root of this project](https://github.com/defold/extension-fbinstant/blob/master/fbinstant/index.html#L58) for an example of this.
 
 ### 2.1 Report loading progress
 Facebook Instant Games can show the progress while the game is loaded. It is quite easy to set this up for a Defold game. All that is required is to override the Progress.updateProgress() function and pass along the value to the Instant Games API (this is done for you [in the default index.html](https://github.com/defold/extension-fbinstant/blob/master/fbinstant/index.html#L68-L71) provided with this extension):
@@ -36,15 +35,6 @@ It has been observed that the progress updates do not work properly on Android. 
 		Module._fbinstant_inited = true;
 	});
 ```
-### 2.3 game.project options
-Add the following lines to your game.project file:
-```
-[fb_instant]
-stretch_canvas = 1
-```
-`stretch_canvas = 0` if you want to fit canvas into the browser window bounds.
-
-`stretch_canvas = 1` if you want to stretch canvas.
 
 ## 3. Create a Facebook App
 You also need to create a Facebook App where Instant Games is enabled. Please refer to the [Getting Started documentation](https://developers.facebook.com/docs/games/instant-games/getting-started) on the Instant Games page for further instructions.

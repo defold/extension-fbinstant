@@ -19,12 +19,6 @@ typedef void (*OnPauseCallback)();
 typedef void (*OnContextCallback)(const char* id, const char* type);
 typedef void (*OnGetPlayersInContext)(int count);
 typedef void (*OnEntryPointCallback)(const char* entrypoint);
-typedef void (*OnStoreCreatedCallback)(const char* storeId);
-typedef void (*OnStoreClosedCallback)(const int success);
-typedef void (*OnStoresCallback)(const char* stores);
-typedef void (*OnStoreDataCallback)(const char* data);
-typedef void (*OnStoreDataSavedCallback)(const int success);
-typedef void (*OnStoreDataIncrementedCallback)(const char* data);
 typedef void (*OnInterstitialAdCallback)(const char* adId, const char* error);
 typedef void (*OnInterstitialAdLoadedCallback)(const int success, const char* error);
 typedef void (*OnInterstitialAdShownCallback)(const int success, const char* error);
@@ -106,13 +100,6 @@ extern "C" {
     char* FBInstant_PlatformGetPlayerIdInContext(const int index);
     char* FBInstant_PlatformGetPlayerNameInContext(const int index);
     char* FBInstant_PlatformGetPlayerPhotoInContext(const int index);
-
-    void FBInstant_PlatformCreateStoreAsync(OnStoreCreatedCallback callback, const char* storeName);
-    void FBInstant_PlatformCloseStoreAsync(OnStoreClosedCallback callback, const char* storeName);
-    void FBInstant_PlatformGetStoresAsync(OnStoresCallback callback);
-    void FBInstant_PlatformGetStoreDataAsync(OnStoreDataCallback callback, const char* storeName, const char* keysJson);
-    void FBInstant_PlatformSaveStoreDataAsync(OnStoreDataSavedCallback callback, const char* storeName, const char* dataJson);
-    void FBInstant_PlatformIncrementStoreDataAsync(OnStoreDataIncrementedCallback callback, const char* storeName, const char* dataJson);
 
     void FBInstant_PlatformGetInterstitialAdAsync(OnInterstitialAdCallback callback, const char* placementId);
     void FBInstant_PlatformLoadInterstitialAdAsync(OnInterstitialAdLoadedCallback callback, const char* adId);

@@ -1700,9 +1700,6 @@ static void LuaInit(lua_State* L) {
 	lua_setfieldstringstring(L, "FILTER_INCLUDE_EXISTING_CHALLENGES", "INCLUDE_EXISTING_CHALLENGES");
 	lua_setfieldstringstring(L, "FILTER_NEW_PLAYERS_ONLY", "NEW_PLAYERS_ONLY");
 
-	lua_setfieldstringstring(L, "STORE_ACTIVE", "ACTIVE");
-	lua_setfieldstringstring(L, "STORE_ENDED", "ENDED");
-
 	lua_setfieldstringstring(L, "ERROR_ADS_FREQUENT_LOAD", "ADS_FREQUENT_LOAD");
 	lua_setfieldstringstring(L, "ERROR_ADS_NO_FILL", "ADS_NO_FILL");
 	lua_setfieldstringstring(L, "ERROR_ADS_NOT_LOADED", "ADS_NOT_LOADED");

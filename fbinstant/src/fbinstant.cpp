@@ -909,7 +909,13 @@ static int FBInstant_LogEvent(lua_State* L) {
 	if(lua_isnumber(L, 2)) {
 		valueToSum = luaL_checknumber(L, 2);
 	}
-	const char* parametersJson = luaL_checkstring(L, 3);
+	const char* parametersJson;
+	if (lua_isstring(L, 3)) {
+		parametersJson = luaL_checkstring(L, 3);
+	}
+	else {
+		parametersJson = "";
+	}
 	FBInstant_PlatformLogEvent(eventName, valueToSum, parametersJson);
 
 	assert(top == lua_gettop(L));

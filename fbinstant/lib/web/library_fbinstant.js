@@ -634,7 +634,7 @@ var FBInstantLibrary = {
             Utils.dynCall(callback, [id, 0]);
         }).catch(function(err) {
             console.log("FBInstant_PlatformGetInterstitialAdAsync - error: " + err.message);
-            Utils.dynCall(callback, [1, err.code]);
+            Utils.dynCall(callback, [0, err.code]);
         });
     },
     FBInstant_PlatformLoadInterstitialAdAsync: function(callback, cid) {
@@ -680,7 +680,7 @@ var FBInstantLibrary = {
             Utils.dynCall(callback, [id, 0]);
         }).catch(function(err) {
             console.log("FBInstant_PlatformGetRewardedVideoAsync - error: " + err.message);
-            Utils.dynCall(callback, [1, err.code]);
+            Utils.dynCall(callback, [0, err.code]);
         });
     },
     FBInstant_PlatformLoadRewardedVideoAsync: function(callback, cid) {

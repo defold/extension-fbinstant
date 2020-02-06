@@ -181,7 +181,7 @@ The ```callback``` function is expected to accept the following values:
 
 
 ### fbinstant.get_connected_players(callback)
-Get an list of players that are connected to the current player.
+Get a list of players that are connected to the current player.
 
 **PARAMETERS**
 * ```callback``` (function) - Function to call with the list of connected players

@@ -434,7 +434,9 @@ https://developers.facebook.com/docs/games/instant-games/sdk
 
 **EXAMPLE**
 ```
-if fbinstant.get_supported_apis()["getInterstitialAdAsync"] then
+local apis_json = fbinstant.get_supported_apis()
+local apis = json.decode(apis_json)
+if apis["getInterstitialAdAsync"] then
     -- load/show interstitial
 end
 ```

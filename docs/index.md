@@ -508,7 +508,9 @@ https://developers.facebook.com/docs/games/instant-games/sdk
 
 **EXAMPLE**
 ```
-if fbinstant.get_supported_apis()["getInterstitialAdAsync"] then
+local apis_json = fbinstant.get_supported_apis()
+local apis = json.decode(apis_json)
+if apis["getInterstitialAdAsync"] then
     -- load/show interstitial
 end
 ```
@@ -816,7 +818,7 @@ Each entry in ```purchases``` contains:
 
 * ```developer_payload``` (string) - A developer-specified string, provided during the purchase of the product
 * ```payment_id``` (string) - The identifier for the purchase transaction
-* ```product_id``` (string) - The product description
+* ```product_id``` (string) - The identifier of the purchased product
 * ```purchase_time``` (string) - Unix timestamp of when the purchase occurred
 * ```purchase_token``` (string) - A token representing the purchase that may be used to consume the purchase
 * ```signed_request``` (string) - Server-signed encoding of the purchase request

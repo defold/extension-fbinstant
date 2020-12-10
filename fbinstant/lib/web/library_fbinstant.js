@@ -123,7 +123,7 @@ var FBInstantLibrary = {
     // UpdateAsync
     // =====================================
     FBInstant_PlatformUpdateAsync: function(callback, cpayloadjson) {
-        var payloadjson = Pointer_stringify(cpayloadjson);
+        var payloadjson =  UTF8ToString(cpayloadjson);
         var payload = JSON.parse(payloadjson);
         FBInstant.updateAsync(payload).then(function() {
             dynCall("vi", callback, [1]);
@@ -138,7 +138,7 @@ var FBInstantLibrary = {
     // GetSignedPlayerInfoAsync
     // =====================================
     FBInstant_PlatformGetSignedPlayerInfoAsync: function(callback, cpayload) {
-        var payload = Pointer_stringify(cpayload);
+        var payload =  UTF8ToString(cpayload);
         FBInstant.player.getSignedPlayerInfoAsync(payload).then(function(result) {
             Utils.dynCall(callback, [result.getSignature()]);
         }).catch(function(err) {
@@ -152,7 +152,7 @@ var FBInstantLibrary = {
     // Get/Set/Flush PlayerData
     // =====================================
     FBInstant_PlatformGetPlayerDataAsync: function(callback, ckeysjson) {
-        var keysJson = Pointer_stringify(ckeysjson);
+        var keysJson =  UTF8ToString(ckeysjson);
         var keys = JSON.parse(keysJson);
         FBInstant.player.getDataAsync(keys).then(function(data) {
             Utils.dynCall(callback, [JSON.stringify(data)]);
@@ -162,7 +162,7 @@ var FBInstantLibrary = {
         });
     },
     FBInstant_PlatformSetPlayerDataAsync: function(callback, cdatajson) {
-        var datajson = Pointer_stringify(cdatajson);
+        var datajson =  UTF8ToString(cdatajson);
         var data = JSON.parse(datajson);
         FBInstant.player.setDataAsync(data).then(function() {
             dynCall("vi", callback, [1]);
@@ -185,7 +185,7 @@ var FBInstantLibrary = {
     // Get/Set/Increment PlayerStats
     // =====================================
     FBInstant_PlatformGetPlayerStatsAsync: function(callback, ckeysjson) {
-        var keysJson = Pointer_stringify(ckeysjson);
+        var keysJson =  UTF8ToString(ckeysjson);
         var keys = keysJson != "" ? JSON.parse(keysJson) : null;
         FBInstant.player.getStatsAsync(keys).then(function(stats) {
             Utils.dynCall(callback, [JSON.stringify(stats)]);
@@ -195,7 +195,7 @@ var FBInstantLibrary = {
         });
     },
     FBInstant_PlatformSetPlayerStatsAsync: function(callback, cjson) {
-        var json = Pointer_stringify(cjson);
+        var json =  UTF8ToString(cjson);
         var stats = JSON.parse(json);
         FBInstant.player.setStatsAsync(stats).then(function() {
             dynCall("vi", callback, [1]);
@@ -205,7 +205,7 @@ var FBInstantLibrary = {
         });
     },
     FBInstant_PlatformIncrementPlayerStatsAsync: function(callback, cjson) {
-        var json = Pointer_stringify(cjson);
+        var json =  UTF8ToString(cjson);
         var increments = JSON.parse(json);
         FBInstant.player.incrementStatsAsync(increments).then(function(stats) {
             Utils.dynCall(callback, [JSON.stringify(stats)]);
@@ -242,7 +242,7 @@ var FBInstantLibrary = {
     // SetSessionData
     // =====================================
     FBInstant_PlatformSetSessionData: function(cjson) {
-        var json = Pointer_stringify(cjson);
+        var json =  UTF8ToString(cjson);
         var sessionData = JSON.parse(json);
         FBInstant.setSessionData(sessionData);
     },
@@ -265,8 +265,8 @@ var FBInstantLibrary = {
     // SwitchGameAsync
     // =====================================
     FBInstant_PlatformSwitchGameAsync: function(cappId, cdataJson, callback) {
-        var appId = Pointer_stringify(cappId);
-        var dataJson = Pointer_stringify(cdataJson);
+        var appId =  UTF8ToString(cappId);
+        var dataJson =  UTF8ToString(cdataJson);
         var data = dataJson != "" ? JSON.parse(dataJson) : null;
         FBInstant.switchGameAsync(appId, data).then(function() {
             dynCall("vi", callback, [1]);
@@ -401,7 +401,7 @@ var FBInstantLibrary = {
     // ChooseContextAsync
     // =====================================
     FBInstant_PlatformChooseContextAsync: function(callback, coptionsJson) {
-        var optionsJson = Pointer_stringify(coptionsJson);
+        var optionsJson =  UTF8ToString(coptionsJson);
         var options = optionsJson != "" ? JSON.parse(optionsJson) : null;
         FBInstant.context.chooseAsync(options).then(function() {
             var ctxId = FBInstant.context.getID();
@@ -418,7 +418,7 @@ var FBInstantLibrary = {
     // CreateContextAsync
     // =====================================
     FBInstant_PlatformCreateContextAsync: function(callback, cplayerId) {
-        var playerId = Pointer_stringify(cplayerId);
+        var playerId =  UTF8ToString(cplayerId);
         FBInstant.context.createAsync(playerId).then(function() {
             var ctxId = FBInstant.context.getID();
             var ctxType = FBInstant.context.getType();
@@ -434,7 +434,7 @@ var FBInstantLibrary = {
     // SwitchContextAsync
     // =====================================
     FBInstant_PlatformSwitchContextAsync: function(callback, ccontextId) {
-        var contextId = Pointer_stringify(ccontextId);
+        var contextId =  UTF8ToString(ccontextId);
         FBInstant.context.createAsync(contextId).then(function() {
             var ctxId = FBInstant.context.getID();
             var ctxType = FBInstant.context.getType();
@@ -589,8 +589,8 @@ var FBInstantLibrary = {
     // LogEvent
     // =====================================
     FBInstant_PlatformLogEvent: function(ceventName, valueToSum, cparametersJson) {
-        var eventName = Pointer_stringify(ceventName);
-        var parametersJson = Pointer_stringify(cparametersJson);
+        var eventName =  UTF8ToString(ceventName);
+        var parametersJson =  UTF8ToString(cparametersJson);
         var parameters = JSON.parse(parametersJson);
         var logged = FBInstant.logEvent(eventName, valueToSum, parameters);
         if (logged != null) {
@@ -613,7 +613,7 @@ var FBInstantLibrary = {
     // ShareAsync
     // =====================================
     FBInstant_PlatformShareAsync: function(callback, cpayloadJson) {
-        var payloadJson = Pointer_stringify(cpayloadJson);
+        var payloadJson =  UTF8ToString(cpayloadJson);
         var payload = JSON.parse(payloadJson);
         FBInstant.shareAsync(payload).then(function() {
             dynCall("vi", callback, [1]);
@@ -628,7 +628,7 @@ var FBInstantLibrary = {
     // Interstitial Ads
     // =====================================
     FBInstant_PlatformGetInterstitialAdAsync: function(callback, cplacementId) {
-        var placementId = Pointer_stringify(cplacementId);
+        var placementId =  UTF8ToString(cplacementId);
         FBInstant.getInterstitialAdAsync(placementId).then(function(interstitial) {
             var id = Ads.insert(placementId, interstitial);
             Utils.dynCall(callback, [id, 0]);
@@ -638,7 +638,7 @@ var FBInstantLibrary = {
         });
     },
     FBInstant_PlatformLoadInterstitialAdAsync: function(callback, cid) {
-        var id = Pointer_stringify(cid);
+        var id =  UTF8ToString(cid);
         var adInstance = Ads.find(id);
         if (!adInstance) {
             console.log("FBInstant_PlatformLoadInterstitialAdAsync - unable to find ad with id: " + id);
@@ -653,7 +653,7 @@ var FBInstantLibrary = {
         });
     },
     FBInstant_PlatformShowInterstitialAdAsync: function(callback, cid) {
-        var id = Pointer_stringify(cid);
+        var id =  UTF8ToString(cid);
         var adInstance = Ads.remove(id);
         if (!adInstance) {
             console.log("FBInstant_PlatformShowInterstitialAdAsync - unable to find ad with id: " + id);
@@ -674,7 +674,7 @@ var FBInstantLibrary = {
     // Rewarded Ads
     // =====================================
     FBInstant_PlatformGetRewardedVideoAsync: function(callback, cplacementId) {
-        var placementId = Pointer_stringify(cplacementId);
+        var placementId =  UTF8ToString(cplacementId);
         FBInstant.getRewardedVideoAsync(placementId).then(function(rewarded) {
             var id = Ads.insert(placementId, rewarded);
             Utils.dynCall(callback, [id, 0]);
@@ -684,7 +684,7 @@ var FBInstantLibrary = {
         });
     },
     FBInstant_PlatformLoadRewardedVideoAsync: function(callback, cid) {
-        var id = Pointer_stringify(cid);
+        var id =  UTF8ToString(cid);
         var adInstance = Ads.find(id);
         if (!adInstance) {
             console.log("FBInstant_PlatformLoadRewardedVideoAsync - unable to find ad with id: " + id);
@@ -699,7 +699,7 @@ var FBInstantLibrary = {
         });
     },
     FBInstant_PlatformShowRewardedVideoAsync: function(callback, cid) {
-        var id = Pointer_stringify(cid);
+        var id =  UTF8ToString(cid);
         var adInstance = Ads.remove(id);
         if (!adInstance) {
             console.log("FBInstant_PlatformShowRewardedVideoAsync - unable to find ad with id: " + id);
@@ -719,7 +719,7 @@ var FBInstantLibrary = {
     // Leaderboard
     // =====================================
     FBInstant_PlatformGetLeaderboardAsync: function(callback, cname) {
-        var name = Pointer_stringify(cname);
+        var name =  UTF8ToString(cname);
         var contextId;
         FBInstant.getLeaderboardAsync(name).then(function(leaderboard) {
             contextId = leaderboard.getContextID();
@@ -732,8 +732,8 @@ var FBInstantLibrary = {
         });
     },
     FBInstant_PlatformSetLeaderboardScoreAsync: function(callback, cname, score, cextraData) {
-        var name = Pointer_stringify(cname);
-        var extraData = Pointer_stringify(cextraData);
+        var name =  UTF8ToString(cname);
+        var extraData =  UTF8ToString(cextraData);
         FBInstant.getLeaderboardAsync(name).then(function(leaderboard) {
             return leaderboard.setScoreAsync(score, extraData);
         }).then(function(entry) {
@@ -744,7 +744,7 @@ var FBInstantLibrary = {
         });
     },
     FBInstant_PlatformGetLeaderboardScoreAsync: function(callback, cname) {
-        var name = Pointer_stringify(cname);
+        var name =  UTF8ToString(cname);
         FBInstant.getLeaderboardAsync(name).then(function(leaderboard) {
             return leaderboard.getPlayerEntryAsync();
         }).then(function(entry) {
@@ -755,7 +755,7 @@ var FBInstantLibrary = {
         });
     },
     FBInstant_PlatformGetLeaderboardEntriesAsync: function(callback, cname, count, offset) {
-        var name = Pointer_stringify(cname);
+        var name =  UTF8ToString(cname);
         FBInstant.getLeaderboardAsync(name).then(function(leaderboard) {
             return leaderboard.getEntriesAsync(count, offset);
         }).then(function(entries) {
@@ -780,7 +780,7 @@ var FBInstantLibrary = {
         });
     },
     FBInstant_PlatformGetLeaderboardConnectedPlayerEntriesAsync: function(callback, cname, count, offset) {
-        var name = Pointer_stringify(cname);
+        var name =  UTF8ToString(cname);
         FBInstant.getLeaderboardAsync(name).then(function(leaderboard) {
             return leaderboard.getConnectedPlayerEntriesAsync(count, offset);
         }).then(function(entries) {
@@ -847,8 +847,8 @@ var FBInstantLibrary = {
     // =====================================
     FBInstant_PlatformPurchaseAsync: function(callback, cproductId, cdeveloperPayload) {
         var purchaseConfig = {
-            productID: Pointer_stringify(cproductId),
-            developerPayload: Pointer_stringify(cdeveloperPayload),
+            productID:  UTF8ToString(cproductId),
+            developerPayload:  UTF8ToString(cdeveloperPayload),
         };
         FBInstant.payments.purchaseAsync(purchaseConfig).then(function(purchase) {
             var result = Utils.convertPurchase(purchase);
@@ -885,7 +885,7 @@ var FBInstantLibrary = {
     // ConsumePurchaseAsync
     // =====================================
     FBInstant_PlatformConsumePurchaseAsync: function(callback, cpurchaseToken) {
-        var purchaseToken = Pointer_stringify(cpurchaseToken);
+        var purchaseToken =  UTF8ToString(cpurchaseToken);
         FBInstant.payments.consumePurchaseAsync(purchaseToken).then(function() {
             dynCall("vi", callback, [1]);
         }).catch(function(err) {
@@ -906,7 +906,7 @@ var FBInstantLibrary = {
     // MatchPlayerAsync
     // =====================================
     FBInstant_PlatformMatchPlayerAsync: function(callback, cmatchTag, cswitchContextWhenMatched, cofflineMatch) {
-        var matchTag = Pointer_stringify(cmatchTag);
+        var matchTag =  UTF8ToString(cmatchTag);
         if (matchTag == "") {
             matchTag = null;
         }

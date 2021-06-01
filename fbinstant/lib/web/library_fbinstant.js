@@ -5,7 +5,7 @@ var FBInstantLibrary = {
     $Context: {
         players: [],
         setPlayers: function(players_to_set) {
-            Context.players = {};
+            Context.players = [];
             for (var i=0; i<players_to_set.length; i++) {
                 player = players_to_set[i];
                 Context.players.push({

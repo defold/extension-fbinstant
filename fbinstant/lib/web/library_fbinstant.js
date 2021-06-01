@@ -20,7 +20,7 @@ var FBInstantLibrary = {
     $Utils: {
         strings: {},
         allocateString: function(str) {
-            return allocate(intArrayFromString(str), "i8", ALLOC_STACK);
+            return allocate(intArrayFromString(str), ALLOC_STACK);
         },
         convertPurchase: function(purchase) {
             return {

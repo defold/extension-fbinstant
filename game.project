@@ -1,11 +1,12 @@
 [project]
 title = XOXO
-dependencies = https://github.com/britzl/gooey/archive/6.5.0.zip,https://github.com/britzl/monarch/archive/2.13.0.zip
 bundle_resources = /bundle_resources
 bundle_exclude_resources = 
+dependencies#0 = https://github.com/britzl/gooey/archive/6.5.0.zip
+dependencies#1 = https://github.com/britzl/monarch/archive/2.13.0.zip
 
 [bootstrap]
-main_collection = /tictactoe/tictactoe.collectionc
+main_collection = /examples/balls/balls.collectionc
 
 [input]
 game_binding = /input/game.input_bindingc
@@ -20,11 +21,8 @@ shared_state = 1
 [library]
 include_dirs = fbinstant
 
-[native_extension]
-app_manifest = /tictactoe/tictactoe.appmanifest
-
 [graphics]
-texture_profiles = /tictactoe/tictactoe.texture_profiles
+texture_profiles = /examples/tictactoe/tictactoe.texture_profiles
 
 [collection_proxy]
 max_count = 9
@@ -33,4 +31,11 @@ max_count = 9
 scale_mode = stretch
 show_fullscreen_button = 0
 show_made_with_defold = 0
+
+[physics]
+gravity_y = -600.0
+scale = 0.02
+
+[facebook]
+appid = 230721801871234
 

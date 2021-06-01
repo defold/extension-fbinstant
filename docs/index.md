@@ -12,19 +12,19 @@ Instant Games is a new way for people to play games across Facebook platforms. P
 
 ## Installation
 
-### 1. Add project dependencies
+### 1. Add project dependencies - REQUIRED
 You can use the extension in your own project by adding this project as a [Defold library dependency](http://www.defold.com/manuals/libraries/). Open your game.project file and in the dependencies field under project add:
 
-https://github.com/defold/extension-fbinstant/archive/master.zip
+[https://github.com/defold/extension-fbinstant/archive/master.zip](https://github.com/defold/extension-fbinstant/archive/master.zip)
 
 Or point to the ZIP file of a [specific release](https://github.com/defold/extension-fbinstant/releases).
 
 
-### 2. Preparing index.html
+### 2. Preparing index.html - REQUIRED
 
 Configure your `game.project` HTML5 section according to the [manual](https://defold.com/manuals/html5/).
 
-#### 2.1 Report loading progress
+#### 2.1 Report loading progress - OPTIONAL
 Facebook Instant Games can show the progress while the game is loaded. It is quite easy to set this up for a Defold game. All that is required is to override the Progress.updateProgress() function and pass along the value to the Instant Games API (this is done for you [in the default index.html](https://github.com/defold/extension-fbinstant/blob/master/fbinstant/index.html#L68-L71) provided with this extension):
 
 ```
@@ -34,7 +34,7 @@ Facebook Instant Games can show the progress while the game is loaded. It is qui
 	}
 ```
 
-#### 2.2 Early API initialization
+#### 2.2 Early API initialization - OPTIONAL
 It has been observed that the progress updates do not work properly on Android. The progress stays at 0 and immediately jumps to 100 when the game has finished loaded. This seems to be caused by the Instant Games API not being initialized until after the game has loaded. In order to avoid this it is recommended to initialize the Instant Games API and flag this to the extension (this is done for you [in the default index.html](https://github.com/defold/extension-fbinstant/blob/master/fbinstant/index.html#L73-L79) provided with this extension):
 
 ```Lua
@@ -48,11 +48,11 @@ It has been observed that the progress updates do not work properly on Android. 
 ```
 
 
-### 3. Create a Facebook App
+### 3. Create a Facebook App - REQUIRED
 You also need to create a Facebook App in the [Facebook App Dashboard](https://developers.facebook.com/apps) where Instant Games is enabled. Please refer to the [Getting Started documentation](https://developers.facebook.com/docs/games/instant-games/getting-started) on the Instant Games page for further instructions.
 
 
-### 4. Create a Bundle Configuration file (optional)
+### 4. Create a Bundle Configuration file - OPTIONAL
 You can include an `fbapp-config.json` configuration file in the application bundle that you publish. The file is put in the root directory of your bundle to specify settings for your application. These settings will apply to all users who the bundle is served to. This enables you to launch different bundles along with different application settings to different audiences. Read more about the format [here](https://developers.facebook.com/docs/games/instant-games/sdk/bundle-config).
 
 Defold can automatically include this file in the HTML5 bundle using the [Bundle Resources setting](https://www.defold.com/manuals/project-settings/#_project) in `game.project`. Create a folder in your project to hold the configuration file:
@@ -92,9 +92,6 @@ end)
 #### From promises to callbacks
 The async API functions are [Promise based](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) in Javascript while the Lua counterparts are callback based.
 
-### Missing API functions
-The Facebook Instant Games platform is still evolving and new APIs are added by Facebook quite frequently. This means that there's likely parts of the API that isn't yet provided by this extension. Refer to the [GitHub Issues tagged "Missing API"](https://github.com/defold/extension-fbinstant/issues?q=is%3Aissue+is%3Aopen+label%3A%22missing+api%22) for a list of know missing APIs.
-
 ### Facebook Instant Games and LiveUpdate
 The [LiveUpdate functionality of Defold](https://www.defold.com/manuals/live-update/) can be combined with Facebook Instant Games to create really small application bundles where additional content can be downloaded while the player is progressing through game. Combine the excluded content with the application bundle in a single zip file when [uploading to the web hosting provided by Facebook Instant Games](https://developers.facebook.com/docs/games/instant-games/test-publish-share#upload). When loading the excluded content you're required to load the content from the same base URL as the rest of the game is loaded from. There is a helper module that will get the base URL from the browser:
 
@@ -131,10 +128,13 @@ This process of excluding parts of the game content, storing it on a server and 
 The source code is available on [GitHub](https://github.com/defold/extension-fbinstant)
 
 
-## Example game
-The original Tic Tac Toe example game made in Phaser has been recreated in Defold to show how the API is supposed to be user. Refer to the [tictactoe folder](https://github.com/defold/extension-fbinstant/tree/master/tictactoe) for the example.
+## Examples
 
-![Tic Tac Toe](images/instant-games/tictactoe.png)
+### Balls game
+A bare bones "game" with code to initialize and end a Facebook Instant game session can be found in the [examples/balls folder](https://github.com/defold/extension-fbinstant/tree/master/examples/balls)
+
+### Tic Tac Toe game
+The original Tic Tac Toe example game made in Phaser has been recreated in Defold to show how the API is supposed to be user. Refer to the [tictactoe folder](https://github.com/defold/extension-fbinstant/tree/master/examples/tictactoe) for the example.
 
 The example has support for two different backends:
 
@@ -142,12 +142,9 @@ The example has support for two different backends:
 2. Node.js server - This stores the game state in a simple Node.js backend and a Postgres database. This is what the official Facebook Instant Games Tic Tac Toe example uses. The server code, created by a Facebook engineer, is located in the `tictactoe-server` folder. It's quite easy to get the server up an running on Heroku. Change `game.gui_script` so that it requires `tictactoe.game.data.heroku` to use this solution.
 
 
-## Known issues
-
-Refer to the [Known Issues section of the HTML5 manual](/manuals/html5/#known-issues-and-limitations) for known issues with HTML5 and Instant Games.
-
 
 ## API reference
+An example project with all APIs implemented can be found in the [examples/apis folder](https://github.com/defold/extension-fbinstant/tree/master/examples/apis)
 
 ## Lifecycle functions
 

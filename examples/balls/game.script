@@ -1,0 +1,75 @@
+local function log(message)
+	label.set_text("#message", message)
+end
+
+local function game_over(self)
+	log("Game over!")
+	if fbinstant then
+		fbinstant.quit()
+	end
+end
+
+local function remove_ball(self, id)
+	go.delete(id)
+	self.balls_to_collect = self.balls_to_collect - 1
+	if self.balls_to_collect == 0 then
+		msg.post("#", "release_input_focus")
+		game_over(self)
+	end
+end
+
+local function drop_ball(self, x)
+	if self.balls_to_drop > 0 then
+		log("")
+		factory.create("#ballfactory", vmath.vector3(x, 1200, 0))
+		self.balls_to_drop = self.balls_to_drop - 1
+		label.set_text("#balls", "BALLS: " .. self.balls_to_drop)
+	end
+end
+
+local function start_game(self)
+	log("Click to drop a ball")
+	self.balls_to_drop = 10
+	self.balls_to_collect = 10
+	label.set_text("#balls", "BALLS: " .. 10)
+	msg.post("#", "acquire_input_focus")
+end
+
+local function initialize_game(self)
+	fbinstant.initialize(function(self, success)
+		if not success then
+			log("ERROR! Unable to initialize FBInstant")
+			return
+		end
+
+		fbinstant.start_game(function(self, success)
+			if not success then
+				log("ERROR! Unable to start game")
+				return
+			end
+			start_game(self)
+		end)
+	end)
+end
+
+function init(self)
+	log("Starting game")
+	if fbinstant then
+		initialize_game(self)
+	else
+		start_game(self)
+	end
+	msg.post("@render:", "clear_color", { color = vmath.vector4(0.1, 0.1, 0.1, 1.0) })
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("collision_response") then
+		remove_ball(self, message.other_id)
+	end
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("touch") and action.pressed then
+		drop_ball(self, action.x)
+	end
+end

@@ -134,12 +134,7 @@ The source code is available on [GitHub](https://github.com/defold/extension-fbi
 A bare bones "game" with code to initialize and end a Facebook Instant game session can be found in the [examples/balls folder](https://github.com/defold/extension-fbinstant/tree/master/examples/balls)
 
 ### Tic Tac Toe game
-The original Tic Tac Toe example game made in Phaser has been recreated in Defold to show how the API is supposed to be user. Refer to the [tictactoe folder](https://github.com/defold/extension-fbinstant/tree/master/examples/tictactoe) for the example.
-
-The example has support for two different backends:
-
-1. Activity Store - This stores the game state using the Facebook Instant Games Activity Store API (2018-04-16: activity stores are currently disabled). Change `game.gui_script` so that it requires `tictactoe.game.data.activity_store` to use this solution.
-2. Node.js server - This stores the game state in a simple Node.js backend and a Postgres database. This is what the official Facebook Instant Games Tic Tac Toe example uses. The server code, created by a Facebook engineer, is located in the `tictactoe-server` folder. It's quite easy to get the server up an running on Heroku. Change `game.gui_script` so that it requires `tictactoe.game.data.heroku` to use this solution.
+A Tic Tac Toe game is [available in a separate repository](https://github.com/defold/game-xoxo-fbinstant).
 
 
 

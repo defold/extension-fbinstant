@@ -1,2 +1,0 @@
-# Instant Games server for XOXO example game
-The XOXO example shipped with this extension supports game state persistence using both a server and the now deprecated Activity Store API. The server protocol is the same as that used by the official Facebook Instant Games example. Download the server code from the Instant Games Quickstart guide: https://developers.facebook.com/docs/games/instant-games/getting-started/quickstart

@@ -61,8 +61,6 @@ fbinstant.ERROR_USER_INPUT = "USER_INPUT"
 
 local player_data = {}
 
-local entry_point_data = {}
-
 local session_data = {}
 
 local player_stats = {}
@@ -71,7 +69,7 @@ local leaderboards = {}
 
 local purchases = {}
 
-
+fbinstant.ENTRY_POINT_DATA = {}
 fbinstant.PLAYER = {}
 fbinstant.PLAYERS = {}
 fbinstant.CONNECTED_PLAYERS = {}
@@ -217,7 +215,7 @@ end
 
 function fbinstant.get_entry_point_data()
 	print("get_entry_point_data")
-	return rxijson.encode(entry_point_data)
+	return rxijson.encode(fbinstant.ENTRY_POINT_DATA)
 end
 
 function fbinstant.get_entry_point(cb)

@@ -1,5 +1,5 @@
 [project]
-title = XOXO
+title = FBInstant
 bundle_resources = /bundle_resources
 bundle_exclude_resources = 
 dependencies#0 = https://github.com/britzl/gooey/archive/6.5.0.zip

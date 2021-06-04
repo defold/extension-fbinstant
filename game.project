@@ -21,9 +21,6 @@ shared_state = 1
 [library]
 include_dirs = fbinstant
 
-[graphics]
-texture_profiles = /examples/tictactoe/tictactoe.texture_profiles
-
 [collection_proxy]
 max_count = 9
 

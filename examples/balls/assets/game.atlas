@@ -1,9 +1,9 @@
 images {
-  image: "/examples/balls/images/pin.png"
+  image: "/examples/balls/assets/images/pin.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/examples/balls/images/ball.png"
+  image: "/examples/balls/assets/images/ball.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 margin: 0

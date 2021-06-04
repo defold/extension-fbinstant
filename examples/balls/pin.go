@@ -1,7 +1,7 @@
 embedded_components {
   id: "sprite"
   type: "sprite"
-  data: "tile_set: \"/examples/balls/game.atlas\"\n"
+  data: "tile_set: \"/examples/balls/assets/game.atlas\"\n"
   "default_animation: \"pin\"\n"
   "material: \"/builtins/materials/sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"

@@ -1,6 +1,6 @@
 local dirtylarry = require "gooey.themes.dirtylarry.dirtylarry"
 local json = require "fbinstant.utils.json"
-local prettify = require "apitester.prettify"
+local prettify = require "examples.apis.prettify"
 local monarch = require "monarch.monarch"
 
 

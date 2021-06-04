@@ -1,8 +1,8 @@
 local dirtylarry = require "gooey.themes.dirtylarry.dirtylarry"
 local json = require "fbinstant.utils.json"
-local prettify = require "apitester.prettify"
+local prettify = require "examples.apis.prettify"
 local monarch = require "monarch.monarch"
-local popup = require "apitester.popup.popup"
+local popup = require "examples.apis.popup.popup"
 
 local function set_result(result)
 	gui.set_text(gui.get_node("result"), result)

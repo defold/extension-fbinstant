@@ -1,10 +1,10 @@
-name: "default"
+name: "apis"
 scale_along_z: 0
 embedded_instances {
   id: "controller"
   data: "components {\n"
   "  id: \"apitester\"\n"
-  "  component: \"/examples/apis/apitester.script\"\n"
+  "  component: \"/examples/apis/apis.script\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"

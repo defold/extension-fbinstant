@@ -1,6 +1,6 @@
 local monarch = require "monarch.monarch"
 local json = require "fbinstant.utils.json"
-local popup = require "apitester.popup.popup"
+local popup = require "examples.apis.popup.popup"
 
 -- mock fbinstant.* to test your game without the need to build/bundle for HTML5
 require "fbinstant.utils.mock"

@@ -20,7 +20,7 @@ var FBInstantLibrary = {
     $Utils: {
         strings: {},
         allocateString: function(str) {
-            return allocate(intArrayFromString(str), ALLOC_STACK);
+            return stringToUTF8OnStack(str);
         },
         convertPurchase: function(purchase) {
             return {
@@ -914,4 +914,4 @@ autoAddDeps(FBInstantLibrary, "$Context");
 autoAddDeps(FBInstantLibrary, "$Utils");
 autoAddDeps(FBInstantLibrary, "$Ads");
 
-mergeInto(LibraryManager.library, FBInstantLibrary);
+addToLibrary(FBInstantLibrary);

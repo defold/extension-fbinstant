@@ -47,6 +47,8 @@ nodes {
   alpha: 1.0
   template: "/gooey/themes/dirtylarry/components/button.gui"
   template_node_child: false
+  custom_type: 0
+  enabled: true
 }
 nodes {
   position {
@@ -102,6 +104,10 @@ nodes {
   alpha: 1.0
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -136,7 +142,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "BACK"
+  text: "LABEL"
   font: "dirtylarry"
   id: "back/label"
   xanchor: XANCHOR_NONE
@@ -162,10 +168,13 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
-  overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -228,6 +237,10 @@ nodes {
   template_node_child: false
   text_leading: 1.0
   text_tracking: 0.0
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -267,6 +280,8 @@ nodes {
   alpha: 1.0
   template: "/gooey/themes/dirtylarry/components/button.gui"
   template_node_child: false
+  custom_type: 0
+  enabled: true
 }
 nodes {
   position {
@@ -322,6 +337,10 @@ nodes {
   alpha: 1.0
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -356,7 +375,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "GET DATA"
+  text: "LABEL"
   font: "dirtylarry"
   id: "get_data/label"
   xanchor: XANCHOR_NONE
@@ -382,10 +401,13 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
-  overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -425,6 +447,8 @@ nodes {
   alpha: 1.0
   template: "/gooey/themes/dirtylarry/components/button.gui"
   template_node_child: false
+  custom_type: 0
+  enabled: true
 }
 nodes {
   position {
@@ -480,6 +504,10 @@ nodes {
   alpha: 1.0
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -514,7 +542,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "SET DATA"
+  text: "LABEL"
   font: "dirtylarry"
   id: "set_data/label"
   xanchor: XANCHOR_NONE
@@ -540,10 +568,13 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
-  overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -606,6 +637,10 @@ nodes {
   template_node_child: false
   text_leading: 1.0
   text_tracking: 0.0
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -645,6 +680,8 @@ nodes {
   alpha: 1.0
   template: "/gooey/themes/dirtylarry/components/button.gui"
   template_node_child: false
+  custom_type: 0
+  enabled: true
 }
 nodes {
   position {
@@ -700,6 +737,10 @@ nodes {
   alpha: 1.0
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -734,7 +775,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "FLUSH DATA"
+  text: "LABEL"
   font: "dirtylarry"
   id: "flush_data/label"
   xanchor: XANCHOR_NONE
@@ -760,10 +801,13 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
-  overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -803,6 +847,8 @@ nodes {
   alpha: 1.0
   template: "/gooey/themes/dirtylarry/components/button.gui"
   template_node_child: false
+  custom_type: 0
+  enabled: true
 }
 nodes {
   position {
@@ -858,6 +904,10 @@ nodes {
   alpha: 1.0
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -892,7 +942,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "GET STATS"
+  text: "LABEL"
   font: "dirtylarry"
   id: "get_stats/label"
   xanchor: XANCHOR_NONE
@@ -918,10 +968,13 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
-  overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -961,6 +1014,8 @@ nodes {
   alpha: 1.0
   template: "/gooey/themes/dirtylarry/components/button.gui"
   template_node_child: false
+  custom_type: 0
+  enabled: true
 }
 nodes {
   position {
@@ -1016,6 +1071,10 @@ nodes {
   alpha: 1.0
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -1050,7 +1109,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "SET STATS"
+  text: "LABEL"
   font: "dirtylarry"
   id: "set_stats/label"
   xanchor: XANCHOR_NONE
@@ -1076,10 +1135,13 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
-  overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -1119,6 +1181,8 @@ nodes {
   alpha: 1.0
   template: "/gooey/themes/dirtylarry/components/button.gui"
   template_node_child: false
+  custom_type: 0
+  enabled: true
 }
 nodes {
   position {
@@ -1174,6 +1238,10 @@ nodes {
   alpha: 1.0
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -1208,7 +1276,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "INC STATS"
+  text: "LABEL"
   font: "dirtylarry"
   id: "increment_stats/label"
   xanchor: XANCHOR_NONE
@@ -1234,10 +1302,13 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
-  overridden_fields: 8
   template_node_child: true
   text_leading: 1.0
   text_tracking: 0.0
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -1300,6 +1371,10 @@ nodes {
   template_node_child: false
   text_leading: 1.0
   text_tracking: 0.0
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -1362,6 +1437,10 @@ nodes {
   template_node_child: false
   text_leading: 1.0
   text_tracking: 0.0
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -1424,6 +1503,10 @@ nodes {
   template_node_child: false
   text_leading: 1.0
   text_tracking: 0.0
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 nodes {
   position {
@@ -1486,6 +1569,10 @@ nodes {
   template_node_child: false
   text_leading: 1.0
   text_tracking: 0.0
+  custom_type: 0
+  enabled: true
+  visible: true
+  material: ""
 }
 layers {
   name: "below"

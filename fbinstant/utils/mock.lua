@@ -20,9 +20,6 @@ local function load(name)
 end
 
 
-local rxijson = require "fbinstant.utils.json"
-
-
 fbinstant.mock = true
 
 fbinstant.CONTEXT_SOLO = "SOLO"
@@ -128,7 +125,7 @@ end
 
 function fbinstant.share(payload, cb)
 	print("share")
-	pprint(rxijson.decode(payload))
+	pprint(json.decode(payload))
 	cb(get_self(), true)
 end
 
@@ -144,7 +141,7 @@ end
 
 function fbinstant.get_supported_apis()
 	print("get_supported_apis")
-	return rxijson.encode({
+	return json.encode({
 		["getLocale"] = true,
 		["getPlatform"] = true,
 		["getSupportedAPIs"] = true,
@@ -215,7 +212,7 @@ end
 
 function fbinstant.get_entry_point_data()
 	print("get_entry_point_data")
-	return rxijson.encode(fbinstant.ENTRY_POINT_DATA)
+	return json.encode(fbinstant.ENTRY_POINT_DATA)
 end
 
 function fbinstant.get_entry_point(cb)
@@ -245,7 +242,7 @@ end
 
 function fbinstant.get_connected_players(cb)
 	print("get_connected_players")
-	cb(get_self(), rxijson.encode(fbinstant.CONNECTED_PLAYERS))
+	cb(get_self(), json.encode(fbinstant.CONNECTED_PLAYERS))
 end
 
 function fbinstant.get_player_data(keys, cb)
@@ -254,7 +251,7 @@ function fbinstant.get_player_data(keys, cb)
 	for _,key in pairs(json.decode(keys)) do
 		result[key] = player_data[key]
 	end
-	cb(get_self(), rxijson.encode(result))
+	cb(get_self(), json.encode(result))
 end
 
 function fbinstant.set_player_data(jsondata, cb)
@@ -274,13 +271,13 @@ end
 function fbinstant.get_player_stats(stats, cb)
 	print("get_player_stats", stats)
 	if type(stats) == "function" then
-		cb(get_self(), rxijson.encode(player_stats))
+		cb(get_self(), json.encode(player_stats))
 	else
 		local result = {}
 		for _,key in ipairs(json.decode(stats)) do
 			result[key] = player_stats[key]
 		end
-		cb(get_self(), rxijson.encode(result))
+		cb(get_self(), json.encode(result))
 	end
 end
 
@@ -297,7 +294,7 @@ function fbinstant.increment_player_stats(statsjson, cb)
 		player_stats[k] = player_stats[k] or 0
 		player_stats[k] = player_stats[k] + v
 	end
-	cb(get_self(), rxijson.encode(player_stats))
+	cb(get_self(), json.encode(player_stats))
 end
 
 function fbinstant.can_subscribe_bot(cb)
@@ -563,7 +560,7 @@ function fbinstant.get_leaderboard_entries(name, count, offset, cb)
 		entries[#entries + 1] = entry
 	end
 
-	cb(get_self(), rxijson.encode(entries))
+	cb(get_self(), json.encode(entries))
 end
 
 --------------------------------
@@ -586,12 +583,12 @@ end
 
 function fbinstant.get_product_catalog(callback)
 	print("get_product_catalog")
-	callback(get_self(), rxijson.encode(fbinstant.PRODUCTS))
+	callback(get_self(), json.encode(fbinstant.PRODUCTS))
 end
 
 function fbinstant.get_purchases(callback)
 	print("get_purchases")
-	callback(get_self(), rxijson.encode(purchases))
+	callback(get_self(), json.encode(purchases))
 end
 
 function fbinstant.purchase(product_id, developer_payload, callback)
@@ -610,7 +607,7 @@ function fbinstant.purchase(product_id, developer_payload, callback)
 		signed_request = "signed_request"
 	}
 	purchases[#purchases + 1] = purchase
-	callback(get_self(), rxijson.encode(purchase))
+	callback(get_self(), json.encode(purchase))
 end
 
 
